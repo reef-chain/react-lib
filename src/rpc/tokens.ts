@@ -1,4 +1,4 @@
-import { Signer } from '@reef-defi/evm-provider';
+import { Signer } from '@reef-chain/evm-provider';
 import { calculateAmount } from '../utils/math';
 import { getREEF20Contract } from './rpc';
 import { BasicToken, Token, TokenWithAmount } from '../state';

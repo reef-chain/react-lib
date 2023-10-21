@@ -1,7 +1,7 @@
 import { forkJoin, Observable, of } from 'rxjs';
 import { Contract } from 'ethers';
 import axios from 'axios';
-import { Signer } from '@reef-defi/evm-provider';
+import { Signer } from '@reef-chain/evm-provider';
 import { getContractTypeAbi } from '../appState/util';
 import { NFT, NFTMetadata } from '../state';
 

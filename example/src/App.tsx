@@ -1,5 +1,5 @@
-import { Components } from '@reef-defi/react-lib'
-import '@reef-defi/react-lib/dist/index.css'
+import { Components } from '@reef-chain/react-lib'
+import '@reef-chain/react-lib/dist/index.css'
 
 const {Button, Card, Icons} = Components;
 

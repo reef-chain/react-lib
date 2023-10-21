@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { utils } from 'ethers';
 import { decodeAddress } from '@polkadot/util-crypto';
-import { Provider } from '@reef-defi/evm-provider';
+import { Provider } from '@reef-chain/evm-provider';
 import {
   calculateUsdAmount,
   handleErr,

@@ -1,4 +1,4 @@
-import { Provider } from '@reef-defi/evm-provider';
+import { Provider } from '@reef-chain/evm-provider';
 import { WsProvider } from '@polkadot/api';
 
 export async function initProvider(providerUrl: string) {

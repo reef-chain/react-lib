@@ -1,5 +1,5 @@
 {
-  "name": "@reef-defi/react-lib-example",
+  "name": "@reef-chain/react-lib-example",
   "homepage": ".",
   "version": "0.0.0",
   "private": true,
@@ -21,7 +21,7 @@
     "react-dom": "link:../node_modules/react-dom",
     "react-scripts": "link:../node_modules/react-scripts",
     "typescript": "link:../node_modules/typescript",
-    "@reef-defi/react-lib": "link:.."
+    "@reef-chain/react-lib": "link:.."
   },
   "devDependencies": {
     "@babel/plugin-syntax-object-rest-spread": "^7.8.3"

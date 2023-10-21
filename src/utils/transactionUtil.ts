@@ -1,4 +1,4 @@
-import { Provider } from '@reef-defi/evm-provider';
+import { Provider } from '@reef-chain/evm-provider';
 import { BigNumber } from 'ethers';
 import { availableNetworks, Network, ReefSigner } from '../state';
 

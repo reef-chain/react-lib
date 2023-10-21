@@ -1,5 +1,5 @@
 import Identicon from '@polkadot/react-identicon';
-import { Provider } from '@reef-defi/evm-provider';
+import { Provider } from '@reef-chain/evm-provider';
 import { BigNumber, ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
 import Uik from '@reef-chain/ui-kit';

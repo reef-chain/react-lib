@@ -1,4 +1,4 @@
-import { Provider } from '@reef-defi/evm-provider';
+import { Provider } from '@reef-chain/evm-provider';
 import { useEffect, useState } from 'react';
 import { DeriveBalancesAccountData } from '@polkadot/api-derive/balances/types';
 

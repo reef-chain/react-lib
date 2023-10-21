@@ -1,7 +1,7 @@
 import type {
   InjectedAccountWithMeta, InjectedExtension,
 } from '@polkadot/extension-inject/types';
-import { Provider, Signer } from '@reef-defi/evm-provider';
+import { Provider, Signer } from '@reef-chain/evm-provider';
 
 import { DeriveBalancesAccountData } from '@polkadot/api-derive/balances/types';
 import type { Signer as InjectedSigner } from '@polkadot/api/types';

@@ -1,4 +1,4 @@
-import { Provider } from '@reef-defi/evm-provider';
+import { Provider } from '@reef-chain/evm-provider';
 import { decodeAddress } from '@polkadot/util-crypto';
 import { ethers } from 'ethers';
 import { Buffer } from 'buffer';

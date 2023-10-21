@@ -1,4 +1,4 @@
-import { Signer } from '@reef-defi/evm-provider';
+import { Signer } from '@reef-chain/evm-provider';
 import { BigNumber, Contract } from 'ethers';
 import { ERC20 } from '../assets/abi/ERC20';
 import { ReefswapFactory } from '../assets/abi/ReefswapFactory';

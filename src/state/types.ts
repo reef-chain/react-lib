@@ -1,4 +1,4 @@
-import { Signer } from '@reef-defi/evm-provider';
+import { Signer } from '@reef-chain/evm-provider';
 import { BigNumber } from 'ethers';
 import type { Signer as InjectedSigner } from '@polkadot/api/types';
 

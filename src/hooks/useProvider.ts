@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Provider } from '@reef-defi/evm-provider';
+import { Provider } from '@reef-chain/evm-provider';
 import { useAsyncEffect } from './useAsyncEffect';
 import { initProvider } from '../utils/providerUtil';
 
