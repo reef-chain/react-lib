@@ -3412,9 +3412,9 @@
     blakejs "~1.1.0"
     ethers "~5.5.0"
 
-"@reef-chain/ui-kit@^1.1.4":
+"@reef-chain/ui-kit@^1.1.5":
   version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@reef-chain/ui-kit/-/ui-kit-1.1.5.tgz#fa7f2b5a87b2221ffffcb234f0ae2d25b7ea1664"
+  resolved "https://registry.npmmirror.com/@reef-chain/ui-kit/-/ui-kit-1.1.5.tgz#fa7f2b5a87b2221ffffcb234f0ae2d25b7ea1664"
   integrity sha512-/hkAEif3hdUePP6QmqB3WirZQJtBwIphfSAiC2VJy5rgnqL2/4KHrnZTGQBkBGI82cugO7y8m3fuaL1w+cbf9g==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^6.1.0"
@@ -5721,9 +5721,9 @@ bindings@^1.3.0, bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-"bip32-ed25519@git+https://github.com/Zondax/bip32-ed25519.git":
+"bip32-ed25519@https://github.com/Zondax/bip32-ed25519":
   version "0.0.4"
-  resolved "git+https://github.com/Zondax/bip32-ed25519.git#0949df01b5c93885339bc28116690292088f6134"
+  resolved "https://github.com/Zondax/bip32-ed25519#0949df01b5c93885339bc28116690292088f6134"
   dependencies:
     bn.js "^5.1.1"
     elliptic "^6.4.1"
