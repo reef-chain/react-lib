@@ -7,10 +7,10 @@ import {
   POOL_VOLUME_AGGREGATE_GQL, TransactionTypes,
 } from '../graphql/pools';
 import useInterval from './userInterval';
-import { POLL_INTERVAL } from '../utils';
 import axios, { AxiosInstance } from 'axios';
 import {  useEffect, useState } from 'react';
 import { graphqlRequest } from '../graphql/utils';
+import {network} from '@reef-chain/util-lib';
 
 const getPoolVolumeAggregateQuery = (address: string,
   fromTime: string,
@@ -164,12 +164,12 @@ export const usePoolTransactionCountSubscription = (
     return [undefined, true] as any;
   }
   const queryObj = getPoolTransactionCountQry(address, type);
+  const TRIGGERED = network.getLatestBlockContractEvents$([address])
   useInterval(async() => {
-    setLoading(true);
     const response = await graphqlRequest(httpClient, queryObj);
-    setData(response.data);
+    setData(response.data.data);
     setLoading(false);
-  }, POLL_INTERVAL);
+  }, TRIGGERED);
 
   return {data, loading} as any;
 };
@@ -187,13 +187,13 @@ export const usePoolTransactionSubscription = (
     return [undefined, true] as any;
   }
   const queryObj = getPoolTransactionQry(address, type, limit, pageIndex);
+  const TRIGGERED = network.getLatestBlockContractEvents$([address])
 
   useInterval(async() => {
-    setLoading(true);
     const response = await graphqlRequest(httpClient, queryObj);
-    setData(response.data);
+    setData(response.data.data);
     setLoading(false);
-  }, POLL_INTERVAL);
+  }, TRIGGERED);
 
   return {data, loading} as any;
   }
