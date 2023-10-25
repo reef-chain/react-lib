@@ -6,11 +6,10 @@ import {
   POOL_DAY_VOLUME_GQL, POOL_FEES_GQL, POOL_GQL, POOL_SUPPLY_GQL, POOL_TRANSACTIONS_GQL, POOL_TRANSACTION_COUNT_GQL,
   POOL_VOLUME_AGGREGATE_GQL, TransactionTypes,
 } from '../graphql/pools';
-import useInterval from './userInterval';
 import axios, { AxiosInstance } from 'axios';
 import {  useEffect, useState } from 'react';
 import { graphqlRequest } from '../graphql/utils';
-import {network} from '@reef-chain/util-lib';
+// import {network} from '@reef-chain/util-lib';
 
 const getPoolVolumeAggregateQuery = (address: string,
   fromTime: string,
@@ -164,12 +163,15 @@ export const usePoolTransactionCountSubscription = (
     return [undefined, true] as any;
   }
   const queryObj = getPoolTransactionCountQry(address, type);
-  const TRIGGERED = network.getLatestBlockContractEvents$([address])
-  useInterval(async() => {
-    const response = await graphqlRequest(httpClient, queryObj);
-    setData(response.data.data);
-    setLoading(false);
-  }, TRIGGERED);
+  // const TRIGGERED = network.getLatestBlockContractEvents$([address])
+  useEffect(()=>{
+    const handleResponse =async() => {
+      const response = await graphqlRequest(httpClient, queryObj);
+      setData(response.data.data);
+      setLoading(false);
+    }
+    handleResponse()
+  },[]);
 
   return {data, loading} as any;
 };
@@ -187,13 +189,17 @@ export const usePoolTransactionSubscription = (
     return [undefined, true] as any;
   }
   const queryObj = getPoolTransactionQry(address, type, limit, pageIndex);
-  const TRIGGERED = network.getLatestBlockContractEvents$([address])
-
-  useInterval(async() => {
-    const response = await graphqlRequest(httpClient, queryObj);
+  // const TRIGGERED = network.getLatestBlockContractEvents$([address])
+useEffect(() => {
+  
+const fetchResponse = async()=>{
+  const response = await graphqlRequest(httpClient, queryObj);
     setData(response.data.data);
     setLoading(false);
-  }, TRIGGERED);
+}
+fetchResponse();
+}, [])
+
 
   return {data, loading} as any;
   }
