@@ -9,7 +9,8 @@ import {
 import axios, { AxiosInstance } from 'axios';
 import {  useEffect, useState } from 'react';
 import { graphqlRequest } from '../graphql/utils';
-// import {network} from '@reef-chain/util-lib';
+import {network} from '@reef-chain/util-lib';
+import { useObservableState } from './useObservableState';
 
 const getPoolVolumeAggregateQuery = (address: string,
   fromTime: string,
@@ -163,7 +164,7 @@ export const usePoolTransactionCountSubscription = (
     return [undefined, true] as any;
   }
   const queryObj = getPoolTransactionCountQry(address, type);
-  // const TRIGGERED = network.getLatestBlockContractEvents$([address])
+  const TRIGGER = useObservableState(network.getLatestBlockContractEvents$([address]))
   useEffect(()=>{
     const handleResponse =async() => {
       const response = await graphqlRequest(httpClient, queryObj);
@@ -171,7 +172,7 @@ export const usePoolTransactionCountSubscription = (
       setLoading(false);
     }
     handleResponse()
-  },[]);
+  },[TRIGGER]);
 
   return {data, loading} as any;
 };
@@ -189,7 +190,7 @@ export const usePoolTransactionSubscription = (
     return [undefined, true] as any;
   }
   const queryObj = getPoolTransactionQry(address, type, limit, pageIndex);
-  // const TRIGGERED = network.getLatestBlockContractEvents$([address])
+  const TRIGGER = useObservableState(network.getLatestBlockContractEvents$([address]))
 useEffect(() => {
   
 const fetchResponse = async()=>{
@@ -198,7 +199,7 @@ const fetchResponse = async()=>{
     setLoading(false);
 }
 fetchResponse();
-}, [])
+}, [TRIGGER])
 
 
   return {data, loading} as any;
