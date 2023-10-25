@@ -163,7 +163,6 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
   // });
   useEffect(() => {
     const handleRes = async ()=>{
-      setTokensLoading(true);
       const res = await graphqlRequest(httpClient,getPoolTokensDataQry(address));
       setTokensData(res.data.data);
       setTokensLoading(false);
