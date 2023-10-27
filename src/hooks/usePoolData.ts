@@ -202,13 +202,12 @@ export const usePoolData = ({
   const queryObj = getPoolDataQry(timeData,address, fromTime.toISOString());
   useEffect(() => {
     const handleResp = async()=>{
-      setLoading(true);
       const response = await graphqlRequest(httpClient, queryObj);
       setData(response.data.data);
       setLoading(false);
     }
     handleResp();
-  }, [timeData]);
+  }, []);
 
   const processed = useMemo((): PoolDataTime => {
     if (!data) {

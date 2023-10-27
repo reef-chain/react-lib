@@ -6,11 +6,11 @@ import {
   POOL_DAY_VOLUME_GQL, POOL_FEES_GQL, POOL_GQL, POOL_SUPPLY_GQL, POOL_TRANSACTIONS_GQL, POOL_TRANSACTION_COUNT_GQL,
   POOL_VOLUME_AGGREGATE_GQL, TransactionTypes,
 } from '../graphql/pools';
-import useInterval from './userInterval';
-import { POLL_INTERVAL } from '../utils';
 import axios, { AxiosInstance } from 'axios';
 import {  useEffect, useState } from 'react';
 import { graphqlRequest } from '../graphql/utils';
+import {network} from '@reef-chain/util-lib';
+import { useObservableState } from './useObservableState';
 
 const getPoolVolumeAggregateQuery = (address: string,
   fromTime: string,
@@ -164,12 +164,15 @@ export const usePoolTransactionCountSubscription = (
     return [undefined, true] as any;
   }
   const queryObj = getPoolTransactionCountQry(address, type);
-  useInterval(async() => {
-    setLoading(true);
-    const response = await graphqlRequest(httpClient, queryObj);
-    setData(response.data);
-    setLoading(false);
-  }, POLL_INTERVAL);
+  const TRIGGER = useObservableState(network.getLatestBlockContractEvents$([address]))
+  useEffect(()=>{
+    const handleResponse =async() => {
+      const response = await graphqlRequest(httpClient, queryObj);
+      setData(response.data.data);
+      setLoading(false);
+    }
+    handleResponse()
+  },[TRIGGER]);
 
   return {data, loading} as any;
 };
@@ -187,13 +190,17 @@ export const usePoolTransactionSubscription = (
     return [undefined, true] as any;
   }
   const queryObj = getPoolTransactionQry(address, type, limit, pageIndex);
-
-  useInterval(async() => {
-    setLoading(true);
-    const response = await graphqlRequest(httpClient, queryObj);
-    setData(response.data);
+  const TRIGGER = useObservableState(network.getLatestBlockContractEvents$([address]))
+useEffect(() => {
+  
+const fetchResponse = async()=>{
+  const response = await graphqlRequest(httpClient, queryObj);
+    setData(response.data.data);
     setLoading(false);
-  }, POLL_INTERVAL);
+}
+fetchResponse();
+}, [TRIGGER])
+
 
   return {data, loading} as any;
   }
