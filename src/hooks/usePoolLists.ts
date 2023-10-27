@@ -163,11 +163,11 @@ export const usePoolsList = ({
     return poolsList.map((pool) => ({
       address: pool.id,
       token1: {
-        image: pool.iconUrl1 === '' ? getIconUrl(pool.token1) : pool.iconUrl1,
+        image: !pool.iconUrl1 ? getIconUrl(pool.token1) : pool.iconUrl1,
         name: pool.name1,
       },
       token2: {
-        image: pool.iconUrl2 === '' ? getIconUrl(pool.token2) : pool.iconUrl2,
+        image: !pool.iconUrl2 ? getIconUrl(pool.token2) : pool.iconUrl2,
         name: pool.name2,
       },
       tvl: calculateUSDTVL(pool, tokenPrices),
