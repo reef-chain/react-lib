@@ -5,7 +5,6 @@ import {
   import { Provider } from '@reef-chain/evm-provider';
  import { hooks,rpc ,appState} from '..';
   import { Network } from '../components';
-  import { availableNetworks } from '../state';
   import { ReefSigner } from '../state';
   import type { Signer as InjectedSigner } from '@polkadot/api/types';
   import { map } from 'rxjs';
@@ -24,7 +23,7 @@ import { useInjectExtension } from './useInjectExtension';
     } catch (e) {
       // when cookies disabled localStorage can throw
     }
-    return storedNetwork != null ? storedNetwork : availableNetworks.mainnet;
+    return storedNetwork != null ? storedNetwork : nw.AVAILABLE_NETWORKS.mainnet;
   };
   
   const getSelectedAddress = ():string|undefined => {
