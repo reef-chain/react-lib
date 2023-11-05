@@ -11,10 +11,11 @@ import {
   POOL_TOKENS_DATA_GQL,
 } from '../graphql/pools';
 import { getTokenPrice, TokenPrices } from '../state';
-import { getIconUrl, normalize, POLL_INTERVAL } from '../utils';
+import { normalize, POLL_INTERVAL } from '../utils';
 import useInterval from './userInterval';
 import { AxiosInstance } from 'axios';
 import { graphqlRequest } from '../graphql/utils';
+import { getIconUrl } from '../components/common/Icons';
 
 const getPoolTotalValueLockedQry = (toTime: any) => ({
   query: POOLS_TOTAL_VALUE_LOCKED,
@@ -52,7 +53,7 @@ export const useTotalSupply = (tokenPrices: TokenPrices, httpClient:AxiosInstanc
     }
     handleRes();
   }, [])
-  
+
   // const { data } = useQuery<PoolsTotalSupply, PoolsTotalValueLockedVar>(
   //   POOLS_TOTAL_VALUE_LOCKED,
   //   {

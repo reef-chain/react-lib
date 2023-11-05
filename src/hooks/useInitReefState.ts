@@ -1,20 +1,21 @@
 import {
-    reefState, network as nw,
-  } from '@reef-chain/util-lib';
-  import { useEffect, useState } from 'react';
-  import { Provider } from '@reef-chain/evm-provider';
- import { hooks,rpc ,appState} from '..';
-  import { Network } from '../components';
-  import { availableNetworks } from '../state';
-  import { ReefSigner } from '../state';
-  import type { Signer as InjectedSigner } from '@polkadot/api/types';
-  import { map } from 'rxjs';
-  import { useAsyncEffect } from './useAsyncEffect';
+  reefState, network as nw,
+} from '@reef-chain/util-lib';
+import { useEffect, useState } from 'react';
+import { Provider } from '@reef-chain/evm-provider';
+import { map } from 'rxjs';
+import type { Signer as InjectedSigner } from '@polkadot/api/types';
+import { Network } from '../components';
+import { availableNetworks, ReefSigner } from '../state';
+import { useAsyncEffect } from './useAsyncEffect';
 import { useInjectExtension } from './useInjectExtension';
-  import { useObservableState } from './useObservableState';
-  
-  const SELECTED_ADDRESS_IDENT = 'selected_address_reef';
-  
+import { useObservableState } from './useObservableState';
+import { appState } from '../appState';
+import { accountToSigner } from '../rpc/accounts';
+
+
+const SELECTED_ADDRESS_IDENT = 'selected_address_reef';
+
   const getNetworkFallback = (): Network => {
     let storedNetwork;
     try {
@@ -26,7 +27,7 @@ import { useInjectExtension } from './useInjectExtension';
     }
     return storedNetwork != null ? storedNetwork : availableNetworks.mainnet;
   };
-  
+
   const getSelectedAddress = ():string|undefined => {
     let storedAddress:string;
     try {
@@ -36,7 +37,7 @@ import { useInjectExtension } from './useInjectExtension';
     }
     return storedAddress! != null ? storedAddress : undefined;
   };
-  
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const reefAccountToReefSigner = (accountsFromUtilLib:any, injectedSigner:InjectedSigner):any => {
     const resultObj = {
@@ -60,7 +61,7 @@ import { useInjectExtension } from './useInjectExtension';
     resultObj.accounts = reefSigners as any;
     return resultObj;
   };
-  
+
   interface State{
     error:{ code?: number; message: string; url?: string } | undefined,
     loading:boolean,
@@ -68,9 +69,9 @@ import { useInjectExtension } from './useInjectExtension';
     network: Network,
     signers:ReefSigner[],
     selectedReefSigner?:ReefSigner
-  
+
   }
-  
+
   export const useInitReefState = (
     applicationDisplayName: string,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -88,46 +89,46 @@ import { useInjectExtension } from './useInjectExtension';
     const provider = useObservableState(reefState.selectedProvider$) as Provider|undefined;
     const [loading, setLoading] = useState(true);
     let selectedAddress:string|undefined = useObservableState(reefState.selectedAddress$);
-  
+
     useEffect(() => {
       if (!accounts || !accounts.length || !extension) {
         return;
       }
-  
+
       // eslint-disable-next-line @typescript-eslint/no-shadow
       const net = network || getNetworkFallback();
-  
+
       // eslint-disable-next-line @typescript-eslint/no-shadow
       const jsonAccounts = { accounts, injectedSigner: extension?.signer };
-  
+
       reefState.initReefState({
         network:net,
         jsonAccounts,
         ipfsHashResolverFn,
       });
     }, [accounts, extension]);
-  
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const isProviderLoading = hooks.useObservableState(reefState.providerConnState$.pipe(map((v) => !(v as any).isConnected)), false);
-  
+    const isProviderLoading = useObservableState(reefState.providerConnState$.pipe(map((v) => !(v as any).isConnected)), false);
+
     useEffect(() => {
       setLoading(loadingExtension || isProviderLoading || isSignersLoading);
     }, [isProviderLoading, loadingExtension, isSignersLoading]);
-  
+
     const allReefAccounts = useObservableState(reefState.accounts$);
-  
+
     useAsyncEffect(async () => {
       if (allReefAccounts && provider) {
         const extensionAccounts = [reefAccountToReefSigner(allReefAccounts, jsonAccounts.injectedSigner!)];
-  
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const accountPromises = (extensionAccounts as any).flatMap(
           // eslint-disable-next-line @typescript-eslint/no-shadow
-          ({ accounts, name, sig }) => accounts.map((account) => rpc.accountToSigner(account, provider, sig, name)),
+          ({ accounts, name, sig }) => accounts.map((account) => accountToSigner(account, provider, sig, name)),
         );
         const allAccs = await Promise.all(accountPromises);
         setAllAccounts(allAccs);
-  
+
         const storedAddress = getSelectedAddress();
         if (selectedAddress === undefined && storedAddress !== undefined)selectedAddress = storedAddress;
         if (selectedAddress) {
@@ -140,7 +141,7 @@ import { useInjectExtension } from './useInjectExtension';
         setIsSignersLoading(false);
       }
     }, [allReefAccounts, provider, selectedAddress, network]);
-  
+
     return {
       error: errExtension,
       loading,
@@ -150,4 +151,3 @@ import { useInjectExtension } from './useInjectExtension';
       selectedReefSigner,
     };
   };
-  
