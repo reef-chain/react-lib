@@ -1,7 +1,8 @@
 import { network } from '@reef-chain/util-lib';
 import { REEF_TOKEN, Token } from './token';
 
-export type AvailableNetworks = 'mainnet' | 'testnet' | 'localhost';
+const networks = Object.keys(network.AVAILABLE_NETWORKS);
+export type AvailableNetworks = typeof networks[number];
 
 export interface Bond {
   name: string;

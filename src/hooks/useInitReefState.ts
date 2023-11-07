@@ -1,5 +1,5 @@
 import {
-    reefState,network as nw
+    reefState
   } from '@reef-chain/util-lib';
   import { useEffect, useState } from 'react';
   import { Provider } from '@reef-chain/evm-provider';
@@ -24,8 +24,7 @@ import { useInjectExtension } from './useInjectExtension';
     } catch (e) {
       // when cookies disabled localStorage can throw
     }
-    console.log(nw)
-    console.log(nw.getReefswapNetworkConfig(availableNetworks.mainnet))
+    
     return storedNetwork != null ? storedNetwork : availableNetworks.mainnet;
   };
   
