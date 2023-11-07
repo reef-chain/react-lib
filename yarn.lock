@@ -3449,10 +3449,10 @@
     graphql "^16.6.0"
     subscriptions-transport-ws "^0.11.0"
 
-"@reef-chain/util-lib@^1.0.0-rc10":
-  version "1.0.0-rc10"
-  resolved "https://registry.npmjs.org/@reef-chain/util-lib/-/util-lib-1.0.0-rc10.tgz#ebdcdab9ab87830a63b87cc9182057633d9d95ba"
-  integrity sha512-+Cvq/i4XKEBzm6o1VVhuLrzKsZoihbOMcIR8Vx0la1LZ6fnyBhy9kcnM9uBVRt+10DUKe58Gh8s1meoxaLH5bw==
+"@reef-chain/util-lib@^1.0.0-rc11":
+  version "1.0.0-rc11"
+  resolved "https://registry.npmjs.org/@reef-chain/util-lib/-/util-lib-1.0.0-rc11.tgz#e4d95875906a063c4a9d10f08a98e85129a10c1c"
+  integrity sha512-KYl85YURR2O93SErmRpeS++ADStPupZU0mM+wQ106G87i2vwKib9x1avcq20xKyJmkxQbEyZ1My0eksgqB9pRw==
   dependencies:
     "@polkadot/extension-inject" "^0.44.6"
     "@reef-defi/evm-provider" "^1.0.10"

@@ -1,18 +1,9 @@
 import { network } from '@reef-chain/util-lib';
-import { REEF_TOKEN, Token } from './token';
 
 const networks = Object.keys(network.AVAILABLE_NETWORKS);
 export type AvailableNetworks = typeof networks[number];
 
-export interface Bond {
-  name: string;
-  description: string;
-  contractAddress: string;
-  validatorAddress: string;
-  stake: Token;
-  farm: Token;
-  apy: string;
-}
+type Bond = typeof network.Bond;
 
 export interface Network {
   rpcUrl: string;
@@ -39,7 +30,7 @@ export const availableNetworks: Networks = {
     graphqlExplorerUrl: network.AVAILABLE_NETWORKS.testnet.graphqlExplorerUrl,
     graphqlDexsUrl: network.getReefswapNetworkConfig(network.AVAILABLE_NETWORKS.testnet).graphqlDexsUrl,
     genesisHash: network.AVAILABLE_NETWORKS.testnet.genesisHash,
-    bonds: [],
+    bonds: network.bonds.testnet,
   },
   mainnet: {
     name: network.AVAILABLE_NETWORKS.mainnet.name,
@@ -51,17 +42,7 @@ export const availableNetworks: Networks = {
     graphqlExplorerUrl: network.AVAILABLE_NETWORKS.mainnet.graphqlExplorerUrl,
     graphqlDexsUrl: network.getReefswapNetworkConfig(network.AVAILABLE_NETWORKS.mainnet).graphqlDexsUrl,
     genesisHash: network.AVAILABLE_NETWORKS.mainnet.genesisHash,
-    bonds: [
-      {
-        name: 'Reef community staking bond',
-        description: '',
-        contractAddress: '0x7D3596b724cEB02f2669b902E4F1EEDeEfad3be6',
-        validatorAddress: '5Hax9GZjpurht2RpDr5eNLKvEApECuNxUpmRbYs5iNh7LpHa',
-        stake: { ...REEF_TOKEN },
-        farm: { ...REEF_TOKEN },
-        apy: '32',
-      },
-    ],
+    bonds: network.bonds.testnet.mainnet,
   },
   localhost: {
     name: network.AVAILABLE_NETWORKS.localhost.name,
@@ -73,6 +54,6 @@ export const availableNetworks: Networks = {
     graphqlExplorerUrl: network.AVAILABLE_NETWORKS.localhost.graphqlExplorerUrl,
     graphqlDexsUrl: network.getReefswapNetworkConfig(network.AVAILABLE_NETWORKS.localhost).graphqlDexsUrl,
     genesisHash: network.AVAILABLE_NETWORKS.localhost.genesisHash,
-    bonds: [],
+    bonds: network.bonds.testnet.localhost,
   },
 };
