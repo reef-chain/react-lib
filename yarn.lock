@@ -3449,10 +3449,10 @@
     graphql "^16.6.0"
     subscriptions-transport-ws "^0.11.0"
 
-"@reef-chain/util-lib@^1.0.0-rc9":
-  version "1.0.0-rc9"
-  resolved "https://registry.yarnpkg.com/@reef-chain/util-lib/-/util-lib-1.0.0-rc9.tgz#ba964e2c2e9814ebb4bd1101ee7316af53a8ec1b"
-  integrity sha512-oebKBSbUCzpXz3yuezbEYOcC0s0ll/Ey7sRi6UNs1lbEojmX3Pi7rWewA6crRTL78dQ2cGG2tyvD2Ri6TlAG6Q==
+"@reef-chain/util-lib@^1.0.0-rc10":
+  version "1.0.0-rc10"
+  resolved "https://registry.npmjs.org/@reef-chain/util-lib/-/util-lib-1.0.0-rc10.tgz#ebdcdab9ab87830a63b87cc9182057633d9d95ba"
+  integrity sha512-+Cvq/i4XKEBzm6o1VVhuLrzKsZoihbOMcIR8Vx0la1LZ6fnyBhy9kcnM9uBVRt+10DUKe58Gh8s1meoxaLH5bw==
   dependencies:
     "@polkadot/extension-inject" "^0.44.6"
     "@reef-defi/evm-provider" "^1.0.10"
@@ -5728,9 +5728,9 @@ bindings@^1.3.0, bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-"bip32-ed25519@git+https://github.com/Zondax/bip32-ed25519.git":
+"bip32-ed25519@https://github.com/Zondax/bip32-ed25519":
   version "0.0.4"
-  resolved "git+https://github.com/Zondax/bip32-ed25519.git#0949df01b5c93885339bc28116690292088f6134"
+  resolved "https://github.com/Zondax/bip32-ed25519#0949df01b5c93885339bc28116690292088f6134"
   dependencies:
     bn.js "^5.1.1"
     elliptic "^6.4.1"
