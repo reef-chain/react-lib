@@ -1,10 +1,11 @@
 import { AxiosInstance } from 'axios';
 import {  ALL_POOLS } from '../graphql/pools';
-import { POLL_INTERVAL, getIconUrl } from '../utils';
+import { POLL_INTERVAL } from '../utils';
 import { useState } from 'react';
 import useInterval from './userInterval';
 import { PoolWithReserves } from '../state';
 import { graphqlRequest } from '../graphql/utils';
+import { getIconUrl } from '../components/common/Icons';
 
 export const getAllPoolsQuery = () => ({
   query: ALL_POOLS,

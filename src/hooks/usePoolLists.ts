@@ -4,7 +4,7 @@ import {
   AllPoolsListCountQuery, AllPoolsListQuery, ALL_POOLS_LIST, ALL_POOLS_LIST_COUNT, PoolListItem, PoolsListVar, UserPoolsListCountQuery, UserPoolsListQuery, USER_POOLS_LIST, USER_POOLS_LIST_COUNT,
 } from '../graphql/pools';
 import { TokenPrices } from '../state';
-import { getIconUrl } from '../utils';
+import { getIconUrl } from '../components/common/Icons';
 import { AxiosInstance } from 'axios';
 import { graphqlRequest } from '../graphql/utils';
 
