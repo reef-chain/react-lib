@@ -1,6 +1,8 @@
+/* eslint-disable prefer-promise-reject-errors */
 import Uik from '@reef-chain/ui-kit';
 import { BigNumber, Contract } from 'ethers';
 import { Dispatch, useEffect, useRef } from 'react';
+import { AxiosInstance } from 'axios';
 import { ERC20 } from '../assets/abi/ERC20';
 import { getReefswapRouter } from '../rpc';
 import {
@@ -30,7 +32,6 @@ import {
 } from '../utils';
 import { findToken } from './useKeepTokenUpdated';
 import { useLoadPool } from './useLoadPool';
-import { AxiosInstance } from 'axios';
 
 const swapStatus = (
   sell: TokenWithAmount,
@@ -122,6 +123,7 @@ export const useSwapState = ({
     // Avoid querying pool based on token addresses and receive pool from props
     loadedPool = poolProp;
   } else {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     [loadedPool, isPoolLoading] = useLoadPool(
       sell,
       buy,
@@ -139,7 +141,7 @@ export const useSwapState = ({
   // Updating swap tokens
   useEffect(() => {
     const foundToken1 = findToken(address2, tokens);
-    if (prevAddress2.current != address2 || (!tokenBuySet.current && buy.address)
+    if (prevAddress2.current !== address2 || (!tokenBuySet.current && buy.address)
         || prevBuyBalance.current !== foundToken1.balance.toString()) {
       const price = tokenPrices[address2];
       setBuy({ ...foundToken1, amount: buy.amount, price });
@@ -272,7 +274,7 @@ export const onSwap = ({
       ]);
 
       // Signing and awaiting when data comes in block
-      const signAndSend = new Promise<void>(async (resolve, reject) => {
+      const signAndSend = new Promise<void>((resolve, reject): void => {
         batch.signAndSend(
           address,
           { signer: signer.signingKey },
@@ -302,7 +304,7 @@ export const onSwap = ({
       await signAndSend;
     } else {
       // Approve
-      const signAndSendApprove = new Promise<void>(async (resolve, reject) => {
+      const signAndSendApprove = new Promise<void>((resolve, reject) => {
         approveExtrinsic.signAndSend(
           address,
           { signer: signer.signingKey },
@@ -333,7 +335,7 @@ export const onSwap = ({
         tradeResources.storage.lt(0) ? BigNumber.from(0) : tradeResources.storage,
       );
 
-      const signAndSendTrade = new Promise<void>(async (resolve, reject) => {
+      const signAndSendTrade = new Promise<void>((resolve, reject) => {
         tradeExtrinsic.signAndSend(
           address,
           { signer: signer.signingKey },

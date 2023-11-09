@@ -76,7 +76,6 @@ const signerToReefSigner = async (
     // when web3Enable() is not called before
   }
   const balance = await getReefCoinBalance(address, provider);
-  inj?.signer;
   return {
     signer,
     balance,

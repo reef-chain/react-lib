@@ -60,6 +60,7 @@ export const OverlayAction: React.FC<OverlayAction> = ({
 
               <button
                 className="overlay-action__close-btn"
+                aria-label="Close button"
                 type="button"
                 onClick={onClose}
               >

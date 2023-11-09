@@ -40,6 +40,7 @@ export const AccountListModal = ({
         {!!backButtonModalId && (
           <button
             type="button"
+            aria-label="Back button"
             className="btn ms-0 me-auto py-0"
             data-bs-target={backButtonModalId}
             data-bs-toggle="modal"
@@ -51,6 +52,7 @@ export const AccountListModal = ({
         <Title>{title}</Title>
         <button
           type="button"
+          aria-label="Close button"
           className="btn py-0 ms-auto"
           data-bs-dismiss="modal"
         >

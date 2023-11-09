@@ -29,9 +29,9 @@ const ProvidePopup = ({
 }: Props): JSX.Element => {
   const tokens = useMemo(() => {
     let value1 = Uik.utils.maxDecimals(new BigNumber(token1.price).times(token1.amount).toNumber(), 2);
-    if (isNaN(value1)) value1 = 0;
+    if (Number.isNaN(value1)) value1 = 0;
     let value2 = Uik.utils.maxDecimals(new BigNumber(token2.price).times(token2.amount).toNumber(), 2);
-    if (isNaN(value2)) value2 = 0;
+    if (Number.isNaN(value2)) value2 = 0;
 
     return {
       token1: {
@@ -53,13 +53,13 @@ const ProvidePopup = ({
 
   const getLPTokens = useMemo(() => {
     const value = Uik.utils.maxDecimals(LPTokens, 4);
-    if (isNaN(value)) return 0;
+    if (Number.isNaN(value)) return 0;
     return value;
   }, [LPTokens]);
 
   const getPoolShare = useMemo(() => {
     const value = Uik.utils.maxDecimals(poolShare.replaceAll('%', ''), 4);
-    if (isNaN(value)) return '0%';
+    if (Number.isNaN(value)) return '0%';
     return `${value}%`;
   }, [poolShare]);
 

@@ -1,7 +1,7 @@
 import { Provider } from '@reef-chain/evm-provider';
 import { WsProvider } from '@polkadot/api';
 
-export async function initProvider(providerUrl: string) {
+export async function initProvider(providerUrl: string): Promise<Provider> {
   const newProvider = new Provider({
     provider: new WsProvider(providerUrl),
   });
@@ -14,6 +14,6 @@ export async function initProvider(providerUrl: string) {
   return newProvider;
 }
 
-export async function disconnectProvider(provider: Provider) {
+export async function disconnectProvider(provider: Provider): Promise<void> {
   await provider.api.disconnect();
 }

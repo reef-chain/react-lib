@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
+import { AxiosInstance } from 'axios';
 import { Token, Pool } from '..';
 import { ensureVoidRun, uniqueCombinations } from '../utils/utils';
 import { loadPool } from './useLoadPool';
-import { AxiosInstance } from 'axios';
 
 export const loadPools = async (
   tokens: Token[],
@@ -48,9 +48,7 @@ export const useLoadPools = (
       .finally(() => ensureMounted(setIsLoading, false));
 
     load();
-    return () => {
-      mounted.current = false;
-    };
+    mounted.current = false;
   }, [tokens, httpClient, userAddress]);
 
   return [pools, isLoading];
