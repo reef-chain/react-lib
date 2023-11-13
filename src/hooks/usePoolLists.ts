@@ -1,11 +1,21 @@
 import BigNumber from 'bignumber.js';
 import { useEffect, useMemo, useState } from 'react';
+import { AxiosInstance } from 'axios';
 import {
-  AllPoolsListCountQuery, AllPoolsListQuery, ALL_POOLS_LIST, ALL_POOLS_LIST_COUNT, PoolListItem, PoolsListVar, UserPoolsListCountQuery, UserPoolsListQuery, USER_POOLS_LIST, USER_POOLS_LIST_COUNT,
+  AllPoolsListCountQuery,
+  AllPoolsListQuery,
+  ALL_POOLS_LIST,
+  ALL_POOLS_LIST_COUNT,
+  PoolListItem,
+  PoolsListVar,
+  UserPoolsListCountQuery,
+  UserPoolsListQuery,
+  USER_POOLS_LIST,
+  USER_POOLS_LIST_COUNT,
+  PoolQueryObject, PoolQueryType,
 } from '../graphql/pools';
 import { TokenPrices } from '../state';
 import { getIconUrl } from '../components/common/Icons';
-import { AxiosInstance } from 'axios';
 import { graphqlRequest } from '../graphql/utils';
 
 interface PoolItem {
@@ -27,7 +37,7 @@ interface PoolItem {
 interface UsePoolsList extends PoolsListVar {
   tokenPrices: TokenPrices;
   httpClient: AxiosInstance;
-  queryType: 'All' | 'User';
+  queryType: PoolQueryType;
 }
 
 const calculate24hVolumeUSD = ({
@@ -97,14 +107,14 @@ const calculateUserLiquidity = (
   return res.gt(0) ? res.toFormat(2) : undefined;
 };
 
-const getUserPoolList = (queryType:any,limit:any, offset:any, search:any, signerAddress:any,) => ({
+const getUserPoolList = (queryType: PoolQueryType, limit: number, offset: number, search: string, signerAddress: string): PoolQueryObject => ({
   query: queryType === 'User' ? USER_POOLS_LIST : ALL_POOLS_LIST,
   variables: {
-          limit, offset, search, signerAddress,
-        },
+    limit, offset, search, signerAddress,
+  },
 });
 
-const getUserPoolCountQry = (queryType:any,search:any, signerAddress:any,) => ({
+const getUserPoolCountQry = (queryType: PoolQueryType, search: string, signerAddress: string): PoolQueryObject => ({
   query: queryType === 'User' ? USER_POOLS_LIST_COUNT : ALL_POOLS_LIST_COUNT,
   variables: { search, signerAddress },
 });
@@ -114,46 +124,30 @@ export const usePoolsList = ({
 }: UsePoolsList): [PoolItem[], boolean, number] => {
   const [dataPoolsList, setdataPoolsList] = useState<AllPoolsListQuery | UserPoolsListQuery|undefined>();
   const [dataPoolsCount, setDataPoolsCount] = useState<AllPoolsListCountQuery | UserPoolsListCountQuery|undefined>();
-  const [loadingPoolsList, setLoadingPoolsList] = useState<boolean>(true)
-  const [loadingPoolsCount, setLoadingPoolsCount] = useState<boolean>(true)
-  // const { data: dataPoolsList, loading: loadingPoolsList } = useQuery<AllPoolsListQuery | UserPoolsListQuery, PoolsListVar>(
-  //   queryType === 'User' ? USER_POOLS_LIST : ALL_POOLS_LIST,
-  //   {
-  //     client: dexClient,
-  //     variables: {
-  //       limit, offset, search, signerAddress,
-  //     },
-  //   },
-     // );
+  const [loadingPoolsList, setLoadingPoolsList] = useState<boolean>(true);
+  const [loadingPoolsCount, setLoadingPoolsCount] = useState<boolean>(true);
+
   useEffect(() => {
-    const handleResp = async()=>{
-      const userPoolQry = getUserPoolList(queryType,limit, offset, search, signerAddress);
+    const handleResp = async (): Promise<void> => {
+      const userPoolQry = getUserPoolList(queryType, limit, offset, search, signerAddress);
       setLoadingPoolsList(true);
       const response = await graphqlRequest(httpClient, userPoolQry);
       setdataPoolsList(response.data.data);
       setLoadingPoolsList(false);
-    }
+    };
     handleResp();
   }, [limit, offset]);
 
   const userPoolCountQry = getUserPoolCountQry(queryType, search, signerAddress);
   useEffect(() => {
-    const handleResp = async()=>{
+    const handleResp = async (): Promise<void> => {
       setLoadingPoolsCount(true);
       const response = await graphqlRequest(httpClient, userPoolCountQry);
       setDataPoolsCount(response.data.data);
       setLoadingPoolsCount(false);
-    }
+    };
     handleResp();
   }, []);
-
-  // const { data: dataPoolsCount } = useQuery<AllPoolsListCountQuery | UserPoolsListCountQuery, PoolsListCountVar>(
-  //   queryType === 'User' ? USER_POOLS_LIST_COUNT : ALL_POOLS_LIST_COUNT,
-  //   {
-  //     client: dexClient,
-  //     variables: { search, signerAddress },
-  //   },
-  // );
 
   const processed = useMemo((): PoolItem[] => {
     if (!dataPoolsList) return [];
@@ -176,13 +170,17 @@ export const usePoolsList = ({
       myLiquidity: calculateUserLiquidity(pool, tokenPrices),
     }));
   }, [dataPoolsList]);
+
+  let count = 0;
+
+  if (dataPoolsCount) {
+    count = queryType === 'User'
+      ? (dataPoolsCount as UserPoolsListCountQuery).userPoolsListCount
+      : (dataPoolsCount as AllPoolsListCountQuery).allPoolsListCount;
+  }
   return [
     processed,
     loadingPoolsList || loadingPoolsCount,
-    dataPoolsCount
-      ? queryType === 'User'
-        ? (dataPoolsCount as UserPoolsListCountQuery).userPoolsListCount
-        : (dataPoolsCount as AllPoolsListCountQuery).allPoolsListCount
-      : 0,
+    count,
   ];
 };

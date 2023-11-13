@@ -1,7 +1,10 @@
+/* eslint-disable prefer-promise-reject-errors */
+
 import Uik from '@reef-chain/ui-kit';
 import BN from 'bignumber.js';
 import { BigNumber, Contract } from 'ethers';
 import React, { Dispatch, useEffect } from 'react';
+import { AxiosInstance } from 'axios';
 import { ReefswapPair } from '../assets/abi/ReefswapPair';
 import { getReefswapRouter } from '../rpc';
 import {
@@ -16,7 +19,6 @@ import {
 } from '../utils';
 import { useKeepTokenUpdated } from './useKeepTokenUpdated';
 import { useLoadPool } from './useLoadPool';
-import { AxiosInstance } from 'axios';
 
 interface OnRemoveLiquidity {
   network?: Network;
@@ -195,7 +197,7 @@ export const onRemoveLiquidity = ({
       ]);
 
       // Signing and awaiting when data comes in block
-      const signAndSend = new Promise<void>(async (resolve, reject) => {
+      const signAndSend = new Promise<void>((resolve, reject) => {
         batch.signAndSend(
           address,
           { signer: signer.signingKey },
@@ -225,7 +227,7 @@ export const onRemoveLiquidity = ({
       await signAndSend;
     } else {
       // Approve token
-      const signAndSendApprove = new Promise<void>(async (resolve, reject) => {
+      const signAndSendApprove = new Promise<void>((resolve, reject) => {
         approveExtrinsic.signAndSend(
           address,
           { signer: signer.signingKey },
@@ -254,7 +256,7 @@ export const onRemoveLiquidity = ({
         withdrawResources.gas,
         withdrawResources.storage.lt(0) ? BigNumber.from(0) : withdrawResources.storage,
       );
-      const signAndSendWithdraw = new Promise<void>(async (resolve, reject) => {
+      const signAndSendWithdraw = new Promise<void>((resolve, reject) => {
         withdrawExtrinsic.signAndSend(
           address,
           { signer: signer.signingKey },

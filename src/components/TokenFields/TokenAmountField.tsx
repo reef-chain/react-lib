@@ -111,7 +111,7 @@ interface TokenAmountFieldMax extends TokenAmountFieldProps {
   hideSelectTokenCommonBaseView?: boolean;
 }
 
-function getMaxAmt(token: TokenWithAmount, signerBalance: BigNumber) {
+function getMaxAmt(token: TokenWithAmount, signerBalance: BigNumber): string {
   if (!isNativeTransfer(token)) {
     return toUnits(token);
   }

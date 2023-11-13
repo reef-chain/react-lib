@@ -1,11 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import Uik from '@reef-chain/ui-kit';
-import { ReefSigner } from '../../state';
-import { toReefBalanceDisplay, trim } from '../../utils';
 import './AccountSelector.css';
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Account } from '@reef-chain/ui-kit/dist/ui-kit/components/organisms/AccountSelector/AccountSelector';
+import { ReefSigner } from '../../state';
+import { toReefBalanceDisplay, trim } from '../../utils';
 
 export type Network = 'mainnet' | 'testnet';
 export type Language = 'en' | 'hi';
@@ -80,6 +80,7 @@ export const AccountSelector = ({
           isBalanceHidden ? (
             <button
               type="button"
+              aria-label="Hidden balance button"
               className="nav-account__hidden-balance"
               onClick={showBalance}
             >
@@ -116,6 +117,7 @@ export const AccountSelector = ({
       </div>
       <button
         type="button"
+        aria-label="Open button"
         className="nav-account__gear"
         onClick={() => setOpen(true)}
       >

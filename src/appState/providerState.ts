@@ -1,6 +1,5 @@
 import { reefState } from '@reef-chain/util-lib';
 
-
 export const ACTIVE_NETWORK_LS_KEY = 'reef-app-active-network';
 export const currentProvider$ = reefState.selectedProvider$;
 

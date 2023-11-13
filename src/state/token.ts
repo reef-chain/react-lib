@@ -100,9 +100,18 @@ export const toTokenAmount = (
   isEmpty: false,
 });
 
-export function isNativeTransfer(token: Token) {
+export function isNativeTransfer(token: Token): boolean {
   return token.address === REEF_ADDRESS;
 }
+
+export const REEF_TOKEN: Token = {
+  name: 'REEF',
+  address: REEF_ADDRESS,
+  iconUrl: 'https://s2.coinmarketcap.com/static/img/coins/64x64/6951.png',
+  balance: BigNumber.from(0),
+  decimals: 18,
+  symbol: 'REEF',
+};
 
 export const checkMinExistentialReefAmount = (token: TokenWithAmount, reefBalance: BigNumber): {valid: boolean, message?: string, maxTransfer: BigNumber} => {
   const nativeReefTransfer = isNativeTransfer(token);
@@ -134,15 +143,6 @@ export const ensureExistentialReefAmount = (token: TokenWithAmount, reefBalance:
   ensure(checkMinExistentialReefAmount(token, reefBalance).valid, 'Insufficient REEF balance.');
 };
 
-export const REEF_TOKEN: Token = {
-  name: 'REEF',
-  address: REEF_ADDRESS,
-  iconUrl: 'https://s2.coinmarketcap.com/static/img/coins/64x64/6951.png',
-  balance: BigNumber.from(0),
-  decimals: 18,
-  symbol: 'REEF',
-
-};
 export const reefTokenWithAmount = (): TokenWithAmount => toTokenAmount(
   REEF_TOKEN,
   {
@@ -153,9 +153,9 @@ export const reefTokenWithAmount = (): TokenWithAmount => toTokenAmount(
 );
 
 export const getTokenPrice = (address: string, prices: TokenPrices): BN => new BN(
-  prices[address] && !isNaN(prices[address])
+  prices[address] && !Number.isNaN(prices[address])
     ? prices[address]
-    : 0
+    : 0,
 );
 
-export const isNativeAddress = (toAddress: string) => toAddress.length === 48 && toAddress[0] === '5';
+export const isNativeAddress = (toAddress: string): boolean => toAddress.length === 48 && toAddress[0] === '5';

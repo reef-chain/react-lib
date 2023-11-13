@@ -19,7 +19,7 @@ interface TokenDropdownItem {
 const formatHumanBalance = (token): string => {
   const balance = new BigNumber(showBalance(token).replace(token.name, '').replace(token.symbol, '')).toNumber();
 
-  if (isNaN(balance)) return '0';
+  if (Number.isNaN(balance)) return '0';
 
   if (balance >= 1000000) {
     const hBalance = Uik.utils.formatHumanAmount(balance);

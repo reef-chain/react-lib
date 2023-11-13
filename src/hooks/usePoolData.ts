@@ -1,9 +1,10 @@
+/* eslint-disable no-empty-pattern */
 import BigNumber from 'bignumber.js';
 import { useEffect, useMemo, useState } from 'react';
-import { PoolDataQuery, poolDataQuery } from '../graphql/pools';
+import { AxiosInstance } from 'axios';
+import { PoolDataQuery, poolDataQuery, PoolQueryObject } from '../graphql/pools';
 import { BaseCandlestickData, BaseVolumeData, CandlestickData } from '../state';
 import { calcTimeRange, timeDataToMs, truncateDate } from './useFromTime';
-import { AxiosInstance } from 'axios';
 import { graphqlRequest } from '../graphql/utils';
 
 interface Time {
@@ -173,11 +174,11 @@ interface UsePoolData {
   timeData: TimeData;
 }
 
-const getPoolDataQry = (timeData: any,address:string,fromTime:any) => ({
+const getPoolDataQry = (timeData: TimeData, address: string, fromTime: string): PoolQueryObject => ({
   query: poolDataQuery(timeData.timeUnit),
   variables: {
     address,
-    fromTime
+    fromTime,
   },
 });
 
@@ -188,7 +189,7 @@ export const usePoolData = ({
 
   // ********************* Get pool data from GraphQL **************************************
   const [data, setData] = useState<PoolDataQuery|undefined>();
-  const [loading,setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
   // const { data, loading, refetch } = useQuery<PoolDataQuery, PoolDataVar>(
   //   poolDataQuery(timeData.timeUnit),
   //   {
@@ -199,13 +200,13 @@ export const usePoolData = ({
   //     },
   //   },
   // );
-  const queryObj = getPoolDataQry(timeData,address, fromTime.toISOString());
+  const queryObj = getPoolDataQry(timeData, address, fromTime.toISOString());
   useEffect(() => {
-    const handleResp = async()=>{
+    const handleResp = async (): Promise<void> => {
       const response = await graphqlRequest(httpClient, queryObj);
       setData(response.data.data);
       setLoading(false);
-    }
+    };
     handleResp();
   }, []);
 

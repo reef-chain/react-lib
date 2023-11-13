@@ -15,7 +15,7 @@ export const timeDataToMs = (timeData: TimeData): number => {
   }
 };
 
-export const truncateDate = (date: Date, timeUnit: TimeUnit, up = false) => {
+export const truncateDate = (date: Date, timeUnit: TimeUnit, up = false): Date => {
   date.setUTCSeconds(0, 0);
 
   switch (timeUnit) {
@@ -30,22 +30,13 @@ export const truncateDate = (date: Date, timeUnit: TimeUnit, up = false) => {
       if (up && date.getUTCHours() !== 0) date.setUTCHours(24, 0);
       else date.setUTCHours(0, 0);
       break;
+    default:
   }
 
   return date;
 };
 
-// export const useFromTime = (timeUnit: TimeUnit, timeSpan: number) => useMemo(
-//   () => {
-//     const toTime = new Date();
-//     const fromTime = new Date(toTime.getTime() - timeDataToMs({timeUnit, timeSpan}));
-//     const fromTimeTruncated = truncateDate(fromTime, timeUnit);
-//     return { fromTime: fromTimeTruncated, toTime };
-//   },
-//   [timeUnit, timeSpan],
-// );
-
-export const calcTimeRange = (timeUnit: TimeUnit, timeSpan: number) => {
+export const calcTimeRange = (timeUnit: TimeUnit, timeSpan: number): {fromTime: Date, toTime: Date} => {
   const toTime = truncateDate(new Date(), timeUnit, true);
   const fromTime = new Date(toTime.getTime() - timeDataToMs({ timeUnit, timeSpan }));
 

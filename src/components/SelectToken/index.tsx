@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useEffect, useState } from 'react';
 import { utils } from 'ethers';
 import { CopyToClipboard } from 'react-copy-to-clipboard';

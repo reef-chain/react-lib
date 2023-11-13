@@ -99,6 +99,7 @@ const calculateRate = (
   return `1 ${symbol2} = ${Uik.utils.maxDecimals(res.toNumber(), 4)} ${symbol1}`;
 };
 
+// eslint-disable-next-line react-hooks/rules-of-hooks
 const selectTokensForToken = (token: Token, tokens: Token[], pools: LastPoolReserves[]): Token[] => useMemo(
   () => {
     const availableTokens = pools
@@ -147,6 +148,13 @@ export const Trade = ({
 
   const selectTokens1 = selectTokensForToken(token2, tokens, pools);
   const selectTokens2 = selectTokensForToken(token1, tokens, pools);
+  let summaryItemWarning = '';
+
+  if (slippage > 3) {
+    summaryItemWarning = 'Your transaction may be frontrun and result in an unfavorable trade.';
+  } else if (slippage < 0.1) {
+    summaryItemWarning = 'Slippage below 0.1% may result in a failed transaction.';
+  }
 
   const fee = useMemo(() => {
     if (token1.amount === '') {
@@ -172,6 +180,7 @@ export const Trade = ({
           <div className="uik-pool-actions__token-switch">
             <button
               type="button"
+              aria-label="Switch button"
               className={`
                 uik-pool-actions__token-switch-btn
                 ${focus === 'buy' ? 'uik-pool-actions__token-switch-btn--reversed' : ''}
@@ -223,8 +232,7 @@ export const Trade = ({
           className={slippage > 3 || slippage < 0.1 ? 'uik-pool-actions__trade-slippage--warn' : ''}
           value={`${slippage}%`}
           empty={!slippage}
-          warn={slippage > 3 ? 'Your transaction may be frontrun and result in an unfavorable trade.'
-            : slippage < 0.1 ? 'Slippage below 0.1% may result in a failed transaction.' : ''}
+          warn={summaryItemWarning}
         />
       </div>
 
