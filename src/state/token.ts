@@ -30,6 +30,7 @@ export interface BasicToken {
   name: string;
   address: string;
   iconUrl: string;
+  mimetype?:string;
 }
 
 export interface Token extends BasicToken {
