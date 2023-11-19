@@ -1,6 +1,6 @@
 {
   "name": "@reef-chain/react-lib",
-  "version": "2.0.2-alpha2",
+  "version": "2.1.0",
   "description": "Reef React Library",
   "author": "Reef chain",
   "license": "MIT",
@@ -31,9 +31,9 @@
     "@fortawesome/free-solid-svg-icons": "^6.1.0",
     "@polkadot/extension-dapp": "^0.40.4",
     "@polkadot/react-identicon": "^0.86.4",
-    "@reef-chain/evm-provider": "^2.0.0-alpha6",
+    "@reef-chain/evm-provider": "^2.0.0",
     "@reef-chain/ui-kit": "^1.1.5",
-    "@reef-chain/util-lib": "^2.0.0-alpha2",
+    "@reef-chain/util-lib": "^2.0.1",
     "@reef-defi/extension-base": "^1.0.14",
     "@reef-defi/extension-dapp": "^1.0.14",
     "@reef-defi/extension-inject": "^1.0.14",
@@ -53,7 +53,7 @@
     "@types/react": "17.0.2",
     "@types/react-dom": "17.0.2",
     "ethers": "^5.7.0",
-    "@reef-chain/util-lib": "2.0.0-alpha1"
+    "@reef-chain/util-lib": "2.0.0"
   },
   "peerDependencies": {
     "react": "^17.0.2"
@@ -88,7 +88,7 @@
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
     "tslib": "^2.4.0",
-    "typescript": "^4.6.3",
+    "typescript": "^5.2.2",
     "yalc": "^1.0.0-pre.53"
   },
   "files": [
