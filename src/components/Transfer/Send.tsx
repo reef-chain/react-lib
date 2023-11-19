@@ -18,12 +18,14 @@ import {
   calculateAmount,
   ensure,
   errorHandler, fromReefEVMAddressWithNotification, nativeTransfer, shortAddress,
-  showBalance,
+  // showBalance,
 } from '../../utils';
+import {} from "@reef-chain/util-lib";
 import '../PoolActions/pool-actions.css';
 import TokenField from '../PoolActions/TokenField';
 import './Send.css';
 import SendPopup from '../PoolActions/ConfirmPopups/Send';
+import {balanceUtils} from "@reef-chain/util-lib";
 
 interface Send {
   tokens: Token[];
@@ -239,23 +241,22 @@ export const Send = ({
     document.addEventListener('mouseup', close);
   };
 
-  const maxAmount = useMemo((): number => Math.floor(
-    new BigNumber(
-      showBalance(token)
-        .replace(` ${token.symbol}`, '')
-        .replace(` ${token.name}`, ''),
-    ).toNumber(),
-  ), [token]);
+  const maxAmount = useMemo((): string => {
+    const head = balanceUtils.toReefBalanceDisplay(token.balance).split(" ")[0];
+    const tail = token.balance.toString().slice(head.length,head.length+4);
+    return `${head}.${tail}`}
+  , [token]);
 
   const percentage = useMemo((): number => {
-    let percentage = new BigNumber(token.amount || 0).times(100).dividedBy(maxAmount).toNumber();
+      let percentage = new BigNumber(token.amount || 0).times(100).dividedBy(maxAmount).toNumber();
+
     if (percentage < 0) percentage = 0;
     if (percentage > 100) percentage = 100;
     return percentage;
   }, [token.amount, maxAmount]);
 
   const setPercentage = (perc): void => {
-    const amount = new BigNumber(perc).times(maxAmount).dividedBy(100).toNumber();
+    const amount = new BigNumber(maxAmount).times(perc).dividedBy(100);
     onAmountChange(String(amount), token);
   };
 
