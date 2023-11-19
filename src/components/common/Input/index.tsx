@@ -15,7 +15,7 @@ export const Input = ({
   maxLength,
   placeholder,
   className = '',
-  onChange = (_) => {},
+  onChange = () => {},
 }: Input): JSX.Element => (
   <input
     value={value}

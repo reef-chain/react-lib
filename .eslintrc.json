@@ -59,7 +59,8 @@
     "react/require-default-props": "off",
     "import/no-extraneous-dependencies": ["warn", {"devDependencies": ["**/*.test.ts", "**/*.test.tsx"]}],
     "jsx-a11y/click-events-have-key-events": "off",
-    "no-restricted-syntax": "off"
+    "no-restricted-syntax": "off",
+    "@typescript-eslint/no-explicit-any": ["off"]
   },
   "settings": {
     "import/resolver": {
