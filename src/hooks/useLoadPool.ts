@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { BigNumber } from 'ethers';
+import { AxiosInstance } from 'axios';
 import { Pool, Token } from '..';
-import { USER_POOL_SUPPLY } from '../graphql/pools';
+import { PoolQueryObject, USER_POOL_SUPPLY } from '../graphql/pools';
 import { EMPTY_ADDRESS, ensure } from '../utils';
-import  { AxiosInstance } from 'axios';
 import { graphqlRequest } from '../graphql/utils';
 
 type LoadingPool = Pool | undefined;
 
-export const getUserPoolSupply = (token1:string, token2:string, signerAddress:string) => ({
+export const getUserPoolSupply = (token1:string, token2:string, signerAddress:string): PoolQueryObject => ({
   query: USER_POOL_SUPPLY,
   variables: { token1, token2, signerAddress },
 });
@@ -66,9 +66,9 @@ export const useLoadPool = (
         .then(() => setIsLoading(true))
         .then(() => loadPool(token1, token2, userAddress, httpClient))
         .then(setPool)
-        .catch((e: any) => { 
+        .catch((e: any) => {
           console.error('useLoadPool error', e);
-          setPool(undefined); 
+          setPool(undefined);
         })
         .finally(() => setIsLoading(false));
     };

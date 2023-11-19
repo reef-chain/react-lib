@@ -1,6 +1,9 @@
+/* eslint-disable prefer-promise-reject-errors */
+
 import Uik from '@reef-chain/ui-kit';
 import React, { Dispatch, useEffect } from 'react';
 import { BigNumber, Contract } from 'ethers';
+import { AxiosInstance } from 'axios';
 import { ERC20 } from '../assets/abi/ERC20';
 import { getReefswapRouter } from '../rpc';
 import {
@@ -39,7 +42,6 @@ import {
 import { useKeepTokenUpdated } from './useKeepTokenUpdated';
 import { useLoadPool } from './useLoadPool';
 import { useUpdateLiquidityAmount } from './useUpdateAmount';
-import { AxiosInstance } from 'axios';
 
 interface UseAddLiquidityState {
   address1: string;
@@ -52,11 +54,11 @@ interface UseAddLiquidityState {
   dispatch: Dispatch<AddLiquidityActions>;
 }
 
-const getInsufficientTokenSymbol = (token1:TokenWithAmount,token2:TokenWithAmount):string=>{
-  if(token1.balance._hex=="0x00"){
-    return token1.symbol
-  }return token2.symbol
-}
+const getInsufficientTokenSymbol = (token1:TokenWithAmount, token2:TokenWithAmount):string => {
+  if (token1.balance._hex === '0x00') {
+    return token1.symbol;
+  } return token2.symbol;
+};
 
 const status = (
   token1: TokenWithAmount,
@@ -71,11 +73,11 @@ const status = (
     ensure(token2.amount.length > 0, `Missing ${token2.symbol} amount`);
     ensure(
       BigNumber.from(calculateAmount(token1)).lte(token1.balance) && BigNumber.from(calculateAmount(token1)).gt(0),
-      `Insufficient ${getInsufficientTokenSymbol(token1,token2)} balance`,
+      `Insufficient ${getInsufficientTokenSymbol(token1, token2)} balance`,
     );
     ensure(
       BigNumber.from(calculateAmount(token2)).lte(token2.balance) && BigNumber.from(calculateAmount(token1)).gt(0),
-      `Insufficient ${getInsufficientTokenSymbol(token1,token2)} balance`,
+      `Insufficient ${getInsufficientTokenSymbol(token1, token2)} balance`,
     );
 
     return { isValid: true, text: 'Stake' };
@@ -252,11 +254,11 @@ export const onAddLiquidity = ({
       approveResources2.storage.lt(0) ? BigNumber.from(0) : approveResources2.storage,
     );
 
-    const disableStakeBtn = ()=>{
+    const disableStakeBtn = (): void => {
       dispatch(
-        setCompleteStatusAction("Adding Supply", false, true),
-      )
-    }
+        setCompleteStatusAction('Adding Supply', false, true),
+      );
+    };
 
     if (batchTxs) {
       const provideExtrinsic = signer.signer.provider.api.tx.evm.call(
@@ -275,7 +277,7 @@ export const onAddLiquidity = ({
       ]);
 
       // Signing and awaiting when data comes in block
-      const signAndSend = new Promise<void>(async (resolve, reject) => {
+      const signAndSend = new Promise<void>((resolve, reject) => {
         batch.signAndSend(
           signer.address,
           { signer: signer.signer.signingKey },
@@ -374,7 +376,7 @@ export const onAddLiquidity = ({
       );
 
       const signAndSendProvide = new Promise<void>((resolve, reject) => {
-        disableStakeBtn()
+        disableStakeBtn();
         provideExtrinsic.signAndSend(
           signer.address,
           { signer: signer.signer.signingKey },

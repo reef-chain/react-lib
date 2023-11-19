@@ -126,7 +126,7 @@ const Accounts = ({
               {
                 availableAccounts.map((account, index) => (
                   <Uik.DropdownItem
-                    key={`account-${index}`}
+                    key={`account-${account.address}`}
                     className={`
                       send-accounts__account
                       ${account.address === query ? 'send-accounts__account--selected' : ''}
@@ -161,7 +161,7 @@ export const Send = ({
       const targetToken = tokens.find(({ address }) => address === tokenAddress) as TokenWithAmount;
       if (targetToken) {
         return {
-          ...targetToken, isEmpty: false, price:targetToken.price?? 0, amount: '',
+          ...targetToken, isEmpty: false, price: targetToken.price ?? 0, amount: '',
         };
       }
     }

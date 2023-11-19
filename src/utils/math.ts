@@ -31,11 +31,11 @@ export const transformAmount = (decimals: number, amount: string): string => {
 };
 
 export const assertAmount = (amount?: string): string => {
-  if(amount==="NaN") {
-    return '0'
-  };
+  if (amount === 'NaN') {
+    return '0';
+  }
   return !amount ? '0' : amount;
-}
+};
 
 export const convert2Normal = (
   decimals: number,

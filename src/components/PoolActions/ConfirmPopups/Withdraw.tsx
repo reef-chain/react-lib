@@ -32,14 +32,14 @@ const WithdrawPopup = ({
 }: Props): JSX.Element => {
   const tokens = useMemo(() => {
     let amount1 = new BigNumber(showRemovePoolTokenShare(percentageAmount, pool.token1)).toNumber();
-    if (isNaN(amount1)) amount1 = 0;
+    if (Number.isNaN(amount1)) amount1 = 0;
     let amount2 = new BigNumber(showRemovePoolTokenShare(percentageAmount, pool.token2)).toNumber();
-    if (isNaN(amount2)) amount2 = 0;
+    if (Number.isNaN(amount2)) amount2 = 0;
 
     let value1 = Uik.utils.maxDecimals(new BigNumber(price1).times(amount1).toNumber(), 2);
-    if (isNaN(value1)) value1 = 0;
+    if (Number.isNaN(value1)) value1 = 0;
     let value2 = Uik.utils.maxDecimals(new BigNumber(price2).times(amount2).toNumber(), 2);
-    if (isNaN(value2)) value2 = 0;
+    if (Number.isNaN(value2)) value2 = 0;
 
     return {
       token1: {
@@ -61,13 +61,13 @@ const WithdrawPopup = ({
 
   const getLPTokens = useMemo(() => {
     const value = Uik.utils.maxDecimals(LPTokens, 4);
-    if (isNaN(value)) return 0;
+    if (Number.isNaN(value)) return 0;
     return value;
   }, [LPTokens]);
 
   const getPoolShare = useMemo(() => {
     const value = Uik.utils.maxDecimals(poolShare.replaceAll('%', ''), 4);
-    if (isNaN(value)) return '0%';
+    if (Number.isNaN(value)) return '0%';
     return `${value}%`;
   }, [poolShare]);
 

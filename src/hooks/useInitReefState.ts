@@ -62,20 +62,25 @@ const reefAccountToReefSigner = (accountsFromUtilLib:any, injectedSigner:Injecte
   return resultObj;
 };
 
-  interface State{
-    error:{ code?: number; message: string; url?: string } | undefined,
-    loading:boolean,
-    provider:Provider|undefined,
-    network: Network,
-    signers:ReefSigner[],
-    selectedReefSigner?:ReefSigner,
-    reefState: any
-  }
+interface State{
+  error:{ code?: number; message: string; url?: string } | undefined,
+  loading:boolean,
+  provider:Provider|undefined,
+  network: Network,
+  signers:ReefSigner[],
+  selectedReefSigner?:ReefSigner,
+  reefState: any
+}
+
+export interface InitReefStateOptions{
+  network: Network;
+  ipfsHashResolverFn: any;
+}
 
 export const useInitReefState = (
   applicationDisplayName: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  options:any,
+  options:InitReefStateOptions,
 ): State => {
   const {
     network, ipfsHashResolverFn,

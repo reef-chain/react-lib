@@ -1,42 +1,44 @@
 import { BigNumber } from 'bignumber.js';
 import { useEffect, useMemo, useState } from 'react';
+import { AxiosInstance } from 'axios';
 import {
   Pool24HVolume,
   PoolInfoQuery,
   PoolsTotalSupply,
   PoolTokensDataQuery,
+  PoolQueryObject,
   POOLS_TOTAL_VALUE_LOCKED,
   POOL_24H_VOLUME,
   POOL_INFO_GQL,
   POOL_TOKENS_DATA_GQL,
 } from '../graphql/pools';
 import { getTokenPrice, TokenPrices } from '../state';
-import { getIconUrl, normalize, POLL_INTERVAL } from '../utils';
+import { normalize, POLL_INTERVAL } from '../utils';
 import useInterval from './userInterval';
-import { AxiosInstance } from 'axios';
 import { graphqlRequest } from '../graphql/utils';
+import { getIconUrl } from '../components/common/Icons';
 
-const getPoolTotalValueLockedQry = (toTime: any) => ({
+const getPoolTotalValueLockedQry = (toTime: string): PoolQueryObject => ({
   query: POOLS_TOTAL_VALUE_LOCKED,
   variables: { toTime },
 });
-const getPool24HvolQry = (fromTime: any) => ({
+const getPool24HvolQry = (fromTime: string): PoolQueryObject => ({
   query: POOL_24H_VOLUME,
   variables: { fromTime },
 });
-const getPoolTokensDataQry = (address: string) => ({
+const getPoolTokensDataQry = (address: string): PoolQueryObject => ({
   query: POOL_TOKENS_DATA_GQL,
   variables: { address },
 });
-const getPoolInfoQry = (address:string, signerAddress:string, fromTime:string, toTime:string) => ({
+const getPoolInfoQry = (address:string, signerAddress:string, fromTime:string, toTime:string): PoolQueryObject => ({
   query: POOL_INFO_GQL,
   variables: {
     address, signerAddress, fromTime, toTime,
   },
 });
 
-export const useTotalSupply = (tokenPrices: TokenPrices, httpClient:AxiosInstance, previous = false): string => {
-  const [data, setData] = useState<PoolsTotalSupply|undefined>()
+export const useTotalSupply = (tokenPrices: TokenPrices, httpClient: AxiosInstance, previous = false): string => {
+  const [data, setData] = useState<PoolsTotalSupply|undefined>();
   const toTime = useMemo(() => {
     const tm = new Date();
     if (previous) {
@@ -46,13 +48,13 @@ export const useTotalSupply = (tokenPrices: TokenPrices, httpClient:AxiosInstanc
   }, []);
 
   useEffect(() => {
-    const handleRes = async ()=>{
-      const res = await graphqlRequest(httpClient,getPoolTotalValueLockedQry(toTime.toISOString()));
+    const handleRes = async (): Promise<void> => {
+      const res = await graphqlRequest(httpClient, getPoolTotalValueLockedQry(toTime.toISOString()));
       setData(res.data.data);
-    }
+    };
     handleRes();
-  }, [])
-  
+  }, []);
+
   // const { data } = useQuery<PoolsTotalSupply, PoolsTotalValueLockedVar>(
   //   POOLS_TOTAL_VALUE_LOCKED,
   //   {
@@ -64,19 +66,19 @@ export const useTotalSupply = (tokenPrices: TokenPrices, httpClient:AxiosInstanc
     return '0';
   }
 
-      const totalSupply = data.totalSupply.reduce((acc, { reserved1, reserved2, pool: { token1, token2 } }) => {
-        const tokenPrice1 = getTokenPrice(token1, tokenPrices);
-        const tokenPrice2 = getTokenPrice(token2, tokenPrices);
-        const r1 = tokenPrice1.multipliedBy(new BigNumber(reserved1).div(new BigNumber(10).pow(18)));
-        const r2 = tokenPrice2.multipliedBy(new BigNumber(reserved2).div(new BigNumber(10).pow(18)));
-        return acc.plus(r1).plus(r2);
-      }, new BigNumber(0));
+  const totalSupply = data.totalSupply.reduce((acc, { reserved1, reserved2, pool: { token1, token2 } }) => {
+    const tokenPrice1 = getTokenPrice(token1, tokenPrices);
+    const tokenPrice2 = getTokenPrice(token2, tokenPrices);
+    const r1 = tokenPrice1.multipliedBy(new BigNumber(reserved1).div(new BigNumber(10).pow(18)));
+    const r2 = tokenPrice2.multipliedBy(new BigNumber(reserved2).div(new BigNumber(10).pow(18)));
+    return acc.plus(r1).plus(r2);
+  }, new BigNumber(0));
 
-      return totalSupply.toString();
-  };
+  return totalSupply.toString();
+};
 
 export const usePoolVolume = (tokenPrices: TokenPrices, httpClient:AxiosInstance): string => {
-  const [data, setData] = useState<Pool24HVolume|undefined>()
+  const [data, setData] = useState<Pool24HVolume|undefined>();
 
   const fromTime = useMemo(
     () => new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
@@ -84,13 +86,12 @@ export const usePoolVolume = (tokenPrices: TokenPrices, httpClient:AxiosInstance
   );
 
   useEffect(() => {
-    const handleRes = async ()=>{
-      const res = await graphqlRequest(httpClient,getPool24HvolQry(fromTime));
+    const handleRes = async (): Promise<void> => {
+      const res = await graphqlRequest(httpClient, getPool24HvolQry(fromTime));
       setData(res.data.data);
-    }
+    };
     handleRes();
-  }, [])
-
+  }, []);
 
   // const { data } = useQuery<Pool24HVolume, PoolVolume24HVar>(
   //   POOL_24H_VOLUME,
@@ -141,8 +142,8 @@ export interface PoolStats {
 }
 
 export const usePoolInfo = (address: string, signerAddress: string, tokenPrices: TokenPrices, httpClient: AxiosInstance): [PoolStats|undefined, boolean] => {
-  const [tokensData, setTokensData] = useState<PoolTokensDataQuery|undefined>()
-  const [poolInfoData, setPoolInfoData] = useState<PoolInfoQuery|undefined>()
+  const [tokensData, setTokensData] = useState<PoolTokensDataQuery|undefined>();
+  const [poolInfoData, setPoolInfoData] = useState<PoolInfoQuery|undefined>();
   const [tokensLoading, setTokensLoading] = useState<boolean>(true);
   const [poolInfoLoading, setPoolInfoLoading] = useState<boolean>(true);
   const toTime = useMemo(() => {
@@ -162,13 +163,13 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
   //   variables: { address },
   // });
   useEffect(() => {
-    const handleRes = async ()=>{
-      const res = await graphqlRequest(httpClient,getPoolTokensDataQry(address));
+    const handleRes = async (): Promise<void> => {
+      const res = await graphqlRequest(httpClient, getPoolTokensDataQry(address));
       setTokensData(res.data.data);
       setTokensLoading(false);
-    }
+    };
     handleRes();
-  }, [])
+  }, []);
 
   // const { data: poolInfoData, loading: poolInfoLoading, refetch: refetchPoolInfo } = useQuery<PoolInfoQuery, PoolInfoVar>(POOL_INFO_GQL, {
   //   client: dexClient,
@@ -177,8 +178,8 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
   //   },
   // });
 
-  const queryObj = getPoolInfoQry( address, signerAddress, fromTime, toTime);
-  useInterval(async() => {
+  const queryObj = getPoolInfoQry(address, signerAddress, fromTime, toTime);
+  useInterval(async () => {
     setPoolInfoLoading(true);
     const response = await graphqlRequest(httpClient, queryObj);
     setPoolInfoData(response.data.data);
@@ -208,8 +209,8 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
     const mySupply1 = amountLocked1.multipliedBy(poolShare);
     const mySupply2 = amountLocked2.multipliedBy(poolShare);
 
-    const price1 = tokenPrices[token1.id] && !isNaN(tokenPrices[token1.id]) ? tokenPrices[token1.id] : 0;
-    const price2 = tokenPrices[token2.id] && !isNaN(tokenPrices[token2.id]) ? tokenPrices[token2.id] : 0;
+    const price1 = tokenPrices[token1.id] && !Number.isNaN(tokenPrices[token1.id]) ? tokenPrices[token1.id] : 0;
+    const price2 = tokenPrices[token2.id] && !Number.isNaN(tokenPrices[token2.id]) ? tokenPrices[token2.id] : 0;
     const mySupplyUSD = mySupply1
       .multipliedBy(price1)
       .plus(mySupply2.multipliedBy(price2))
@@ -225,8 +226,12 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
       .multipliedBy(price1)
       .plus(previousVolume2.multipliedBy(price2));
 
-    let volDiff = 0;
-    if (prevVolume24USD.eq(0) && volume24hUSD.eq(0)) {} else if (prevVolume24USD.isNaN() && volume24hUSD.isNaN()) {} else if (prevVolume24USD.eq(0) || prevVolume24USD.isNaN()) {
+    let volDiff: number;
+    if (prevVolume24USD.eq(0) && volume24hUSD.eq(0)) {
+      volDiff = 0;
+    } else if (prevVolume24USD.isNaN() && volume24hUSD.isNaN()) {
+      volDiff = 0;
+    } else if (prevVolume24USD.eq(0) || prevVolume24USD.isNaN()) {
       volDiff = 100;
     } else if (volume24hUSD.eq(0) || volume24hUSD.isNaN()) {
       volDiff = -100;

@@ -96,10 +96,16 @@ export const EvmBindComponent = ({
   const signEvmMessage = (): void => {
     setCustomBindState({ useCustomEvmAddress: true, signingInProcess: true });
     signBindEvmAddress(bindFor).then((res) => {
-      res.error ? setCustomBindState({ useCustomEvmAddress: true, signingInProcess: false, error: res.error })
-        : setCustomBindState({
-          useCustomEvmAddress: true, signingInProcess: false, evmAddress: res.evmAddress, signature: res.signature,
+      if (res.error) {
+        setCustomBindState({ useCustomEvmAddress: true, signingInProcess: false, error: res.error });
+      } else {
+        setCustomBindState({
+          useCustomEvmAddress: true,
+          signingInProcess: false,
+          evmAddress: res.evmAddress,
+          signature: res.signature,
         });
+      }
     }).catch((e) => {
       console.error(e);
       setCustomBindState({ useCustomEvmAddress: true, signingInProcess: false, error: 'Failed to sign message.' });
@@ -148,6 +154,7 @@ export const EvmBindComponent = ({
   const onAccountSelect = (_: any, selected: ReefSigner): void => setTransferBalanceFrom(selected);
 
   const copyAddress = (address: string): void => {
+    // eslint-disable-next-line no-param-reassign
     address = toReefEVMAddressWithNotification(address);
     navigator.clipboard.writeText(address).then(() => {
       Uik.notify.info('Copied address to clipboard');

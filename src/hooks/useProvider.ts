@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { useState } from 'react';
 import { Provider } from '@reef-chain/evm-provider';
 import { useAsyncEffect } from './useAsyncEffect';
 import { initProvider } from '../utils/providerUtil';
 
-export type UseProvider = [Provider | undefined, boolean, string, Function|undefined];
+export type UseProvider = [Provider | undefined, boolean, string, Function | undefined];
 
 // should be used only once per url in app
 export const useProvider = (providerUrl?: string | undefined): UseProvider => {
@@ -19,10 +20,9 @@ export const useProvider = (providerUrl?: string | undefined): UseProvider => {
     Promise.resolve()
       .then(() => setError(''))
       .then(() => setIsLoading(true))
-      .then(async () => await initProvider(providerUrl))
+      .then(() => initProvider(providerUrl))
       .then((prov) => {
         if (provider && providerDestroyFn) {
-          console.log('PROV DDDDD=', provider, providerDestroyFn);
           // providerDestroyFn();
         }
         setProvider(prov);

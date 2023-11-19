@@ -28,7 +28,12 @@ interface CardBack {
 }
 
 export const CardBack = ({ onBack }: CardBack): JSX.Element => (
-  <button type="button" className="btn" onClick={onBack}>
+  <button
+    type="button"
+    aria-label="Back button"
+    className="btn"
+    onClick={onBack}
+  >
     <BackIcon />
   </button>
 );

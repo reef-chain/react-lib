@@ -260,7 +260,7 @@ export const TransferComponent = ({
     setTxToken({ ...txToken, amount: toAmountInputValue(amt) });
   };
 
-  const addressChanged = (_: any): Promise<void> => Promise.resolve();
+  const addressChanged = (): Promise<void> => Promise.resolve();
 
   const tokenSelected = (tkn: Token): void => {
     if (tkn.address !== txToken?.address) {
