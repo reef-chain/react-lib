@@ -3485,10 +3485,10 @@
     ethers "~5.5.4"
     pusher-js "^8.2.0"
 
-"@reef-chain/util-lib@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@reef-chain/util-lib/-/util-lib-2.0.1.tgz#69437fbd4e434c4451c7eda435496f739e583fa5"
-  integrity sha512-kUorFbd+b9oDtt8Ke2P0vxIvbI9IkiYazUnxgBNPFv7HN084wHFVzcG/jZj5/LqSEyGIFMIoGxszh7UM/bR3AA==
+"@reef-chain/util-lib@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@reef-chain/util-lib/-/util-lib-2.0.2.tgz#bdf5bbc2c3ba6e16dd217d84f0f7c90be73caa22"
+  integrity sha512-AYznnYVo72NMoi4ioqPeDG809cGXL80oFoic3+7u7ZVRkkIY7ge04ErerrVuY1hpbgBhG4mpsoNY0b2V/PhUgw==
   dependencies:
     "@polkadot/extension-inject" "^0.46.5"
     "@reef-chain/evm-provider" "^2.0.1"

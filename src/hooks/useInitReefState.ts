@@ -73,8 +73,8 @@ interface State{
 }
 
 export interface InitReefStateOptions{
-  network: Network;
-  ipfsHashResolverFn: any;
+  network?: Network;
+  ipfsHashResolverFn?: reefState.IpfsHashResolverFn;
 }
 
 export const useInitReefState = (
