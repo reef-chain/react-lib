@@ -45,7 +45,7 @@ const Token = ({
     <div className="confirm-popup-token__amount-wrapper">
       <div className="confirm-popup-token__value">
         $
-        { value }
+        { Number.isNaN(value) ? 0 : value }
       </div>
       <div className="confirm-popup-token__amount">{ amount ? toHumanAmount(amount.toString()) : '0' }</div>
     </div>
