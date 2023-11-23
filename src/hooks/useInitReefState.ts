@@ -1,5 +1,5 @@
 import {
-  reefState,
+  reefState,network as nw
 } from '@reef-chain/util-lib';
 import { useEffect, useState } from 'react';
 import { Provider } from '@reef-chain/evm-provider';
@@ -7,7 +7,7 @@ import type { Signer as InjectedSigner } from '@polkadot/api/types';
 import { map } from 'rxjs';
 import { hooks, rpc, appState } from '..';
 import { Network } from '../components';
-import { ReefSigner, availableNetworks } from '../state';
+import { ReefSigner } from '../state';
 import { useAsyncEffect } from './useAsyncEffect';
 import { useInjectExtension } from './useInjectExtension';
 import { useObservableState } from './useObservableState';
@@ -20,12 +20,12 @@ const getNetworkFallback = (): Network => {
     storedNetwork = localStorage.getItem(appState.ACTIVE_NETWORK_LS_KEY);
     storedNetwork = JSON.parse(storedNetwork);
 
-    storedNetwork = availableNetworks[storedNetwork.name];
+    storedNetwork = nw.AVAILABLE_NETWORKS[storedNetwork.name];
   } catch (e) {
     // when cookies disabled localStorage can throw
   }
 
-  return storedNetwork != null ? storedNetwork : availableNetworks.mainnet;
+  return storedNetwork != null ? storedNetwork : nw.AVAILABLE_NETWORKS.mainnet;
 };
 
 const getSelectedAddress = ():string|undefined => {
