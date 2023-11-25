@@ -2,7 +2,9 @@
 
 import { Provider } from '@reef-chain/evm-provider';
 import { BigNumber } from 'ethers';
-import { availableNetworks, Network, ReefSigner } from '../state';
+import {  ReefSigner } from '../state';
+import { Network } from '../state/network';
+import {network as nw} from "@reef-chain/util-lib";
 
 export type TxStatusHandler = (status: TxStatusUpdate) => void;
 
@@ -115,13 +117,13 @@ export const sendToNativeAddress = (
   return txIdent;
 };
 
-export const getExtrinsicUrl = (extrinsic: {id:string}, network: Network = availableNetworks.mainnet): string => {
+export const getExtrinsicUrl = (extrinsic: {id:string}, network: Network = nw.AVAILABLE_NETWORKS.mainnet): string => {
   const [blockHeight, extrinsicIndex] = extrinsic.id.split('-');
   return `${network.reefscanUrl}/extrinsic/${blockHeight}/${extrinsicIndex}`;
 };
-export const getTransferUrl = (extrinsic: {id:string}, event:{index:string}, network: Network = availableNetworks.mainnet): string => {
+export const getTransferUrl = (extrinsic: {id:string}, event:{index:string}, network: Network =  nw.AVAILABLE_NETWORKS.mainnet): string => {
   const [blockHeight, extrinsicIndex] = extrinsic.id.split('-');
   return `${network.reefscanUrl}/transfer/${blockHeight}/${extrinsicIndex}/${event.index}`;
 };
 
-export const getContractUrl = (address: string, network: Network = availableNetworks.mainnet): string => `${network.reefscanUrl}/contract/${address}`;
+export const getContractUrl = (address: string, network: Network =  nw.AVAILABLE_NETWORKS.mainnet): string => `${network.reefscanUrl}/contract/${address}`;
