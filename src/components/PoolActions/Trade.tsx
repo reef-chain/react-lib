@@ -95,8 +95,8 @@ const calculateRate = (
   }
   const r1 = new BigNumber(reserve1).div(new BigNumber(10).pow(decimals1));
   const r2 = new BigNumber(reserve2).div(new BigNumber(10).pow(decimals2));
-  const res = sellTokenAddress === address ? r1.div(r2) : r2.div(r1);
-  return `1 ${symbol2} = ${Uik.utils.maxDecimals(res.toNumber(), 4)} ${symbol1}`;
+  const res = sellTokenAddress !== address ? r1.div(r2) : r2.div(r1);
+  return `1 ${symbol1} = ${Uik.utils.maxDecimals(res.toNumber(), 4)} ${symbol2}`;
 };
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
