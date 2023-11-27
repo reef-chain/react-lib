@@ -169,7 +169,7 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
       setTokensLoading(false);
     };
     handleRes();
-  }, []);
+  }, [address]);
 
   // const { data: poolInfoData, loading: poolInfoLoading, refetch: refetchPoolInfo } = useQuery<PoolInfoQuery, PoolInfoVar>(POOL_INFO_GQL, {
   //   client: dexClient,
