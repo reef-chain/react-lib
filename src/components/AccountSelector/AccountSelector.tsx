@@ -74,8 +74,8 @@ export const AccountSelector = ({
   return (
     <div className="account-selector-box--nav">
 
-      <div className="nav-account border-rad">
-        <div className="my-auto mx-2 fs-6">
+      <div className={`${!balance.startsWith("-")?'nav-account border-rad':''} `}>
+        {!balance.startsWith("-")?<div className="my-auto mx-2 fs-6">
           {
           isBalanceHidden ? (
             <button
@@ -94,7 +94,8 @@ export const AccountSelector = ({
             <span className="nav-account__balance">{ balance }</span>
           )
         }
-        </div>
+        </div>:<div></div>}
+        
         <button
           type="button"
           className="nav-account__account"
