@@ -7,8 +7,9 @@ import {
   isDataSet,
 } from '../utils/dataWithProgress';
 import {
-  Network, ReefSigner, reefTokenWithAmount, Token,
+   ReefSigner, reefTokenWithAmount, Token,
 } from '../state';
+import type {Network} from "@reef-chain/util-lib/dist/network";
 import { loadSignerTokens } from '../api/tokens';
 
 export const useLoadSignerTokens = (

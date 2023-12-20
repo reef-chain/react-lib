@@ -1,8 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
 import { BigNumber } from 'ethers';
 import {
-  Network, ReefSigner, reefTokenWithAmount, Token,
+  ReefSigner, reefTokenWithAmount, Token,
 } from '../state';
+import type {Network} from "@reef-chain/util-lib/dist/network";
 
 interface AccountTokensRes {
   tokens: AccountTokensResBalance[];

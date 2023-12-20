@@ -7,7 +7,7 @@ import type { Signer as InjectedSigner } from '@polkadot/api/types';
 import { map } from 'rxjs';
 import { hooks, rpc, appState } from '..';
 import { ReefSigner } from '../state';
-import { Network } from '../state/network';
+import type {Network} from "@reef-chain/util-lib/dist/network";
 import { useAsyncEffect } from './useAsyncEffect';
 import { useInjectExtension } from './useInjectExtension';
 import { useObservableState } from './useObservableState';

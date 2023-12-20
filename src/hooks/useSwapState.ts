@@ -8,13 +8,13 @@ import { getReefswapRouter } from '../rpc';
 import {
   AddressToNumber,
   ensureTokenAmount,
-  Network,
   NotifyFun,
   Pool,
   ReefSigner,
   resolveSettings, Token,
   TokenWithAmount,
 } from '../state';
+import type {DexProtocolv2 as Network} from "@reef-chain/util-lib/dist/network";
 import { SwapAction } from '../store';
 import {
   clearTokenAmountsAction, setCompleteStatusAction, setLoadingAction, setPoolAction, setStatusAction, setToken1Action, setToken2Action, setTokenPricesAction,

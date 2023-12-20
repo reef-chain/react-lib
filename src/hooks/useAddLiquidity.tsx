@@ -8,12 +8,12 @@ import { ERC20 } from '../assets/abi/ERC20';
 import { getReefswapRouter } from '../rpc';
 import {
   AddressToNumber,
-  Network,
   NotifyFun, ReefSigner,
   resolveSettings,
   Token,
   TokenWithAmount,
 } from '../state';
+import type {DexProtocolv2 as Network} from "@reef-chain/util-lib/dist/network";
 import {
   AddLiquidityActions,
   SetNewPoolSupplyAction,
