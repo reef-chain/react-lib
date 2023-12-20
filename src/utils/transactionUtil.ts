@@ -3,8 +3,8 @@
 import { Provider } from "@reef-chain/evm-provider";
 import { BigNumber } from "ethers";
 import { network as nw } from "@reef-chain/util-lib";
-import { ReefSigner } from "../state";
 import type {Network} from "@reef-chain/util-lib/dist/network";
+import { ReefSigner } from "../state";
 
 export type TxStatusHandler = (status: TxStatusUpdate) => void;
 

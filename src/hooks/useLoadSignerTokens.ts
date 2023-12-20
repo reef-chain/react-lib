@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BigNumber } from 'ethers';
+import type {Network} from "@reef-chain/util-lib/dist/network";
 import {
   DataProgress,
   DataWithProgress,
@@ -9,7 +10,6 @@ import {
 import {
    ReefSigner, reefTokenWithAmount, Token,
 } from '../state';
-import type {Network} from "@reef-chain/util-lib/dist/network";
 import { loadSignerTokens } from '../api/tokens';
 
 export const useLoadSignerTokens = (
