@@ -5,11 +5,12 @@ import BN from 'bignumber.js';
 import { BigNumber, Contract } from 'ethers';
 import React, { Dispatch, useEffect } from 'react';
 import { AxiosInstance } from 'axios';
+import type {DexProtocolv2 as Network} from "@reef-chain/util-lib/dist/network";
 import { ReefswapPair } from '../assets/abi/ReefswapPair';
 import { getReefswapRouter } from '../rpc';
 import {
   AddressToNumber,
-  Network, NotifyFun, Pool, ReefSigner, REMOVE_DEFAULT_SLIPPAGE_TOLERANCE, resolveSettings, Token,
+  NotifyFun, Pool, ReefSigner, REMOVE_DEFAULT_SLIPPAGE_TOLERANCE, resolveSettings, Token,
 } from '../state';
 import {
   RemoveLiquidityActions, RemoveLiquidityState, setCompleteStatusAction, setLoadingAction, setPercentageAction, setPoolAction, setStatusAction, setToken1Action, setToken2Action,

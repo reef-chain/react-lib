@@ -3,12 +3,12 @@ import Uik from '@reef-chain/ui-kit';
 import { BigNumber, Contract } from 'ethers';
 import { Dispatch, useEffect, useRef } from 'react';
 import { AxiosInstance } from 'axios';
+import type {DexProtocolv2 as Network} from "@reef-chain/util-lib/dist/network";
 import { ERC20 } from '../assets/abi/ERC20';
 import { getReefswapRouter } from '../rpc';
 import {
   AddressToNumber,
   ensureTokenAmount,
-  Network,
   NotifyFun,
   Pool,
   ReefSigner,
