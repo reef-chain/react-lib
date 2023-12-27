@@ -1,7 +1,7 @@
 import React from 'react';
 import { Title } from '../Text';
 
-interface Modal {
+interface Modal extends React.PropsWithChildren {
   id?: string;
 }
 
@@ -22,19 +22,19 @@ export const Modal: React.FC<Modal> = ({
   </div>
 );
 
-export const ModalHeader: React.FC<unknown> = ({ children }): JSX.Element => (
+export const ModalHeader: React.FC<React.PropsWithChildren> = ({ children }): JSX.Element => (
   <div className="modal-header border-0">{children}</div>
 );
 
-export const ModalBody: React.FC<unknown> = ({ children }): JSX.Element => (
+export const ModalBody: React.FC<React.PropsWithChildren> = ({ children }): JSX.Element => (
   <div className="modal-body py-0">{children}</div>
 );
 
-export const ModalFooter: React.FC<unknown> = ({ children }): JSX.Element => (
+export const ModalFooter: React.FC<React.PropsWithChildren> = ({ children }): JSX.Element => (
   <div className="modal-footer bg-white border-0 border-rad">{children}</div>
 );
 
-interface ModalClose {
+interface ModalClose extends React.PropsWithChildren {
   onClick?: () => void;
   className?: string;
 }
@@ -55,7 +55,7 @@ export const ModalClose: React.FC<ModalClose> = ({
   </button>
 );
 
-interface OpenModalButton {
+interface OpenModalButton extends React.PropsWithChildren {
   id?: string;
   disabled?: boolean;
   className?: string;
@@ -78,7 +78,7 @@ export const OpenModalButton: React.FC<OpenModalButton> = ({
   </button>
 );
 
-interface ConfirmationModal {
+interface ConfirmationModal extends React.PropsWithChildren {
   id?: string;
   title: string;
   confirmFun: () => void;

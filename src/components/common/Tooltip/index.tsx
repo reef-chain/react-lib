@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactTooltip from 'react-tooltip';
 
-interface Tooltip {
+interface Tooltip extends React.PropsWithChildren {
   id?: string;
 }
 

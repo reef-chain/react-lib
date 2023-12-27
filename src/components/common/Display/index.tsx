@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface FlexRow {
+interface FlexRow extends React.PropsWithChildren {
   className?: string;
   children?: any;
 }
@@ -11,41 +11,41 @@ export const FlexRow: React.FC<FlexRow> = ({
   <div className={`d-flex flex-row ${className}`}>{children}</div>
 );
 
-export const FullRow: React.FC<unknown> = ({ children }): JSX.Element => (
+export const FullRow: React.FC<React.PropsWithChildren> = ({ children }): JSX.Element => (
   <div className="d-flex flex-row w-100">{children}</div>
 );
 
-export const FlexColumn: React.FC<unknown> = ({ children }): JSX.Element => (
+export const FlexColumn: React.FC<React.PropsWithChildren> = ({ children }): JSX.Element => (
   <div className="d-flex flex-column">{children}</div>
 );
 
-export const FullColumn: React.FC<unknown> = ({ children }): JSX.Element => (
+export const FullColumn: React.FC<React.PropsWithChildren> = ({ children }): JSX.Element => (
   <div className="d-flex flex-column w-100">{children}</div>
 );
 
-export const CenterRow: React.FC<unknown> = ({ children }): JSX.Element => (
+export const CenterRow: React.FC<React.PropsWithChildren> = ({ children }): JSX.Element => (
   <div className="my-auto">{children}</div>
 );
 
-export const CenterColumn: React.FC<unknown> = ({ children }): JSX.Element => (
+export const CenterColumn: React.FC<React.PropsWithChildren> = ({ children }): JSX.Element => (
   <div className="mx-auto">{children}</div>
 );
 
-export const ContentCenter: React.FC<unknown> = ({ children }): JSX.Element => (
+export const ContentCenter: React.FC<React.PropsWithChildren> = ({ children }): JSX.Element => (
   <div className="d-flex justify-content-center">{children}</div>
 );
 
-export const ContentBetween: React.FC<unknown> = ({
+export const ContentBetween: React.FC<React.PropsWithChildren> = ({
   children,
 }): JSX.Element => (
   <div className="d-flex justify-content-between w-100">{children}</div>
 );
 
-export const ContentEnd: React.FC<unknown> = ({ children }): JSX.Element => (
+export const ContentEnd: React.FC<React.PropsWithChildren> = ({ children }): JSX.Element => (
   <div className="d-flex justify-content-end w-100">{children}</div>
 );
 
-interface Width {
+interface Width extends React.PropsWithChildren {
   size: number;
 }
 
@@ -53,7 +53,7 @@ export const Width: React.FC<Width> = ({ children, size }): JSX.Element => (
   <div style={{ minWidth: `${size}px`, maxWidth: `${size}px` }}>{children}</div>
 );
 
-interface Size {
+interface Size extends React.PropsWithChildren {
   size?: '1' | '2' | '3' | '4' | '5' | '6' | 'auto';
 }
 
@@ -105,7 +105,7 @@ export const Border: React.FC<Size> = ({
   <div className={`border border-rad p-${size}`}>{children}</div>
 );
 
-export const ComponentCenter: React.FC<unknown> = ({
+export const ComponentCenter: React.FC<React.PropsWithChildren> = ({
   children,
 }): JSX.Element => (
   <CenterColumn>

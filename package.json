@@ -50,13 +50,11 @@
     "rxjs": "^7.5.4"
   },
   "resolutions": {
-    "@types/react": "17.0.2",
-    "@types/react-dom": "17.0.2",
     "ethers": "^5.7.0",
     "@reef-chain/util-lib": "2.0.0"
   },
   "peerDependencies": {
-    "react": "^17.0.2"
+    "react": "^18.2.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -65,9 +63,9 @@
     "@types/bootstrap": "^5.1.12",
     "@types/jest": "^25.1.4",
     "@types/node": "^12.12.38",
-    "@types/react": "^17.0.2",
+    "@types/react": "^18.2.45",
     "@types/react-copy-to-clipboard": "^5.0.1",
-    "@types/react-dom": "^17.0.2",
+    "@types/react-dom": "^18.2.18",
     "@types/react-tooltip": "^4.2.4",
     "@types/validator": "^13.1.0",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
@@ -78,8 +76,8 @@
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-react": "^7.24.0",
-    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "gh-pages": "^2.2.0",
     "microbundle": "^0.14.2",
     "npm-run-all": "^4.1.5",
