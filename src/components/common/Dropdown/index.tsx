@@ -1,11 +1,11 @@
 import React from 'react';
 import { Margin } from '../Display';
 
-interface Dropdown extends React.PropsWithChildren {
+interface Dropdown extends React.PropsWithChildren<{}> {
   id?: string;
 }
 
-export const Dropdown: React.FC<React.PropsWithChildren> = ({ children }): JSX.Element => (
+export const Dropdown: React.FC<React.PropsWithChildren<{}>> = ({ children }): JSX.Element => (
   <div className="dropdown">{children}</div>
 );
 

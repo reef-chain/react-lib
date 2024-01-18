@@ -1,19 +1,19 @@
 import React from 'react';
 import { Color } from '../../../state/types';
 
-export const LargeTitle: React.FC<React.PropsWithChildren> = ({ children }): JSX.Element => (
+export const LargeTitle: React.FC<React.PropsWithChildren<{}>> = ({ children }): JSX.Element => (
   <h1 className="display-3 user-select-none">{children}</h1>
 );
 
-export const Title: React.FC<React.PropsWithChildren> = ({ children }): JSX.Element => (
+export const Title: React.FC<React.PropsWithChildren<{}>> = ({ children }): JSX.Element => (
   <h5 className="title-text user-select-none">{children}</h5>
 );
 
-export const LeadText: React.FC<React.PropsWithChildren> = ({ children }): JSX.Element => (
+export const LeadText: React.FC<React.PropsWithChildren<{}>> = ({ children }): JSX.Element => (
   <span className="title-text user-select-none">{children}</span>
 );
 
-interface Text extends React.PropsWithChildren {
+interface Text extends React.PropsWithChildren<{}> {
   size?: number
   className?: string;
 }
@@ -45,10 +45,10 @@ export const ColorText: React.FC<ColorText> = ({
   </Text>
 );
 
-export const MiniText: React.FC<React.PropsWithChildren> = ({ children }): JSX.Element => (
+export const MiniText: React.FC<React.PropsWithChildren<{}>> = ({ children }): JSX.Element => (
   <span className="mini-text user-select-none">{children}</span>
 );
 
-export const MutedText: React.FC<React.PropsWithChildren> = ({ children }): JSX.Element => (
+export const MutedText: React.FC<React.PropsWithChildren<{}>> = ({ children }): JSX.Element => (
   <span className="text-muted">{children}</span>
 );

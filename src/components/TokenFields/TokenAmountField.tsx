@@ -14,7 +14,7 @@ import { ColorText, MiniText } from '../common/Text';
 import { SelectToken } from '../SelectToken';
 import { getData } from '../../utils';
 
-interface TokenAmountFieldProps extends React.PropsWithChildren {
+interface TokenAmountFieldProps extends React.PropsWithChildren<{}> {
   id?: string;
   tokens: Token[];
   placeholder?: string;

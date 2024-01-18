@@ -1,7 +1,7 @@
 import React from 'react';
 import { BackIcon, DownArrowIcon, PlusIcon } from '../Icons';
 
-interface ButtonProps extends React.PropsWithChildren {
+interface ButtonProps extends React.PropsWithChildren <{}>{
   onClick?: () => void;
   disabled?: boolean;
   className?: string;
@@ -40,13 +40,13 @@ export const BackButton = ({ onClick }: ButtonProps): JSX.Element => (
 );
 
 // TODO Move out or refactor!
-interface SwitchTokenButton extends React.PropsWithChildren {
+interface SwitchTokenButton extends React.PropsWithChildren<{}> {
   addIcon?: boolean;
   disabled?: boolean;
   onClick?: () => void;
 }
 
-interface IconButton extends React.PropsWithChildren {
+interface IconButton extends React.PropsWithChildren<{}> {
   onClick?: () => void;
 }
 
@@ -82,11 +82,11 @@ export const IconButton: React.FC<IconButton> = ({
   </button>
 );
 
-export const ButtonGroup: React.FC<React.PropsWithChildren> = ({ children }): JSX.Element => (
+export const ButtonGroup: React.FC<React.PropsWithChildren<{}>> = ({ children }): JSX.Element => (
   <div className="btn-group">{children}</div>
 );
 
-interface PercentageButton extends React.PropsWithChildren {
+interface PercentageButton extends React.PropsWithChildren<{}> {
   percentage?: number;
   onClick?: () => void;
 }

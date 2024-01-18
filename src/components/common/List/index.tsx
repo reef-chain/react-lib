@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface ListItem extends React.PropsWithChildren {
+interface ListItem extends React.PropsWithChildren<{}> {
   onClick?: () => void;
 }
 
