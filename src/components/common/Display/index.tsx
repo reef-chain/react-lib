@@ -105,7 +105,7 @@ export const Border: React.FC<Size> = ({
   <div className={`border border-rad p-${size}`}>{children}</div>
 );
 
-export const ComponentCenter: React.FC<React.PropsWithChildren<{children:JSX.Element}>> = ({
+export const ComponentCenter: React.FC<React.PropsWithChildren<{}>> = ({
   children,
 }): JSX.Element => (
   <CenterColumn>
