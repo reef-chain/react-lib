@@ -25,6 +25,7 @@ import {
   errorHandler,
   fromReefEVMAddressWithNotification,
   nativeTransfer,
+  REEF_ADDRESS,
   shortAddress,
   // showBalance,
 } from "../../utils";
@@ -311,7 +312,7 @@ export const Send = ({
 
   useEffect(()=>{
     try {    
-      if(to!="")
+      if(to!="" && token.address!=REEF_ADDRESS)
       provider?.api.query.evmAccounts.evmAddresses(to).then(addr=>{
         const address = addr.toString();
         if(!address.length){
