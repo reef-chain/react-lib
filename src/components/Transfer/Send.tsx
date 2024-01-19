@@ -323,7 +323,7 @@ export const Send = ({
           });
           setTo(""); 
         }
-      }).catch(error=>{})
+      }).catch(error=>{console.log(error.message)})
   },[to])
 
   return (
