@@ -309,6 +309,31 @@ export const Send = ({
 
   const [isPopupOpen, setPopupOpen] = useState(false);
 
+  useEffect(()=>{
+    try {    
+      if(to!="")
+      provider?.api.query.evmAccounts.evmAddresses(to).then(addr=>{
+        const address = addr.toString();
+        if(!address.length){
+          Uik.prompt({
+            type: "danger",
+            title: "Recipient has not claimed EVM Address",
+            message: `Can't send tokens if EVM address does not exist`,
+            actions: <Uik.Button text="Close" danger />,
+          });
+          setTo(""); 
+        }
+      })
+    } catch (error) {
+      Uik.prompt({
+        type: "danger",
+        title: "Recipient has not claimed EVM Address",
+        message: `Can't send tokens if EVM address does not exist`,
+        actions: <Uik.Button text="Close" danger />,
+      });
+    }
+  },[to])
+
   return (
     <div className="send">
       <div className="send__address">
