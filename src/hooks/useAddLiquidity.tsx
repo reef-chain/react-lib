@@ -5,6 +5,7 @@ import React, { Dispatch, useEffect } from 'react';
 import { BigNumber, Contract } from 'ethers';
 import { AxiosInstance } from 'axios';
 import type {DexProtocolv2 as Network} from "@reef-chain/util-lib/dist/network";
+import { toBN } from '@reef-chain/evm-provider/utils';
 import { ERC20 } from '../assets/abi/ERC20';
 import { getReefswapRouter } from '../rpc';
 import {
@@ -42,7 +43,6 @@ import {
 import { useKeepTokenUpdated } from './useKeepTokenUpdated';
 import { useLoadPool } from './useLoadPool';
 import { useUpdateLiquidityAmount } from './useUpdateAmount';
-import { toBN } from '@reef-chain/evm-provider/utils';
 
 interface UseAddLiquidityState {
   address1: string;

@@ -4,6 +4,7 @@ import { BigNumber, Contract } from 'ethers';
 import { Dispatch, useEffect, useRef } from 'react';
 import { AxiosInstance } from 'axios';
 import type {DexProtocolv2 as Network} from "@reef-chain/util-lib/dist/network";
+import { toBN } from '@reef-chain/evm-provider/utils';
 import { ERC20 } from '../assets/abi/ERC20';
 import { getReefswapRouter } from '../rpc';
 import {
@@ -32,7 +33,6 @@ import {
 } from '../utils';
 import { findToken } from './useKeepTokenUpdated';
 import { useLoadPool } from './useLoadPool';
-import { toBN } from '@reef-chain/evm-provider/utils';
 
 const swapStatus = (
   sell: TokenWithAmount,

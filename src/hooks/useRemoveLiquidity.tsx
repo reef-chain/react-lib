@@ -6,6 +6,7 @@ import { Contract } from 'ethers';
 import React, { Dispatch, useEffect } from 'react';
 import { AxiosInstance } from 'axios';
 import type {DexProtocolv2 as Network} from "@reef-chain/util-lib/dist/network";
+import { toBN } from '@reef-chain/evm-provider/utils';
 import { ReefswapPair } from '../assets/abi/ReefswapPair';
 import { getReefswapRouter } from '../rpc';
 import {
@@ -20,7 +21,6 @@ import {
 } from '../utils';
 import { useKeepTokenUpdated } from './useKeepTokenUpdated';
 import { useLoadPool } from './useLoadPool';
-import { toBN } from '@reef-chain/evm-provider/utils';
 
 interface OnRemoveLiquidity {
   network?: Network;
