@@ -2,7 +2,7 @@
 
 import Uik from '@reef-chain/ui-kit';
 import BN from 'bignumber.js';
-import { BigNumber, Contract } from 'ethers';
+import { Contract } from 'ethers';
 import React, { Dispatch, useEffect } from 'react';
 import { AxiosInstance } from 'axios';
 import type {DexProtocolv2 as Network} from "@reef-chain/util-lib/dist/network";
