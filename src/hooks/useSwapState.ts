@@ -32,6 +32,7 @@ import {
 } from '../utils';
 import { findToken } from './useKeepTokenUpdated';
 import { useLoadPool } from './useLoadPool';
+import { toBN } from '@reef-chain/evm-provider/utils';
 
 const swapStatus = (
   sell: TokenWithAmount,
@@ -253,18 +254,18 @@ export const onSwap = ({
     const approveExtrinsic = signer.provider.api.tx.evm.call(
       approveTransaction.to,
       approveTransaction.data,
-      BigNumber.from(approveTransaction.value || 0),
-      approveResources.gas,
-      approveResources.storage.lt(0) ? BigNumber.from(0) : approveResources.storage,
+      toBN(approveTransaction.value || 0),
+      toBN(approveResources.gas),
+      approveResources.storage.lt(0) ? toBN(0) : toBN(approveResources.storage),
     );
 
     if (batchTxs) {
       const tradeExtrinsic = signer.provider.api.tx.evm.call(
         tradeTransaction.to,
         tradeTransaction.data,
-        BigNumber.from(tradeTransaction.value || 0),
-        BigNumber.from(582938).mul(2), // hardcoded gas estimation, multiply by 2 as a safety margin
-        BigNumber.from(64).mul(2), // hardcoded storage estimation, multiply by 2 as a safety margin
+        toBN(tradeTransaction.value || 0),
+        toBN(582938 * 2), // hardcoded gas estimation, multiply by 2 as a safety margin
+        toBN(64 * 2), // hardcoded storage estimation, multiply by 2 as a safety margin
       );
 
       // Batching extrinsics
@@ -330,9 +331,9 @@ export const onSwap = ({
       const tradeExtrinsic = signer.provider.api.tx.evm.call(
         tradeTransaction.to,
         tradeTransaction.data,
-        BigNumber.from(tradeTransaction.value || 0),
-        tradeResources.gas,
-        tradeResources.storage.lt(0) ? BigNumber.from(0) : tradeResources.storage,
+        toBN(tradeTransaction.value || 0),
+        toBN(tradeResources.gas),
+        tradeResources.storage.lt(0) ? toBN(0) : toBN(tradeResources.storage),
       );
 
       const signAndSendTrade = new Promise<void>((resolve, reject) => {
