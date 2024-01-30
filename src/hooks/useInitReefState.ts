@@ -76,6 +76,7 @@ interface State{
 export interface InitReefStateOptions{
   network?: Network;
   ipfsHashResolverFn?: reefState.IpfsHashResolverFn;
+  reefscanEventsConfig?: reefState.ReefscanEventsConnConfig;
 }
 
 export const useInitReefState = (
@@ -84,7 +85,7 @@ export const useInitReefState = (
   options:InitReefStateOptions,
 ): State => {
   const {
-    network, ipfsHashResolverFn,
+    network, ipfsHashResolverFn, reefscanEventsConfig,
   } = options;
   const [accounts, extension, loadingExtension, errExtension] = useInjectExtension(applicationDisplayName);
   const [isSignersLoading, setIsSignersLoading] = useState<boolean>(true);
@@ -107,11 +108,11 @@ export const useInitReefState = (
     setInitNetwork(net);
     // eslint-disable-next-line @typescript-eslint/no-shadow
     const jsonAccounts = { accounts, injectedSigner: extension?.signer };
-
     reefState.initReefState({
       network: net,
       jsonAccounts,
       ipfsHashResolverFn,
+      reefscanEventsConfig,
     });
   }, [accounts, extension]);
 
