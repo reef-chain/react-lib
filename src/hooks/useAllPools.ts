@@ -32,7 +32,7 @@ export const useAllPools = (httpClient: AxiosInstance): PoolWithReserves[] => {
       iconUrl1: pool.iconUrl1 === '' ? getIconUrl(pool.token1) : pool.iconUrl1,
       iconUrl2: pool.iconUrl2 === '' ? getIconUrl(pool.token2) : pool.iconUrl2,
     }));
-    if(allPools.length!=pools.length)setPoolsCount(pools.length);
+    if(allPools.length!==pools.length)setPoolsCount(pools.length);
     setAllPools(pools);
   },[poolsCount])
 
