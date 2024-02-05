@@ -15,16 +15,6 @@ export const useAllPools = (httpClient: AxiosInstance): PoolWithReserves[] => {
   const [poolsCount,setPoolsCount] = useState(0);
   const getAllPoolsQry = getAllPoolsQuery();
 
-  // useInterval(async () => {
-  //   const response = await graphqlRequest(httpClient, getAllPoolsQry);
-  //   const pools = response.data.data?.allPools.map((pool) => ({
-  //     ...pool,
-  //     iconUrl1: pool.iconUrl1 === '' ? getIconUrl(pool.token1) : pool.iconUrl1,
-  //     iconUrl2: pool.iconUrl2 === '' ? getIconUrl(pool.token2) : pool.iconUrl2,
-  //   }));
-  //   setAllPools(pools);
-  // }, POLL_INTERVAL);
-
   useAsyncEffect(async()=>{
        const response = await graphqlRequest(httpClient, getAllPoolsQry);
     const pools = response.data.data?.allPools.map((pool) => ({
