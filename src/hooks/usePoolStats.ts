@@ -19,6 +19,8 @@ import { graphqlRequest } from '../graphql/utils';
 import { getIconUrl } from '../components/common/Icons';
 import { useAsyncEffect } from './useAsyncEffect';
 import { useObservableState } from './useObservableState';
+import { calcTimeRange } from './useFromTime';
+import { TimeData } from './usePoolData';
 
 const getPoolTotalValueLockedQry = (toTime: string): PoolQueryObject => ({
   query: POOLS_TOTAL_VALUE_LOCKED,
@@ -143,22 +145,13 @@ export interface PoolStats {
   volumeChange24h: number;
 }
 
-export const usePoolInfo = (address: string, signerAddress: string, tokenPrices: TokenPrices, httpClient: AxiosInstance): [PoolStats|undefined, boolean] => {
+export const usePoolInfo = (address: string, signerAddress: string, tokenPrices: TokenPrices, httpClient: AxiosInstance,timeData:TimeData): [PoolStats|undefined, boolean] => {
   const [tokensData, setTokensData] = useState<PoolTokensDataQuery|undefined>();
   const [poolInfoData, setPoolInfoData] = useState<PoolInfoQuery|undefined>();
   const [tokensLoading, setTokensLoading] = useState<boolean>(true);
   const [poolInfoLoading, setPoolInfoLoading] = useState<boolean>(true);
-  const toTime = useMemo(() => {
-    const date = new Date();
-    date.setDate(date.getDate() - 1);
-    return date.toISOString();
-  }, [address, signerAddress]);
 
-  const fromTime = useMemo(() => {
-    const date = new Date();
-    date.setDate(date.getDate() - 2);
-    return date.toISOString();
-  }, [address, signerAddress]);
+  const { fromTime, toTime } = calcTimeRange(timeData.timeUnit, timeData.timeSpan);
 
   // const { data: tokensData, loading: tokensLoading } = useQuery<PoolTokensDataQuery, PoolTokensVar>(POOL_TOKENS_DATA_GQL, {
   //   client: dexClient,
@@ -180,7 +173,7 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
   //   },
   // });
 
-  const queryObj = getPoolInfoQry(address, signerAddress, fromTime, toTime);
+  const queryObj = getPoolInfoQry(address, signerAddress, fromTime.toISOString(), toTime.toISOString());
 
   const TRIGGER = useObservableState(network.getLatestBlockContractEvents$([address]))
 
@@ -189,7 +182,7 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
     const response = await graphqlRequest(httpClient, queryObj);
     setPoolInfoData(response.data.data);
     setPoolInfoLoading(false);
-  },[TRIGGER])
+  },[TRIGGER,timeData.timeUnit])
 
   const info = useMemo<PoolStats|undefined>(() => {
     if (!poolInfoData || !tokensData) {
