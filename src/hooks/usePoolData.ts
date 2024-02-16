@@ -207,8 +207,9 @@ export const usePoolData = ({
       setData(response.data.data);
       setLoading(false);
     };
+    setLoading(true);
     handleResp();
-  }, []);
+  }, [timeData]);
 
   const processed = useMemo((): PoolDataTime => {
     if (!data) {
@@ -362,7 +363,7 @@ export const usePoolData = ({
       firstTokenVolume,
       secondTokenVolume,
     };
-  }, [data, price1, price2, decimals1, decimals2]);
+  }, [data, price1, price2, decimals1, decimals2,timeData]);
 
   return [processed, loading];
 };
