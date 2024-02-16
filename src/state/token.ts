@@ -11,7 +11,6 @@ import {
 } from '../utils/utils';
 import { assertAmount, calculateAmount } from '../utils/math';
 import { TokenPrices } from './pool';
-import { NFT } from './nft';
 
 export enum ContractType {
   ERC20 = 'ERC20',
@@ -55,19 +54,6 @@ export interface NFTMetadata{
   iconUrl?:string;
   name?: string;
   mimetype?: string;
-}
-
-export interface TransferExtrinsic { blockId: string; index: number; hash: string;id?:string; }
-
-export interface TokenTransfer {
-  from: string;
-  to: string;
-  inbound: boolean;
-  timestamp: number;
-  token: Token|NFT;
-  extrinsic: TransferExtrinsic;
-  url: string;
-  reefswapAction?:string;
 }
 
 export const defaultTokenState = (index = 0): TokenState => ({

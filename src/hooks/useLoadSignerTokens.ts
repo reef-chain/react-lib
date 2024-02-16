@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BigNumber } from 'ethers';
-import type {Network} from "@reef-chain/util-lib/dist/network";
+import {network} from "@reef-chain/util-lib";
 import {
   DataProgress,
   DataWithProgress,
@@ -11,6 +11,8 @@ import {
    ReefSigner, reefTokenWithAmount, Token,
 } from '../state';
 import { loadSignerTokens } from '../api/tokens';
+
+type Network = network.Network;
 
 export const useLoadSignerTokens = (
   refreshToggle: boolean,
