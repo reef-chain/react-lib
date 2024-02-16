@@ -57,7 +57,7 @@ export interface NFTMetadata{
   mimetype?: string;
 }
 
-export interface TransferExtrinsic { blockId: string; index: number; hash: string; }
+export interface TransferExtrinsic { blockId: string; index: number; hash: string;id?:string; }
 
 export interface TokenTransfer {
   from: string;
@@ -67,6 +67,7 @@ export interface TokenTransfer {
   token: Token|NFT;
   extrinsic: TransferExtrinsic;
   url: string;
+  reefswapAction?:string;
 }
 
 export const defaultTokenState = (index = 0): TokenState => ({
