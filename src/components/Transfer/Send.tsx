@@ -311,7 +311,7 @@ export const Send = ({
   const [isPopupOpen, setPopupOpen] = useState(false);
 
   useEffect(()=>{  
-      if(to!="" && token.address!=REEF_ADDRESS)
+      if(to!=="" && token.address!==REEF_ADDRESS)
       provider?.api.query.evmAccounts.evmAddresses(to).then(addr=>{
         const address = addr.toString();
         if(!address.length){
