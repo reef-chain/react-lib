@@ -136,7 +136,7 @@ export const usePoolsList = ({
       setLoadingPoolsList(false);
     };
     handleResp();
-  }, [limit, offset]);
+  }, [limit, offset,search,signerAddress]);
 
   const userPoolCountQry = getUserPoolCountQry(queryType, search, signerAddress);
   useEffect(() => {
