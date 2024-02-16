@@ -209,7 +209,7 @@ export const usePoolData = ({
     };
     setLoading(true);
     handleResp();
-  }, [timeData]);
+  }, [address, timeData]);
 
   const processed = useMemo((): PoolDataTime => {
     if (!data) {
