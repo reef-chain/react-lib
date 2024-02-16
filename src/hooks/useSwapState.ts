@@ -3,7 +3,7 @@ import Uik from '@reef-chain/ui-kit';
 import { BigNumber, Contract } from 'ethers';
 import { Dispatch, useEffect, useRef } from 'react';
 import { AxiosInstance } from 'axios';
-import type {DexProtocolv2 as Network} from "@reef-chain/util-lib/dist/network";
+import {network} from "@reef-chain/util-lib";
 import { toBN } from '@reef-chain/evm-provider/utils';
 import { ERC20 } from '../assets/abi/ERC20';
 import { getReefswapRouter } from '../rpc';
@@ -33,6 +33,8 @@ import {
 } from '../utils';
 import { findToken } from './useKeepTokenUpdated';
 import { useLoadPool } from './useLoadPool';
+
+type Network = network.DexProtocolv2;
 
 const swapStatus = (
   sell: TokenWithAmount,

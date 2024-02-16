@@ -5,7 +5,7 @@ import BN from 'bignumber.js';
 import { Contract } from 'ethers';
 import React, { Dispatch, useEffect } from 'react';
 import { AxiosInstance } from 'axios';
-import type {DexProtocolv2 as Network} from "@reef-chain/util-lib/dist/network";
+import {network} from "@reef-chain/util-lib";
 import { toBN } from '@reef-chain/evm-provider/utils';
 import { ReefswapPair } from '../assets/abi/ReefswapPair';
 import { getReefswapRouter } from '../rpc';
@@ -22,6 +22,7 @@ import {
 import { useKeepTokenUpdated } from './useKeepTokenUpdated';
 import { useLoadPool } from './useLoadPool';
 
+type Network = network.DexProtocolv2;
 interface OnRemoveLiquidity {
   network?: Network;
   signer?: ReefSigner;

@@ -4,7 +4,7 @@ import Uik from '@reef-chain/ui-kit';
 import React, { Dispatch, useEffect } from 'react';
 import { BigNumber, Contract } from 'ethers';
 import { AxiosInstance } from 'axios';
-import type {DexProtocolv2 as Network} from "@reef-chain/util-lib/dist/network";
+import {network} from "@reef-chain/util-lib";
 import { toBN } from '@reef-chain/evm-provider/utils';
 import { ERC20 } from '../assets/abi/ERC20';
 import { getReefswapRouter } from '../rpc';
@@ -44,6 +44,7 @@ import { useKeepTokenUpdated } from './useKeepTokenUpdated';
 import { useLoadPool } from './useLoadPool';
 import { useUpdateLiquidityAmount } from './useUpdateAmount';
 
+type Network = network.DexProtocolv2;
 interface UseAddLiquidityState {
   address1: string;
   address2: string;

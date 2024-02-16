@@ -5,13 +5,14 @@ import { useEffect, useState } from 'react';
 import { Provider } from '@reef-chain/evm-provider';
 import type { Signer as InjectedSigner } from '@polkadot/api/types';
 import { map } from 'rxjs';
-import type {Network} from "@reef-chain/util-lib/dist/network";
 import { ReefSigner } from '../state';
 import { useAsyncEffect } from './useAsyncEffect';
 import { useInjectExtension } from './useInjectExtension';
 import { useObservableState } from './useObservableState';
 import { appState } from '../appState';
 import {accountToSigner} from "../rpc";
+
+type Network = nw.Network;
 
 const SELECTED_ADDRESS_IDENT = 'selected_address_reef';
 
@@ -75,7 +76,7 @@ interface State{
 
 export interface InitReefStateOptions{
   network?: Network;
-  ipfsHashResolverFn?: reefState.IpfsHashResolverFn;
+  ipfsHashResolverFn?: reefState.IpfsUrlResolverFn;
   reefscanEventsConfig?: reefState.ReefscanEventsConnConfig;
 }
 
