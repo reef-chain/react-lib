@@ -208,8 +208,8 @@ export const usePoolData = ({
       setLoading(false);
     };
     setLoading(true);
-    handleResp();
-  }, [timeData]);
+    handleResp().then();
+  }, [address, timeData]);
 
   const processed = useMemo((): PoolDataTime => {
     if (!data) {
