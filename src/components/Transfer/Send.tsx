@@ -25,6 +25,7 @@ import {
   errorHandler,
   fromReefEVMAddressWithNotification,
   nativeTransfer,
+  REEF_ADDRESS,
   shortAddress,
   // showBalance,
 } from "../../utils";
@@ -308,6 +309,22 @@ export const Send = ({
   };
 
   const [isPopupOpen, setPopupOpen] = useState(false);
+
+  useEffect(()=>{  
+      if(to!=="" && token.address!==REEF_ADDRESS)
+      provider?.api.query.evmAccounts.evmAddresses(to).then(addr=>{
+        const address = addr.toString();
+        if(!address.length){
+          Uik.prompt({
+            type: "danger",
+            title: "Recipient has not claimed EVM Address",
+            message: `Can't send tokens if EVM address does not exist`,
+            actions: <Uik.Button text="Close" danger />,
+          });
+          setTo(""); 
+        }
+      }).catch(error=>console.log(`[SEND COMPONENT] ${error.message}`))
+  },[to])
 
   return (
     <div className="send">
