@@ -9,11 +9,14 @@ import type {
   InjectedAccount,
   InjectedAccountWithMeta as InjectedAccountWithMetaReef,
   InjectedExtension as InjectedExtensionReef,
-} from '@reef-defi/extension-inject/types';
+} from '@reef-chain/util-lib/dist/dts/extension';
 import { BigNumber } from 'ethers';
 // import { firstValueFrom } from 'rxjs';
-import { AccountJson } from '@reef-defi/extension-base/background/types';
-import { web3FromAddress, web3FromSource } from '@reef-defi/extension-dapp';
+import { 
+  web3FromAddress,
+  web3FromSource,
+  AccountJson
+} from '@reef-chain/util-lib/dist/dts/extension';
 import { ReefSigner } from '../state/types';
 import { ensure, removeUndefinedItem } from '../utils/utils';
 // import { selectedSigner$ } from '../appState/accountState';
@@ -157,7 +160,6 @@ export function accountJsonToMeta(acc: AccountJson, source = ''): InjectedAccoun
       name: acc.name,
       source,
     },
-    type: acc.type,
   };
 }
 
