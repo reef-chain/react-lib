@@ -3,7 +3,10 @@ import Uik from "@reef-chain/ui-kit";
 import "./AccountSelector.css";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Account } from "@reef-chain/ui-kit/dist/ui-kit/components/organisms/AccountSelector/AccountSelector";
+import {
+  Account,
+  AccountCreationData,
+} from "@reef-chain/ui-kit/dist/ui-kit/components/organisms/AccountSelector/AccountSelector";
 import { ReefSigner } from "../../state";
 import { toReefBalanceDisplay, trim } from "../../utils";
 
@@ -20,6 +23,16 @@ interface AccountSelector {
   isBalanceHidden?: boolean;
   showBalance?: (...args: any[]) => any;
   availableNetworks: Network[];
+  showSnapOptions?: boolean;
+  isDefaultWallet?: boolean;
+  onRename?: (address: string, newName: string) => any;
+  onExport?: (address: string) => any;
+  onImport?: (...args: any[]) => any;
+  onForget?: (address: string) => any;
+  onDefaultWalletSelect?: (isDefault: boolean) => any;
+  onUpdateMetadata?: (network: Network) => any;
+  onStartAccountCreation?: () => Promise<AccountCreationData>;
+  onConfirmAccountCreation?: (seed: string, name: string) => any;
 }
 
 export const AccountSelector = ({
@@ -32,6 +45,16 @@ export const AccountSelector = ({
   isBalanceHidden,
   showBalance,
   availableNetworks,
+  showSnapOptions,
+  isDefaultWallet,
+  onRename,
+  onExport,
+  onImport,
+  onForget,
+  onDefaultWalletSelect,
+  onUpdateMetadata,
+  onStartAccountCreation,
+  onConfirmAccountCreation,
 }: AccountSelector): JSX.Element => {
   const name = selectedSigner ? selectedSigner.name : "";
   const balance = toReefBalanceDisplay(selectedSigner?.balance);
@@ -123,6 +146,16 @@ export const AccountSelector = ({
           onNetworkSelect={onNetworkSelect}
           onLanguageSelect={onLanguageSelect}
           availableNetworks={availableNetworks}
+          showSnapOptions={showSnapOptions}
+          isDefaultWallet={isDefaultWallet}
+          onRename={onRename}
+          onExport={onExport}
+          onImport={onImport}
+          onForget={onForget}
+          onDefaultWalletSelect={onDefaultWalletSelect}
+          onUpdateMetadata={onUpdateMetadata}
+          onStartAccountCreation={onStartAccountCreation}
+          onConfirmAccountCreation={onConfirmAccountCreation}
         />
       </div>
       <button
