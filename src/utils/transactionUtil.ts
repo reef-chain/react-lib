@@ -2,11 +2,12 @@
 
 import { Provider } from "@reef-chain/evm-provider";
 import { BigNumber } from "ethers";
-import { network as nw } from "@reef-chain/util-lib";
-import type {Network} from "@reef-chain/util-lib/dist/network";
+import {network as nw} from "@reef-chain/util-lib";
 import { ReefSigner } from "../state";
 
 export type TxStatusHandler = (status: TxStatusUpdate) => void;
+
+type Network = nw.Network;
 
 export enum TX_STATUS_ERROR_CODE {
   ERROR_MIN_BALANCE_AFTER_TX,

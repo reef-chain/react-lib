@@ -2,10 +2,11 @@
 
 import Uik from '@reef-chain/ui-kit';
 import BN from 'bignumber.js';
-import { BigNumber, Contract } from 'ethers';
+import { Contract } from 'ethers';
 import React, { Dispatch, useEffect } from 'react';
 import { AxiosInstance } from 'axios';
-import type {DexProtocolv2 as Network} from "@reef-chain/util-lib/dist/network";
+import {network} from "@reef-chain/util-lib";
+import { toBN } from '@reef-chain/evm-provider/utils';
 import { ReefswapPair } from '../assets/abi/ReefswapPair';
 import { getReefswapRouter } from '../rpc';
 import {
@@ -21,6 +22,7 @@ import {
 import { useKeepTokenUpdated } from './useKeepTokenUpdated';
 import { useLoadPool } from './useLoadPool';
 
+type Network = network.DexProtocolv2;
 interface OnRemoveLiquidity {
   network?: Network;
   signer?: ReefSigner;
@@ -177,18 +179,18 @@ export const onRemoveLiquidity = ({
     const approveExtrinsic = signer.provider.api.tx.evm.call(
       approveTransaction.to,
       approveTransaction.data,
-      BigNumber.from(approveTransaction.value || 0),
-      approveResources.gas,
-      approveResources.storage.lt(0) ? BigNumber.from(0) : approveResources.storage,
+      toBN(approveTransaction.value || 0),
+      toBN(approveResources.gas),
+      approveResources.storage.lt(0) ? toBN(0) : toBN(approveResources.storage),
     );
 
     if (batchTxs) {
       const withdrawExtrinsic = signer.provider.api.tx.evm.call(
         withdrawTransaction.to,
         withdrawTransaction.data,
-        BigNumber.from(withdrawTransaction.value || 0),
-        BigNumber.from(626914).mul(2), // hardcoded gas estimation, multiply by 2 as a safety margin
-        BigNumber.from(64).mul(2), // hardcoded storage estimation, multiply by 2 as a safety margin
+        toBN(withdrawTransaction.value || 0),
+        toBN(626914 * 2), // hardcoded gas estimation, multiply by 2 as a safety margin
+        toBN(64 * 2), // hardcoded storage estimation, multiply by 2 as a safety margin
       );
 
       // Batching extrinsics
@@ -253,9 +255,9 @@ export const onRemoveLiquidity = ({
       const withdrawExtrinsic = signer.provider.api.tx.evm.call(
         withdrawTransaction.to,
         withdrawTransaction.data,
-        BigNumber.from(withdrawTransaction.value || 0),
-        withdrawResources.gas,
-        withdrawResources.storage.lt(0) ? BigNumber.from(0) : withdrawResources.storage,
+        toBN(withdrawTransaction.value || 0),
+        toBN(withdrawResources.gas),
+        withdrawResources.storage.lt(0) ? toBN(0) : toBN(withdrawResources.storage),
       );
       const signAndSendWithdraw = new Promise<void>((resolve, reject) => {
         withdrawExtrinsic.signAndSend(

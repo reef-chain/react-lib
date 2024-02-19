@@ -1,7 +1,10 @@
-import { web3Enable } from '@reef-defi/extension-dapp';
-import { InjectedAccountWithMeta, InjectedExtension } from '@reef-defi/extension-inject/types';
 import { useState } from 'react';
-import { REEF_EXTENSION_IDENT } from '@reef-defi/extension-inject';
+import { 
+  web3Enable,
+  InjectedAccountWithMeta,
+  InjectedExtension,
+  REEF_EXTENSION_IDENT
+} from '@reef-chain/util-lib/dist/dts/extension';
 import { useAsyncEffect } from './useAsyncEffect';
 
 function getBrowserExtensionUrl(): string | undefined {
