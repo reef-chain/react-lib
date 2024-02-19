@@ -158,7 +158,7 @@ export const usePoolTransactionCountSubscription = (
   const [data, setData] = useState<PoolTransactionCountQuery|undefined>();
   const [loading, setLoading] = useState<boolean>(true);
   const queryObj = getPoolTransactionCountQry(address, type);
-  const TRIGGER = useObservableState(network.getLatestBlockContractEvents$([address]));
+  const TRIGGER = useObservableState(network.getLatestBlockContractEvents$(address?[address]:[]));
   useEffect(() => {
     const handleResponse = async (): Promise<void> => {
       const response = await graphqlRequest(httpClient, queryObj);
@@ -185,7 +185,7 @@ export const usePoolTransactionSubscription = (
   const [data, setData] = useState<PoolTransactionQuery|undefined>();
   const [loading, setLoading] = useState<boolean>(true);
   const queryObj = getPoolTransactionQry(address, type, limit, pageIndex);
-  const TRIGGER = useObservableState(network.getLatestBlockContractEvents$([address]));
+  const TRIGGER = useObservableState(network.getLatestBlockContractEvents$(address?[address]:[]));
   useEffect(() => {
     const fetchResponse = async (): Promise<void> => {
       const response = await graphqlRequest(httpClient, queryObj);
