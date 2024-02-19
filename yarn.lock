@@ -1858,13 +1858,6 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "6.5.1"
 
-"@fortawesome/react-fontawesome@^0.1.17":
-  version "0.1.19"
-  resolved "https://registry.yarnpkg.com/@fortawesome/react-fontawesome/-/react-fontawesome-0.1.19.tgz#2b36917578596f31934e71f92b7cf9c425fd06e4"
-  integrity sha512-Hyb+lB8T18cvLNX0S3llz7PcSOAJMLwiVKBuuzwM/nI5uoBw+gQjnf9il0fR1C3DKOI5Kc79pkJ4/xB0Uw9aFQ==
-  dependencies:
-    prop-types "^15.8.1"
-
 "@fortawesome/react-fontawesome@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@fortawesome/react-fontawesome/-/react-fontawesome-0.2.0.tgz#d90dd8a9211830b4e3c08e94b63a0ba7291ddcf4"
@@ -3573,20 +3566,19 @@
     blakejs "~1.2.1"
     ethers "~5.5.0"
 
-"@reef-chain/ui-kit@^1.1.6":
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/@reef-chain/ui-kit/-/ui-kit-1.1.6.tgz#fd704d3e47ea8bcee48ea6a56dbe6cace194bd08"
-  integrity sha512-U6Z8dMq3oSC4FpWs4Z97Mm5aUn1H6kfVr+Y/SdEuOAKLONGa3qhWyu55u7TL+q7ZSDExvPxHOFBsBkQuLGCdaQ==
+"@reef-chain/ui-kit@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@reef-chain/ui-kit/-/ui-kit-2.0.0.tgz#ab6d890337e29355958fc99df0cdc88bb01f6ed4"
+  integrity sha512-uetycJkEhb3qqsPwIpXGHJgm2pep9d2UeFlxzB20E+m9SvvIa7tPol3hIhot1VDyzWeVpYHDNlKAGFv8VzPvcg==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^6.1.0"
     "@fortawesome/free-regular-svg-icons" "^6.1.0"
     "@fortawesome/free-solid-svg-icons" "^6.1.0"
-    "@fortawesome/react-fontawesome" "^0.1.17"
+    "@fortawesome/react-fontawesome" "^0.2.0"
     "@polkadot/react-identicon" "^2.0.1"
     "@types/jest" "^27.4.1"
     "@types/node" "^17.0.21"
-    "@types/react" "^17.0.0"
-    "@types/react-dom" "^17.0.0"
+    "@types/react" "^18.2.55"
     bignumber.js "^9.0.2"
     qrcode.react "^3.0.1"
     react-localization "^1.0.19"
@@ -4379,7 +4371,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-dom@17.0.2", "@types/react-dom@^17.0.0":
+"@types/react-dom@17.0.2":
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-17.0.2.tgz#35654cf6c49ae162d5bc90843d5437dc38008d43"
   integrity sha512-Icd9KEgdnFfJs39KyRyr0jQ7EKhq8U6CcHRMGAS45fp5qgUvxL3ujUCfWFttUK2UErqZNj97t9gsVPNAqcwoCg==
@@ -4417,7 +4409,7 @@
   dependencies:
     react-tooltip "*"
 
-"@types/react@*", "@types/react@17.0.2", "@types/react@^17", "@types/react@^17.0.0":
+"@types/react@*", "@types/react@17.0.2", "@types/react@^17", "@types/react@^18.2.55":
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.2.tgz#3de24c4efef902dd9795a49c75f760cbe4f7a5a8"
   integrity sha512-Xt40xQsrkdvjn1EyWe1Bc0dJLcil/9x2vAuW7ya+PuQip4UYUaXyhzWmAbwRsdMgwOFHpfp7/FFZebDU6Y8VHA==
@@ -5872,9 +5864,9 @@ bindings@^1.3.0, bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-"bip32-ed25519@git+https://github.com/Zondax/bip32-ed25519.git":
+"bip32-ed25519@https://github.com/Zondax/bip32-ed25519":
   version "0.0.4"
-  resolved "git+https://github.com/Zondax/bip32-ed25519.git#0949df01b5c93885339bc28116690292088f6134"
+  resolved "https://github.com/Zondax/bip32-ed25519#0949df01b5c93885339bc28116690292088f6134"
   dependencies:
     bn.js "^5.1.1"
     elliptic "^6.4.1"
