@@ -3248,10 +3248,27 @@
     react-syntax-highlighter "^15.5.0"
     react-transition-group "^4.4.2"
 
-"@reef-chain/util-lib@2.4.2", "@reef-chain/util-lib@^2.4.2":
+"@reef-chain/util-lib@2.4.2":
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/@reef-chain/util-lib/-/util-lib-2.4.2.tgz#16edb6ef4fc32c0d579e694d0a9b71c4e8a58aa8"
   integrity sha512-KuSbnjD4nSjGpSZwBztJUusF7O3FeChJTkLupwXWoWTpyUSBlApfqzCwvBRJuzdI/waLOlUlMl0Ze/43JdEU9Q==
+  dependencies:
+    "@apollo/client" "^3.9.4"
+    "@metamask/providers" "^14.0.2"
+    "@polkadot/api" "^10.11.2"
+    "@polkadot/extension-inject" "^0.46.6"
+    "@polkadot/types" "^10.11.2"
+    "@reef-chain/evm-provider" "^2.0.2"
+    axios "^1.6.2"
+    bignumber.js "^9.1.2"
+    ethers "~5.5.4"
+    graphql "^16.8.1"
+    mqtt "^5.3.5"
+
+"@reef-chain/util-lib@^2.4.3":
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/@reef-chain/util-lib/-/util-lib-2.4.3.tgz#a66e58522d45bae201ca03a9d9ae4c934419b7fa"
+  integrity sha512-GG/+wh8PeLI4FXjrotksJzIk+jGUnlkJvu+xtJx4oWKq2Yt98BFP/NmkqVi2++JcZQNQuk9sp/ZXunIs1lT/FA==
   dependencies:
     "@apollo/client" "^3.9.4"
     "@metamask/providers" "^14.0.2"
