@@ -16,6 +16,7 @@ function getBrowserExtensionUrl(): string | undefined {
   return undefined;
 }
 
+// TODO: Show options to install snap and easy wallet when they are available
 function getInstallExtensionMessage(): { message: string; url?: string } {
   const extensionUrl = getBrowserExtensionUrl();
   const installText = extensionUrl
@@ -50,8 +51,9 @@ export const useInjectExtension = (
       setError(undefined);
       setIsLoading(true);
       extensions = await extReef.web3Enable(appDisplayName);
-      const reefExt = extensions.find((ext) => ext.name === extReef.REEF_EXTENSION_IDENT);
-      if (!reefExt) {
+      const reefExt = extensions.length > 0 ? extensions[0] : undefined;
+      if (!reefExt || (reefExt.name !== extReef.REEF_EXTENSION_IDENT 
+          && reefExt.name !== extReef.REEF_SNAP_IDENT)) {
         const installExtensionMessage = getInstallExtensionMessage();
         setError({
           code: 1,
