@@ -1,5 +1,7 @@
 import {
-  reefState,network as nw
+  reefState,
+  network as nw,
+  extension as extReef
 } from '@reef-chain/util-lib';
 import { useEffect, useState } from 'react';
 import { Provider } from '@reef-chain/evm-provider';
@@ -71,7 +73,8 @@ interface State{
   network: Network,
   signers:ReefSigner[],
   selectedReefSigner?:ReefSigner,
-  reefState: any
+  reefState: any,
+  extension: extReef.InjectedExtension | undefined
 }
 
 export interface InitReefStateOptions{
@@ -158,5 +161,6 @@ export const useInitReefState = (
     signers: allAccounts as ReefSigner[],
     selectedReefSigner,
     reefState,
+    extension
   };
 };
