@@ -1,10 +1,5 @@
 import { useState } from 'react';
-import { 
-  web3Enable,
-  InjectedAccountWithMeta,
-  InjectedExtension,
-  REEF_EXTENSION_IDENT
-} from '@reef-chain/util-lib/dist/dts/extension';
+import { extension as extReef } from '@reef-chain/util-lib';
 import { useAsyncEffect } from './useAsyncEffect';
 
 function getBrowserExtensionUrl(): string | undefined {
@@ -21,6 +16,7 @@ function getBrowserExtensionUrl(): string | undefined {
   return undefined;
 }
 
+// TODO: Show options to install snap and easy wallet when they are available
 function getInstallExtensionMessage(): { message: string; url?: string } {
   const extensionUrl = getBrowserExtensionUrl();
   const installText = extensionUrl
@@ -35,17 +31,17 @@ function getInstallExtensionMessage(): { message: string; url?: string } {
 export const useInjectExtension = (
   appDisplayName: string,
 ): [
-  InjectedAccountWithMeta[],
-  InjectedExtension|undefined,
+  extReef.InjectedAccountWithMeta[],
+    extReef.InjectedExtension|undefined,
   boolean,
   { code?: number; message: string; url?: string } | undefined
 ] => {
-  const [accountsVal, setAccountsVal] = useState<InjectedAccountWithMeta[]>([]);
-  const [extensionVal, setExtensionVal] = useState<InjectedExtension>();
+  const [accountsVal, setAccountsVal] = useState<extReef.InjectedAccountWithMeta[]>([]);
+  const [extensionVal, setExtensionVal] = useState<extReef.InjectedExtension>();
   const [isReefInjected, setIsReefInjected] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<{ message: string; code?: number; url?: string }>();
-  let extensions: InjectedExtension[];
+  let extensions: extReef.InjectedExtension[];
 
   document.addEventListener('reef-injected', async () => {
     if (!isReefInjected)setIsReefInjected(true);
@@ -54,9 +50,10 @@ export const useInjectExtension = (
     try {
       setError(undefined);
       setIsLoading(true);
-      extensions = await web3Enable(appDisplayName);
-      const reefExt = extensions.find((ext) => ext.name === REEF_EXTENSION_IDENT);
-      if (!reefExt) {
+      extensions = await extReef.web3Enable(appDisplayName);
+      const reefExt = extensions.length > 0 ? extensions[0] : undefined;
+      if (!reefExt || (reefExt.name !== extReef.REEF_EXTENSION_IDENT 
+          && reefExt.name !== extReef.REEF_SNAP_IDENT)) {
         const installExtensionMessage = getInstallExtensionMessage();
         setError({
           code: 1,
@@ -89,7 +86,7 @@ export const useInjectExtension = (
           source: reefExt.name,
         },
         type: acc.type,
-      } as InjectedAccountWithMeta));
+      } as extReef.InjectedAccountWithMeta));
       setAccountsVal(accountsWithMeta);
     } catch (e) {
       // eslint-disable-next-line no-console
