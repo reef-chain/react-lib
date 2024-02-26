@@ -33,6 +33,8 @@ import "../PoolActions/pool-actions.css";
 import TokenField from "../PoolActions/TokenField";
 import "./Send.css";
 import SendPopup from "../PoolActions/ConfirmPopups/Send";
+import { retrieveReefCoingeckoPrice } from "../../api";
+import UsdAmountField from "../PoolActions/UsdAmountField";
 
 interface Send {
   tokens: Token[];
@@ -191,6 +193,7 @@ export const Send = ({
   const [status, setStatus] = useState("Send");
   const [isLoading, setLoading] = useState(false);
   const [isAmountPristine, setAmountPristine] = useState(true);
+  const [amountInUsd,setAmountInUsd] = useState("");
 
   const getInitToken = (): TokenWithAmount => {
     if (tokenAddress) {
@@ -229,9 +232,13 @@ export const Send = ({
     signer.balance
   );
 
-  const onAmountChange = (amount: string, token: TokenWithAmount): void => {
+  const onAmountChange = async(amount: string, token: TokenWithAmount,isUSDChanged?:boolean): Promise<void> => {
     setToken({ ...token, amount });
     setAmountPristine(false);
+    if(!isUSDChanged){
+      const calculatedUsdFromReef = (await reefPrice)*parseFloat(amount);
+      setAmountInUsd(calculatedUsdFromReef.toString());
+    }
   };
 
   const onSend = async (): Promise<void> => {
@@ -308,6 +315,17 @@ export const Send = ({
     onAmountChange(String(amount), token);
   };
 
+  const reefPrice = useMemo(async () => {
+    return await retrieveReefCoingeckoPrice();
+  }, []);
+
+  const handleUsdAmount = async(e)=>{
+    const inputAmount = e;
+    const calculatedReef = parseFloat(inputAmount)/(await reefPrice);
+    onAmountChange(String(calculatedReef), token,true);
+    setAmountInUsd(inputAmount);
+  }
+
   const [isPopupOpen, setPopupOpen] = useState(false);
 
   useEffect(()=>{  
@@ -372,6 +390,17 @@ export const Send = ({
       {!isAmountPristine && !existentialValidity.valid && (
         <div className="send__error">{existentialValidity.message}</div>
       )}
+
+    <div className="uik-pool-actions__tokens">
+        {/* <Uik.Input
+          type="number"
+          placeholder="amount in $s"
+          onInput={handleUsdAmount}
+          value={amountInUsd.toString()}
+          /> */}
+          <UsdAmountField onInput={handleUsdAmount}
+          value={amountInUsd.toString()} />
+      </div>
 
       <div className="uik-pool-actions__slider">
         <Uik.Slider
