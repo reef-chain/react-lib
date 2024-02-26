@@ -392,12 +392,6 @@ export const Send = ({
       )}
 
     <div className="uik-pool-actions__tokens">
-        {/* <Uik.Input
-          type="number"
-          placeholder="amount in $s"
-          onInput={handleUsdAmount}
-          value={amountInUsd.toString()}
-          /> */}
           <UsdAmountField onInput={handleUsdAmount}
           value={amountInUsd.toString()} />
       </div>
