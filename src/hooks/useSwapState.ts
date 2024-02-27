@@ -381,12 +381,12 @@ export const onSwap = ({
     const message = errorHandler(error.message);
     Uik.notify.danger({
       message: `An error occurred while trying to complete your trade: ${message}`,
-      keepAlive: true,
+      aliveFor: 10,
     });
   } finally {
     await updateTokenState().catch(() => Uik.notify.danger({
       message: 'Please reload the page to update token balances',
-      keepAlive: true,
+      aliveFor: 10,
     }));
 
     dispatch(setLoadingAction(false));
