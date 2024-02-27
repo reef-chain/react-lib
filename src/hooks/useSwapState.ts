@@ -298,7 +298,7 @@ export const onSwap = ({
 
               Uik.notify.success({
                 message: 'Blocks have been finalized',
-                keepAlive: true,
+                aliveFor: 10,
               });
             }
           },
@@ -360,7 +360,7 @@ export const onSwap = ({
 
               Uik.notify.success({
                 message: 'Blocks have been finalized',
-                keepAlive: true,
+                aliveFor: 10,
               });
             }
           },
@@ -373,7 +373,7 @@ export const onSwap = ({
 
     Uik.notify.success({
       message: 'Trade complete.\nBalances will reload after blocks are finalized',
-      keepAlive: true,
+      aliveFor: 10,
     });
 
     Uik.dropConfetti();
