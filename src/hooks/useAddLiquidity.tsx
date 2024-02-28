@@ -305,7 +305,7 @@ export const onAddLiquidity = ({
 
               Uik.notify.success({
                 message: 'Blocks have been finalized',
-                keepAlive: true,
+                aliveFor: 10,
               });
             }
           },
@@ -401,7 +401,7 @@ export const onAddLiquidity = ({
 
               Uik.notify.success({
                 message: 'Blocks have been finalized',
-                keepAlive: true,
+                aliveFor: 10,
               });
             }
           },
@@ -414,7 +414,7 @@ export const onAddLiquidity = ({
 
     Uik.notify.success({
       message: 'Successfully provided liquidity.\nBalances will reload after blocks are finalized.',
-      keepAlive: true,
+      aliveFor: 10,
     });
 
     Uik.dropConfetti();
@@ -434,7 +434,7 @@ export const onAddLiquidity = ({
     dispatch(setAllTokensAction(newTokens)); */
     await updateTokenState().catch(() => Uik.notify.danger({
       message: 'Please reload the page to update token balances',
-      keepAlive: true,
+      aliveFor: 10,
     }));
     dispatch(setLoadingAction(false));
     dispatch(clearTokenAmountsAction());
