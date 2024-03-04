@@ -12,11 +12,13 @@ BigNumber.config({ EXPONENTIAL_AT: 1000 });
 interface UsdAmountField {
   value:string;
   onInput: (amount: string) => void;
+  reefPrice:string;
 }
 
 const UsdAmountField = ({
   value,
   onInput,
+  reefPrice
 }: UsdAmountField): JSX.Element => {
   const [isFocused, setFocused] = useState(false);
   const onInputFocus = (): void => setFocused(true);
@@ -34,18 +36,21 @@ const UsdAmountField = ({
     >
         <div style={{
             paddingLeft:'2rem',
-            width: '12rem'
+            width: '54rem',
+            position: 'absolute',
+            left: '0'
         }}>
         <Text text='USD: ' type='light'/>
         <a style={{
             color: '#b2b0c8',
             fontSize: '0.775rem',
             textDecoration: 'none',
+            
         }}
         href='https://www.coingecko.com/en/coins/reef'
         target='_blank'
         >
-            Approximate Value
+            Approximate Value of 1 REEF = ${reefPrice}
         </a>
         </div>
         <div className="uik-pool-actions-token__value">

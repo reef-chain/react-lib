@@ -194,6 +194,7 @@ export const Send = ({
   const [isLoading, setLoading] = useState(false);
   const [isAmountPristine, setAmountPristine] = useState(true);
   const [amountInUsd,setAmountInUsd] = useState("");
+  const [reefPrice,setReefPrice]= useState(0);
 
   const getInitToken = (): TokenWithAmount => {
     if (tokenAddress) {
@@ -212,6 +213,14 @@ export const Send = ({
 
     return reefTokenWithAmount();
   };
+
+  useEffect(()=>{
+    const fetchReefPrice = async()=>{
+      const _reefPrice = await retrieveReefCoingeckoPrice();
+      setReefPrice(_reefPrice);
+    }
+    fetchReefPrice();
+  },[])
 
   const [token, setToken] = useState(getInitToken());
 
@@ -232,11 +241,11 @@ export const Send = ({
     signer.balance
   );
 
-  const onAmountChange = async(amount: string, token: TokenWithAmount,isUSDChanged?:boolean): Promise<void> => {
+  const onAmountChange = (amount: string, token: TokenWithAmount,isUSDChanged?:boolean): void => {
     setToken({ ...token, amount });
     setAmountPristine(false);
     if(!isUSDChanged){
-      const calculatedUsdFromReef = (await reefPrice)*parseFloat(amount);
+      const calculatedUsdFromReef = reefPrice*parseFloat(amount);
       setAmountInUsd(calculatedUsdFromReef.toString());
     }
   };
@@ -315,13 +324,9 @@ export const Send = ({
     onAmountChange(String(amount), token);
   };
 
-  const reefPrice = useMemo(async () => {
-    return await retrieveReefCoingeckoPrice();
-  }, []);
-
-  const handleUsdAmount = async(e)=>{
+  const handleUsdAmount = (e)=>{
     const inputAmount = e;
-    const calculatedReef = parseFloat(inputAmount)/(await reefPrice);
+    const calculatedReef = parseFloat(inputAmount)/reefPrice;
     onAmountChange(String(calculatedReef), token,true);
     setAmountInUsd(inputAmount);
   }
@@ -391,10 +396,10 @@ export const Send = ({
         <div className="send__error">{existentialValidity.message}</div>
       )}
 
-    <div className="uik-pool-actions__tokens">
+    {token.address==REEF_ADDRESS &&  <div className="uik-pool-actions__tokens">
           <UsdAmountField onInput={handleUsdAmount}
-          value={amountInUsd.toString()} />
-      </div>
+          value={amountInUsd.toString()} reefPrice = {reefPrice.toString()} />
+    </div>}
 
       <div className="uik-pool-actions__slider">
         <Uik.Slider
