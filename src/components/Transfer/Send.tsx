@@ -264,9 +264,9 @@ export const Send = ({
       Uik.notify.success({
         message:
           "Tokens transfered.\nBalances will reload after blocks are finalized",
-        keepAlive: true,
+        aliveFor: 10,
       });
-
+      
       Uik.dropConfetti();
     } catch (error) {
       const message = errorHandler(error.message);
