@@ -33,6 +33,7 @@ import "../PoolActions/pool-actions.css";
 import TokenField from "../PoolActions/TokenField";
 import "./Send.css";
 import SendPopup from "../PoolActions/ConfirmPopups/Send";
+import { DownIcon } from "../common/Icons";
 import { retrieveReefCoingeckoPrice } from "../../api";
 import UsdAmountField from "../PoolActions/UsdAmountField";
 
@@ -352,12 +353,22 @@ export const Send = ({
   return (
     <div className="send">
       <div className="send__address">
-        <Identicon
+      {to.length==0?
+        <div className="send__address-identicon" style={{
+          width:"46px",
+          height:"46px",
+          display:'flex',
+          alignItems:'center',
+          justifyContent:'center'
+        }}>
+          <DownIcon small={true}/>
+        </div>:<Identicon
           className="send__address-identicon"
           value={to}
           size={46}
           theme="substrate"
         />
+      }
 
         <input
           className="send__address-input"
