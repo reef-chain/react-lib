@@ -24,6 +24,12 @@ const UsdAmountField = ({
   const onInputFocus = (): void => setFocused(true);
   const onInputBlur = (): void => setFocused(false);
 
+  const approxValueTextStyle = {
+    color: '#b2b0c8',
+    fontSize: '0.775rem',
+    textDecoration: 'none',
+}
+
   return (
     <div
       className={`
@@ -36,22 +42,20 @@ const UsdAmountField = ({
     >
         <div style={{
             paddingLeft:'2rem',
-            width: '54rem',
-            position: 'absolute',
-            left: '0'
+            width: '12rem',
         }}>
+          <div style={{paddingTop:'1rem'}}>
         <Text text='USD: ' type='light'/>
-        <a style={{
-            color: '#b2b0c8',
-            fontSize: '0.775rem',
-            textDecoration: 'none',
-            
-        }}
+          </div>
+        <a style={approxValueTextStyle}
         href='https://www.coingecko.com/en/coins/reef'
         target='_blank'
         >
-            Approximate Value of 1 REEF = ${reefPrice}
+            Approximate Value
         </a>
+        <div style={{...approxValueTextStyle,paddingBottom:'1rem'}}>
+        1 REEF = ${reefPrice}
+        </div>
         </div>
         <div className="uik-pool-actions-token__value">
           <input
