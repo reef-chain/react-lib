@@ -34,6 +34,8 @@ import TokenField from "../PoolActions/TokenField";
 import "./Send.css";
 import SendPopup from "../PoolActions/ConfirmPopups/Send";
 import { DownIcon } from "../common/Icons";
+import { retrieveReefCoingeckoPrice } from "../../api";
+import UsdAmountField from "../PoolActions/UsdAmountField";
 
 interface Send {
   tokens: Token[];
@@ -192,6 +194,8 @@ export const Send = ({
   const [status, setStatus] = useState("Send");
   const [isLoading, setLoading] = useState(false);
   const [isAmountPristine, setAmountPristine] = useState(true);
+  const [amountInUsd,setAmountInUsd] = useState("");
+  const [reefPrice,setReefPrice]= useState(0);
 
   const getInitToken = (): TokenWithAmount => {
     if (tokenAddress) {
@@ -210,6 +214,14 @@ export const Send = ({
 
     return reefTokenWithAmount();
   };
+
+  useEffect(()=>{
+    const fetchReefPrice = async()=>{
+      const _reefPrice = await retrieveReefCoingeckoPrice();
+      setReefPrice(_reefPrice);
+    }
+    fetchReefPrice();
+  },[])
 
   const [token, setToken] = useState(getInitToken());
 
@@ -230,9 +242,13 @@ export const Send = ({
     signer.balance
   );
 
-  const onAmountChange = (amount: string, token: TokenWithAmount): void => {
+  const onAmountChange = (amount: string, token: TokenWithAmount,isUSDChanged?:boolean): void => {
     setToken({ ...token, amount });
     setAmountPristine(false);
+    if(!isUSDChanged){
+      let calculatedUsdFromReef = reefPrice*parseFloat(amount);
+      setAmountInUsd(calculatedUsdFromReef>1?calculatedUsdFromReef.toFixed(2):calculatedUsdFromReef.toFixed(4));
+    }
   };
 
   const onSend = async (): Promise<void> => {
@@ -309,6 +325,13 @@ export const Send = ({
     onAmountChange(String(amount), token);
   };
 
+  const handleUsdAmount = (e)=>{
+    const inputAmount = e;
+    const calculatedReef = parseFloat(inputAmount)/reefPrice;
+    onAmountChange(String(calculatedReef), token,true);
+    setAmountInUsd(inputAmount);
+  }
+
   const [isPopupOpen, setPopupOpen] = useState(false);
 
   useEffect(()=>{  
@@ -383,6 +406,11 @@ export const Send = ({
       {!isAmountPristine && !existentialValidity.valid && (
         <div className="send__error">{existentialValidity.message}</div>
       )}
+
+    {token.address==REEF_ADDRESS &&  <div className="uik-pool-actions__tokens">
+          <UsdAmountField onInput={handleUsdAmount}
+          value={amountInUsd.toString()} reefPrice = {reefPrice.toString()} />
+    </div>}
 
       <div className="uik-pool-actions__slider">
         <Uik.Slider
