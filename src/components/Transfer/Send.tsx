@@ -245,8 +245,8 @@ export const Send = ({
     setToken({ ...token, amount });
     setAmountPristine(false);
     if(!isUSDChanged){
-      const calculatedUsdFromReef = reefPrice*parseFloat(amount);
-      setAmountInUsd(calculatedUsdFromReef.toString());
+      let calculatedUsdFromReef = reefPrice*parseFloat(amount);
+      setAmountInUsd(calculatedUsdFromReef>1?calculatedUsdFromReef.toFixed(2):calculatedUsdFromReef.toFixed(4));
     }
   };
 
