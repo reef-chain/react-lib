@@ -123,6 +123,10 @@ export const useInitReefState = (
   };
 
   useEffect(() => {
+    setError(errExtension);
+  }, [errExtension]);
+
+  useEffect(() => {
     if (!extensionsWithAccounts.length) {
       return;
     }
