@@ -10,8 +10,8 @@ import {
 } from "@reef-chain/ui-kit/dist/ui-kit/components/organisms/AccountSelector/AccountSelector";
 import { ReefSigner } from "../../state";
 import { toReefBalanceDisplay, trim } from "../../utils";
-import MetaMaskIcon from "./MetaMaskIcon";
 import { extension as reefExt } from "@reef-chain/util-lib";
+import { MetaMaskLogo } from "../common/Logos/MetaMaskLogo";
 
 export type Network = "mainnet" | "testnet";
 export type Language = "en" | "hi";
@@ -31,7 +31,7 @@ const availableExtensions: Extension[] = [
     link: reefExt.SNAP_ID,
     selected: false,
     installed: false,
-    icon: <MetaMaskIcon />,
+    icon: <MetaMaskLogo />,
     isSnap: true,
   },
   // {
