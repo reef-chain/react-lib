@@ -221,7 +221,7 @@ export const onRemoveLiquidity = ({
 
               Uik.notify.success({
                 message: 'Blocks have been finalized',
-                keepAlive: true,
+                aliveFor: 10,
               });
             }
           },
@@ -281,7 +281,7 @@ export const onRemoveLiquidity = ({
 
               Uik.notify.success({
                 message: 'Blocks have been finalized',
-                keepAlive: true,
+                aliveFor: 10,
               });
             }
           },
@@ -294,7 +294,7 @@ export const onRemoveLiquidity = ({
 
     Uik.notify.success({
       message: 'Tokens were successfully withdrawn.\nBalances will reload after blocks are finalized.',
-      keepAlive: true,
+      aliveFor: 10,
     });
 
     Uik.dropConfetti();

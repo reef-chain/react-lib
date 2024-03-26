@@ -172,6 +172,7 @@ interface UsePoolData {
   decimals1: number;
   decimals2: number;
   timeData: TimeData;
+  poolUpdatedAt: string;
 }
 
 const getPoolDataQry = (timeData: TimeData, address: string, fromTime: string): PoolQueryObject => ({
@@ -183,7 +184,7 @@ const getPoolDataQry = (timeData: TimeData, address: string, fromTime: string): 
 });
 
 export const usePoolData = ({
-  address, decimals1, decimals2, price1, price2, timeData = { timeUnit: 'Day', timeSpan: 31 },
+  address, decimals1, decimals2, price1, price2, timeData = { timeUnit: 'Day', timeSpan: 31 },poolUpdatedAt
 }: UsePoolData, httpClient:AxiosInstance): UsePoolDataOutput => {
   const { fromTime, toTime } = calcTimeRange(timeData.timeUnit, timeData.timeSpan);
 
@@ -209,7 +210,7 @@ export const usePoolData = ({
     };
     setLoading(true);
     handleResp().then();
-  }, [address, timeData]);
+  }, [address,fromTime.toISOString(),poolUpdatedAt]);
 
   const processed = useMemo((): PoolDataTime => {
     if (!data) {

@@ -1,0 +1,1 @@
+export { MetaMaskLogo } from "./MetaMaskLogo";
