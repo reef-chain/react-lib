@@ -3320,10 +3320,10 @@
     graphql "^16.8.1"
     mqtt "^5.3.5"
 
-"@reef-chain/util-lib@^2.4.13":
-  version "2.4.13"
-  resolved "https://registry.yarnpkg.com/@reef-chain/util-lib/-/util-lib-2.4.13.tgz#a51a6d34f4470fd3db9d9b623e5aa3a22969ed83"
-  integrity sha512-aIauB4PywWXhbPpN9YdknwDPAvAznYJrysWe056plWDsoqbHHtSOnR5z8F60ESrcdKTpJiKY8aQTNabY1wGvcA==
+"@reef-chain/util-lib@^2.4.14":
+  version "2.4.14"
+  resolved "https://registry.yarnpkg.com/@reef-chain/util-lib/-/util-lib-2.4.14.tgz#c00349079dfb51ec5af371da173bd1a72f21520e"
+  integrity sha512-PysesQaVczdb//VHCKbKSe3Z2BMDMcB7Ch2vq2H5gJ8RN3eb+6ii9HKCX0BU007yV5ZeGLO38Qh6YbTr9B0f2Q==
   dependencies:
     "@metamask/providers" "^14.0.2"
     "@polkadot/api" "^10.11.2"
