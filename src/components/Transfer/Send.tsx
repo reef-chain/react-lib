@@ -289,6 +289,7 @@ export const Send = ({
     } finally {
       setLoading(false);
       setToken({ ...token, amount: "" });
+      setAmountInUsd("");
     }
   };
 
