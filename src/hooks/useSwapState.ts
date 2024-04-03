@@ -3,7 +3,8 @@ import Uik from '@reef-chain/ui-kit';
 import { BigNumber, Contract } from 'ethers';
 import { Dispatch, useEffect, useRef } from 'react';
 import { AxiosInstance } from 'axios';
-import type {DexProtocolv2 as Network} from "@reef-chain/util-lib/dist/network";
+import {network} from "@reef-chain/util-lib";
+import { toBN } from '@reef-chain/evm-provider/utils';
 import { ERC20 } from '../assets/abi/ERC20';
 import { getReefswapRouter } from '../rpc';
 import {
@@ -32,6 +33,8 @@ import {
 } from '../utils';
 import { findToken } from './useKeepTokenUpdated';
 import { useLoadPool } from './useLoadPool';
+
+type Network = network.DexProtocolv2;
 
 const swapStatus = (
   sell: TokenWithAmount,
@@ -253,18 +256,18 @@ export const onSwap = ({
     const approveExtrinsic = signer.provider.api.tx.evm.call(
       approveTransaction.to,
       approveTransaction.data,
-      BigNumber.from(approveTransaction.value || 0),
-      approveResources.gas,
-      approveResources.storage.lt(0) ? BigNumber.from(0) : approveResources.storage,
+      toBN(approveTransaction.value || 0),
+      toBN(approveResources.gas),
+      approveResources.storage.lt(0) ? toBN(0) : toBN(approveResources.storage),
     );
 
     if (batchTxs) {
       const tradeExtrinsic = signer.provider.api.tx.evm.call(
         tradeTransaction.to,
         tradeTransaction.data,
-        BigNumber.from(tradeTransaction.value || 0),
-        BigNumber.from(582938).mul(2), // hardcoded gas estimation, multiply by 2 as a safety margin
-        BigNumber.from(64).mul(2), // hardcoded storage estimation, multiply by 2 as a safety margin
+        toBN(tradeTransaction.value || 0),
+        toBN(582938 * 2), // hardcoded gas estimation, multiply by 2 as a safety margin
+        toBN(64 * 2), // hardcoded storage estimation, multiply by 2 as a safety margin
       );
 
       // Batching extrinsics
@@ -295,7 +298,7 @@ export const onSwap = ({
 
               Uik.notify.success({
                 message: 'Blocks have been finalized',
-                keepAlive: true,
+                aliveFor: 10,
               });
             }
           },
@@ -330,9 +333,9 @@ export const onSwap = ({
       const tradeExtrinsic = signer.provider.api.tx.evm.call(
         tradeTransaction.to,
         tradeTransaction.data,
-        BigNumber.from(tradeTransaction.value || 0),
-        tradeResources.gas,
-        tradeResources.storage.lt(0) ? BigNumber.from(0) : tradeResources.storage,
+        toBN(tradeTransaction.value || 0),
+        toBN(tradeResources.gas),
+        tradeResources.storage.lt(0) ? toBN(0) : toBN(tradeResources.storage),
       );
 
       const signAndSendTrade = new Promise<void>((resolve, reject) => {
@@ -357,7 +360,7 @@ export const onSwap = ({
 
               Uik.notify.success({
                 message: 'Blocks have been finalized',
-                keepAlive: true,
+                aliveFor: 10,
               });
             }
           },
@@ -370,7 +373,7 @@ export const onSwap = ({
 
     Uik.notify.success({
       message: 'Trade complete.\nBalances will reload after blocks are finalized',
-      keepAlive: true,
+      aliveFor: 10,
     });
 
     Uik.dropConfetti();
@@ -378,12 +381,12 @@ export const onSwap = ({
     const message = errorHandler(error.message);
     Uik.notify.danger({
       message: `An error occurred while trying to complete your trade: ${message}`,
-      keepAlive: true,
+      aliveFor: 10,
     });
   } finally {
     await updateTokenState().catch(() => Uik.notify.danger({
       message: 'Please reload the page to update token balances',
-      keepAlive: true,
+      aliveFor: 10,
     }));
 
     dispatch(setLoadingAction(false));

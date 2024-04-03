@@ -1,9 +1,10 @@
 import { Provider } from '@reef-chain/evm-provider';
 import { WsProvider } from '@polkadot/api';
+import type { ProviderInterface } from '@polkadot/rpc-provider/types';
 
 export async function initProvider(providerUrl: string): Promise<Provider> {
   const newProvider = new Provider({
-    provider: new WsProvider(providerUrl),
+    provider: new WsProvider(providerUrl) as unknown as ProviderInterface,
   });
   try {
     await newProvider.api.isReadyOrError;

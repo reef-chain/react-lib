@@ -1,5 +1,6 @@
 import { BigNumber } from 'bignumber.js';
 import { useEffect, useMemo, useState } from 'react';
+import { network } from '@reef-chain/util-lib';
 import { AxiosInstance } from 'axios';
 import {
   Pool24HVolume,
@@ -13,10 +14,11 @@ import {
   POOL_TOKENS_DATA_GQL,
 } from '../graphql/pools';
 import { getTokenPrice, TokenPrices } from '../state';
-import { normalize, POLL_INTERVAL } from '../utils';
-import useInterval from './userInterval';
+import { normalize } from '../utils';
 import { graphqlRequest } from '../graphql/utils';
 import { getIconUrl } from '../components/common/Icons';
+import { useAsyncEffect } from './useAsyncEffect';
+import { useObservableState } from './useObservableState';
 
 const getPoolTotalValueLockedQry = (toTime: string): PoolQueryObject => ({
   query: POOLS_TOTAL_VALUE_LOCKED,
@@ -169,7 +171,7 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
       setTokensLoading(false);
     };
     handleRes();
-  }, []);
+  }, [address]);
 
   // const { data: poolInfoData, loading: poolInfoLoading, refetch: refetchPoolInfo } = useQuery<PoolInfoQuery, PoolInfoVar>(POOL_INFO_GQL, {
   //   client: dexClient,
@@ -179,12 +181,15 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
   // });
 
   const queryObj = getPoolInfoQry(address, signerAddress, fromTime, toTime);
-  useInterval(async () => {
+
+  const TRIGGER = useObservableState(network.getLatestBlockContractEvents$([address]))
+
+  useAsyncEffect(async()=>{
     setPoolInfoLoading(true);
     const response = await graphqlRequest(httpClient, queryObj);
     setPoolInfoData(response.data.data);
     setPoolInfoLoading(false);
-  }, POLL_INTERVAL);
+  },[TRIGGER])
 
   const info = useMemo<PoolStats|undefined>(() => {
     if (!poolInfoData || !tokensData) {

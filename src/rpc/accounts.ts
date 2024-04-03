@@ -2,28 +2,19 @@ import type {
   InjectedAccountWithMeta, InjectedExtension,
 } from '@polkadot/extension-inject/types';
 import { Provider, Signer } from '@reef-chain/evm-provider';
-
 import { DeriveBalancesAccountData } from '@polkadot/api-derive/balances/types';
 import type { Signer as InjectedSigner } from '@polkadot/api/types';
-import type {
-  InjectedAccount,
-  InjectedAccountWithMeta as InjectedAccountWithMetaReef,
-  InjectedExtension as InjectedExtensionReef,
-} from '@reef-defi/extension-inject/types';
+import { extension as extReef } from '@reef-chain/util-lib';
 import { BigNumber } from 'ethers';
-// import { firstValueFrom } from 'rxjs';
-import { AccountJson } from '@reef-defi/extension-base/background/types';
-import { web3FromAddress, web3FromSource } from '@reef-defi/extension-dapp';
 import { ReefSigner } from '../state/types';
 import { ensure, removeUndefinedItem } from '../utils/utils';
-// import { selectedSigner$ } from '../appState/accountState';
 
 const accountSourceSigners = new Map<string, InjectedSigner>();
 const getAccountInjectedSigner = async (
   source: string,
 ): Promise<InjectedSigner | undefined> => {
   if (!accountSourceSigners.has(source)) {
-    const signer = await web3FromSource(source)
+    const signer = await extReef.web3FromSource(source)
       .then((injected) => injected?.signer)
       .catch((err) => console.error('getAccountSigner error =', err));
     if (signer) {
@@ -71,7 +62,7 @@ const signerToReefSigner = async (
   const isEvmClaimed = await signer.isClaimed();
   let inj;
   try {
-    inj = await web3FromAddress(address);
+    inj = await extReef.web3FromAddress(address);
   } catch (e) {
     // when web3Enable() is not called before
   }
@@ -90,7 +81,7 @@ const signerToReefSigner = async (
 };
 
 export const metaAccountToSigner = async (
-  account: InjectedAccountWithMeta | InjectedAccountWithMetaReef,
+  account: InjectedAccountWithMeta | extReef.InjectedAccountWithMeta,
   provider: Provider,
   injSigner: InjectedSigner,
 ): Promise<ReefSigner | undefined> => {
@@ -117,7 +108,7 @@ export const metaAccountToSigner = async (
 };
 
 export const metaAccountsToSigners = async (
-  accounts: (InjectedAccountWithMeta | InjectedAccountWithMetaReef)[],
+  accounts: (InjectedAccountWithMeta | extReef.InjectedAccountWithMeta)[],
   provider: Provider,
   sign: InjectedSigner,
 ): Promise<ReefSigner[]> => {
@@ -131,7 +122,7 @@ export const metaAccountsToSigners = async (
 };
 
 export const accountToSigner = async (
-  account: InjectedAccount,
+  account: extReef.InjectedAccount,
   provider: Provider,
   sign: InjectedSigner,
   source: string,
@@ -149,7 +140,7 @@ export const accountToSigner = async (
   );
 };
 
-export function accountJsonToMeta(acc: AccountJson, source = ''): InjectedAccountWithMeta {
+export function accountJsonToMeta(acc: extReef.AccountJson, source = ''): InjectedAccountWithMeta {
   return {
     address: acc.address,
     meta: {
@@ -157,12 +148,11 @@ export function accountJsonToMeta(acc: AccountJson, source = ''): InjectedAccoun
       name: acc.name,
       source,
     },
-    type: acc.type,
   };
 }
 
 export const getExtensionSigners = async (
-  extensions: InjectedExtension[] | InjectedExtensionReef[],
+  extensions: InjectedExtension[] | extReef.InjectedExtension[],
   provider: Provider,
 ): Promise<ReefSigner[]> => {
   const extensionAccounts = await Promise.all(

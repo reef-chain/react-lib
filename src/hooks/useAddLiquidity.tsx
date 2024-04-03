@@ -4,7 +4,8 @@ import Uik from '@reef-chain/ui-kit';
 import React, { Dispatch, useEffect } from 'react';
 import { BigNumber, Contract } from 'ethers';
 import { AxiosInstance } from 'axios';
-import type {DexProtocolv2 as Network} from "@reef-chain/util-lib/dist/network";
+import {network} from "@reef-chain/util-lib";
+import { toBN } from '@reef-chain/evm-provider/utils';
 import { ERC20 } from '../assets/abi/ERC20';
 import { getReefswapRouter } from '../rpc';
 import {
@@ -43,6 +44,7 @@ import { useKeepTokenUpdated } from './useKeepTokenUpdated';
 import { useLoadPool } from './useLoadPool';
 import { useUpdateLiquidityAmount } from './useUpdateAmount';
 
+type Network = network.DexProtocolv2;
 interface UseAddLiquidityState {
   address1: string;
   address2: string;
@@ -242,16 +244,16 @@ export const onAddLiquidity = ({
     const approveExtrinsic1 = signer.signer.provider.api.tx.evm.call(
       approveTransaction1.to,
       approveTransaction1.data,
-      BigNumber.from(approveTransaction1.value || 0),
-      approveResources1.gas,
-      approveResources1.storage.lt(0) ? BigNumber.from(0) : approveResources1.storage,
+      toBN(approveTransaction1.value || 0),
+      toBN(approveResources1.gas),
+      approveResources1.storage.lt(0) ? toBN(0) : toBN(approveResources1.storage),
     );
     const approveExtrinsic2 = signer.signer.provider.api.tx.evm.call(
       approveTransaction2.to,
       approveTransaction2.data,
-      BigNumber.from(approveTransaction2.value || 0),
-      approveResources2.gas,
-      approveResources2.storage.lt(0) ? BigNumber.from(0) : approveResources2.storage,
+      toBN(approveTransaction2.value || 0),
+      toBN(approveResources2.gas),
+      approveResources2.storage.lt(0) ? toBN(0) : toBN(approveResources2.storage),
     );
 
     const disableStakeBtn = (): void => {
@@ -264,9 +266,9 @@ export const onAddLiquidity = ({
       const provideExtrinsic = signer.signer.provider.api.tx.evm.call(
         provideTransaction.to,
         provideTransaction.data,
-        BigNumber.from(provideTransaction.value || 0),
-        BigNumber.from(9636498), // Value was used from estimateResources, which can only be ran if tokens are approved
-        BigNumber.from(68206), // Value was used from estimateResources, which can only be ran if tokens are approved
+        toBN(provideTransaction.value || 0),
+        toBN(9636498), // Value was used from estimateResources, which can only be ran if tokens are approved
+        toBN(68206), // Value was used from estimateResources, which can only be ran if tokens are approved
       );
 
       // Batching extrinsics
@@ -303,7 +305,7 @@ export const onAddLiquidity = ({
 
               Uik.notify.success({
                 message: 'Blocks have been finalized',
-                keepAlive: true,
+                aliveFor: 10,
               });
             }
           },
@@ -370,9 +372,9 @@ export const onAddLiquidity = ({
       const provideExtrinsic = signer.signer.provider.api.tx.evm.call(
         provideTransaction.to,
         provideTransaction.data,
-        BigNumber.from(provideTransaction.value || 0),
-        provideResources.gas,
-        provideResources.storage.lt(0) ? BigNumber.from(0) : provideResources.storage,
+        toBN(provideTransaction.value || 0),
+        toBN(provideResources.gas),
+        provideResources.storage.lt(0) ? toBN(0) : toBN(provideResources.storage),
       );
 
       const signAndSendProvide = new Promise<void>((resolve, reject) => {
@@ -399,7 +401,7 @@ export const onAddLiquidity = ({
 
               Uik.notify.success({
                 message: 'Blocks have been finalized',
-                keepAlive: true,
+                aliveFor: 10,
               });
             }
           },
@@ -412,7 +414,7 @@ export const onAddLiquidity = ({
 
     Uik.notify.success({
       message: 'Successfully provided liquidity.\nBalances will reload after blocks are finalized.',
-      keepAlive: true,
+      aliveFor: 10,
     });
 
     Uik.dropConfetti();
@@ -432,7 +434,7 @@ export const onAddLiquidity = ({
     dispatch(setAllTokensAction(newTokens)); */
     await updateTokenState().catch(() => Uik.notify.danger({
       message: 'Please reload the page to update token balances',
-      keepAlive: true,
+      aliveFor: 10,
     }));
     dispatch(setLoadingAction(false));
     dispatch(clearTokenAmountsAction());
