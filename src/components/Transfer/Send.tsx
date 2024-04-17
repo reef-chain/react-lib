@@ -305,8 +305,18 @@ export const Send = ({
   };
 
   const maxAmount = useMemo((): string => {
-    const head = balanceUtils.toReefBalanceDisplay(token.balance).split(" ")[0];
-    const tail = token.balance.toString().slice(head.length, head.length + 4);
+    const head = balanceUtils.toReefBalanceDisplay(
+      token.address==REEF_ADDRESS
+      ? existentialValidity.maxTransfer
+      : token.balance
+    ).split(" ")[0];
+
+    const tail = (
+      token.address==REEF_ADDRESS
+      ?existentialValidity.maxTransfer
+      :token.balance
+    ).toString().slice(head.length, head.length + 4);
+    
     return `${head}.${tail}`;
   }, [token]);
 
