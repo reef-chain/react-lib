@@ -246,7 +246,7 @@ export const Send = ({
     setToken({ ...token, amount });
     setAmountPristine(false);
     if(!isUSDChanged){
-      let calculatedUsdFromReef = reefPrice*parseFloat(amount);
+      const calculatedUsdFromReef = reefPrice*parseFloat(amount);
       setAmountInUsd(calculatedUsdFromReef>1?calculatedUsdFromReef.toFixed(2):calculatedUsdFromReef.toFixed(4));
     }
   };
@@ -276,7 +276,7 @@ export const Send = ({
           "Tokens transfered.\nBalances will reload after blocks are finalized",
         aliveFor: 10,
       });
-      
+
       Uik.dropConfetti();
     } catch (error) {
       const message = errorHandler(error.message);
@@ -306,17 +306,17 @@ export const Send = ({
 
   const maxAmount = useMemo((): string => {
     const head = balanceUtils.toReefBalanceDisplay(
-      token.address==REEF_ADDRESS
+      token.address===REEF_ADDRESS
       ? existentialValidity.maxTransfer
       : token.balance
     ).split(" ")[0];
 
     const tail = (
-      token.address==REEF_ADDRESS
+      token.address===REEF_ADDRESS
       ?existentialValidity.maxTransfer
       :token.balance
     ).toString().slice(head.length, head.length + 4);
-    
+
     return `${head}.${tail}`;
   }, [token]);
 
@@ -345,7 +345,7 @@ export const Send = ({
 
   const [isPopupOpen, setPopupOpen] = useState(false);
 
-  useEffect(()=>{  
+  useEffect(()=>{
       if(to!=="" && token.address!==REEF_ADDRESS)
       provider?.api.query.evmAccounts.evmAddresses(to).then(addr=>{
         const address = addr.toString();
@@ -356,7 +356,7 @@ export const Send = ({
             message: `Can't send tokens if EVM address does not exist`,
             actions: <Uik.Button text="Close" danger />,
           });
-          setTo(""); 
+          setTo("");
         }
       }).catch(error=>console.log(`[SEND COMPONENT] ${error.message}`))
   },[to])
@@ -364,7 +364,7 @@ export const Send = ({
   return (
     <div className="send">
       <div className="send__address">
-      {to.length==0?
+      {to.length===0?
         <div className="send__address-identicon" style={{
           width:"46px",
           height:"46px",
@@ -418,7 +418,7 @@ export const Send = ({
         <div className="send__error">{existentialValidity.message}</div>
       )}
 
-    {token.address==REEF_ADDRESS &&  <div className="uik-pool-actions__tokens">
+    {token.address===REEF_ADDRESS &&  <div className="uik-pool-actions__tokens">
           <UsdAmountField onInput={handleUsdAmount}
           value={amountInUsd.toString()} reefPrice = {reefPrice.toString()} />
     </div>}
