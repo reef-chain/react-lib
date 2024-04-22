@@ -235,13 +235,10 @@ export const Send = ({
     }
   }, [tokens]);
 
-  const tokenContract = new Contract(token.address, ERC20, signer.signer);
-  const { isValid, text } = sendStatus(to, token, signer);
-  const existentialValidity = checkMinExistentialReefAmount(
-    token,
-    signer.balance
-  );
-
+  const tokenContract = useMemo(() => new Contract(token.address, ERC20, signer.signer), [token.address, signer.signer]);
+  const { isValid, text } = useMemo(() => sendStatus(to, token, signer), [to, token, signer]);
+  const existentialValidity = useMemo(() => checkMinExistentialReefAmount(token, signer.balance), [token, signer.balance]);
+  
   const onAmountChange = (amount: string, token: TokenWithAmount,isUSDChanged?:boolean): void => {
     setToken({ ...token, amount });
     setAmountPristine(false);
