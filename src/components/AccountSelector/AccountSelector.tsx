@@ -10,42 +10,13 @@ import {
 } from "@reef-chain/ui-kit/dist/ui-kit/components/organisms/AccountSelector/AccountSelector";
 import { ReefSigner } from "../../state";
 import { toReefBalanceDisplay, trim } from "../../utils";
-import { extension as reefExt } from "@reef-chain/util-lib";
-import { MetaMaskLogo } from "../common/Logos/MetaMaskLogo";
+import { defaultAvailableExtensions } from "../WalletSelector/WalletSelector";
 
 export type Network = "mainnet" | "testnet";
 export type Language = "en" | "hi";
 
-const availableExtensions: Extension[] = [
-  {
-    name: reefExt.REEF_EXTENSION_IDENT,
-    displayName: "Browser extension",
-    link: "https://chrome.google.com/webstore/detail/reefjs-extension/mjgkpalnahacmhkikiommfiomhjipgjn",
-    selected: false,
-    installed: false,
-    icon: <Uik.ReefIcon />,
-  },
-  {
-    name: reefExt.REEF_SNAP_IDENT,
-    displayName: "MetaMask Snap",
-    link: reefExt.SNAP_ID,
-    selected: false,
-    installed: false,
-    icon: <MetaMaskLogo />,
-    isSnap: true,
-  },
-  // {
-  //   name: reefExt.REEF_EASY_WALLET_IDENT,
-  //   displayName: "Easy wallet",
-  //   link: "local:http://localhost:8080",
-  //   selected: false,
-  //   installed: false,
-  //   icon: <Uik.ReefSign />,
-  // },
-];
-
 interface AccountSelector {
-  injectedExtensions?: reefExt.InjectedExtension[];
+  availableExtensions?: Extension[];
   selExtName?: string;
   selectExtension?: (name: string) => void;
   accounts: ReefSigner[];
@@ -65,11 +36,12 @@ interface AccountSelector {
   onUpdateMetadata?: (network: Network) => any;
   onStartAccountCreation?: () => Promise<AccountCreationData>;
   onConfirmAccountCreation?: (seed: string, name: string) => any;
+  open?: boolean;
 }
 
 export const AccountSelector = ({
   selectedSigner,
-  injectedExtensions,
+  availableExtensions,
   selExtName,
   selectExtension,
   accounts,
@@ -88,37 +60,26 @@ export const AccountSelector = ({
   onUpdateMetadata,
   onStartAccountCreation,
   onConfirmAccountCreation,
+  open = false,
 }: AccountSelector): JSX.Element => {
   const name = selectedSigner ? selectedSigner.name : "";
   const balance = toReefBalanceDisplay(selectedSigner?.balance);
 
-  const [isOpen, setOpen] = useState(false);
-  const [extensions, setExtensions] = useState(availableExtensions);
+  const [allAccounts, setAllAccounts] = useState<Account[]>();
+  const [isOpen, setOpen] = useState(open);
 
   useEffect(() => {
-    const updatedExtensions = extensions.map((extension: Extension) => ({
-      ...extension,
-      installed: !!injectedExtensions?.find(
-        (ext) => ext.name === extension.name
-      ),
-    }));
-    setExtensions(updatedExtensions);
-  }, [injectedExtensions]);
-
-  const getAccounts = useMemo(() => {
-    const allAccounts: Account[] = [];
-    accounts.map(async (acc) => {
-      const { name, address, evmAddress, source } = acc;
-      const isEvmClaimed = await acc.signer.isClaimed();
-      allAccounts.push({
+    const allAccounts: Account[] = accounts.map((acc) => {
+      const { name, address, evmAddress, source, isEvmClaimed } = acc;
+      return {
         name,
         address,
         evmAddress,
         source,
         isEvmClaimed,
-      } as Account);
+      } as Account;
     });
-    return allAccounts;
+    setAllAccounts(allAccounts);
   }, [accounts]);
 
   const selectedAccount = useMemo(() => {
@@ -185,10 +146,10 @@ export const AccountSelector = ({
         <Uik.AccountSelector
           isOpen={isOpen}
           onClose={() => setOpen(false)}
-          availableExtensions={extensions}
+          availableExtensions={availableExtensions || defaultAvailableExtensions}
           selExtName={selExtName}
           onExtensionSelect={selectExtension}
-          accounts={getAccounts}
+          accounts={allAccounts}
           selectedAccount={selectedAccount}
           onSelect={onSelect}
           selectedNetwork={selectedNetwork}

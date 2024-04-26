@@ -2,47 +2,20 @@ import { useState } from "react";
 import { extension as extReef } from "@reef-chain/util-lib";
 import { useAsyncEffect } from "./useAsyncEffect";
 
-function getBrowserExtensionUrl(): string | undefined {
-  const isFirefox = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
-  if (isFirefox) {
-    return "https://addons.mozilla.org/en-US/firefox/addon/reef-js-extension/";
-  }
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const isChrome = navigator.userAgent.toLowerCase().indexOf("chrome") > -1;
-  if (isChrome) {
-    return "https://chrome.google.com/webstore/detail/reefjs-extension/mjgkpalnahacmhkikiommfiomhjipgjn";
-  }
-  return undefined;
-}
-
-// TODO: Show options to install snap and easy wallet when they are available
-function getInstallExtensionMessage(): { message: string; url?: string } {
-  const extensionUrl = getBrowserExtensionUrl();
-  const installText = extensionUrl
-    ? "Please install Reef chain or some other Solidity browser extension and refresh the page."
-    : "Please use Chrome or Firefox browser.";
-  return {
-    message: `App uses browser extension to get accounts and securely sign transactions. ${installText}`,
-    url: extensionUrl,
-  };
-}
-
 export interface ExtensionWithAccounts {
   extension: extReef.InjectedExtension;
   accounts: extReef.InjectedAccountWithMeta[];
 }
 
 export const useInjectExtension = (
-  appDisplayName: string
+  appDisplayName: string,
+  extensionIdent: string | undefined
 ): [
-  ExtensionWithAccounts[],
+  ExtensionWithAccounts | undefined,
   boolean,
   { code?: number; message: string; url?: string } | undefined
 ] => {
-  const [extensionsVal, setExtensionsVal] = useState<ExtensionWithAccounts[]>(
-    []
-  );
+  const [extensionVal, setExtensionVal] = useState<ExtensionWithAccounts>();
   const [isReefInjected, setIsReefInjected] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] =
@@ -53,50 +26,54 @@ export const useInjectExtension = (
     if (!isReefInjected) setIsReefInjected(true);
   });
   useAsyncEffect(async () => {
+    if (!extensionIdent) return;
+
     try {
       setError(undefined);
       setIsLoading(true);
-      extensions = (await extReef.web3Enable(appDisplayName)).filter((ext) =>
+      const tryConnectSnap = extensionIdent === extReef.REEF_SNAP_IDENT;
+      extensions = (await extReef.web3Enable(appDisplayName, undefined, tryConnectSnap)).filter((ext) =>
         extReef.ExtensionsIdents.includes(ext.name)
       );
-      if (!extensions?.length) {
-        const installExtensionMessage = getInstallExtensionMessage();
+
+      const extension = extensions.find((ext) => ext.name === extensionIdent);
+      if (!extension) {
         setError({
           code: 1,
-          ...installExtensionMessage,
+          message: "Wallet not found.",
         });
         setIsLoading(false);
+        setExtensionVal(undefined);
         return;
       }
 
-      const extensionsWithAccounts: ExtensionWithAccounts[] = await Promise.all(
-        extensions.map(async (ext) => {
-          const accounts = await ext.accounts.get();
-          const accountsWithMeta = accounts.map(
-            (acc) =>
-              ({
-                address: acc.address,
-                meta: {
-                  genesisHash: acc.genesisHash,
-                  name: acc.name,
-                  source: ext.name,
-                },
-                type: acc.type,
-              } as extReef.InjectedAccountWithMeta)
-          );
-          return { extension: ext, accounts: accountsWithMeta };
-        })
+      const accounts = await extension.accounts.get();
+      const accountsWithMeta = accounts.map(
+        (acc) =>
+          ({
+            address: acc.address,
+            meta: {
+              genesisHash: acc.genesisHash,
+              name: acc.name,
+              source: extension.name,
+            },
+            type: acc.type,
+          } as extReef.InjectedAccountWithMeta)
       );
 
-      setExtensionsVal(extensionsWithAccounts);
+      setExtensionVal({ extension, accounts: accountsWithMeta });
     } catch (e) {
       // eslint-disable-next-line no-console
       console.log("Error when loading signers!", e);
-      setError(e as { message: string });
+      setError({
+        code: 2,
+        message: e
+      });
+      setExtensionVal(undefined);
     } finally {
       setIsLoading(false);
     }
-  }, [isReefInjected]);
+  }, [isReefInjected, extensionIdent]);
 
-  return [extensionsVal, isLoading, error];
+  return [extensionVal, isLoading, error];
 };
