@@ -10,3 +10,5 @@ export * from './RemoveLiquidity';
 export * from './Transfer';
 export * from './EvmBind/EvmBindComponent';
 export * from './OverlayAction';
+export * from './NFT';
+export * from './Overlays'
