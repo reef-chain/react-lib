@@ -1,0 +1,152 @@
+.overlay-swap .overlay-action__wrapper {
+    background: hsla(
+      var(--bg--h),
+      var(--bg--s),
+      var(--bg--l),
+      0.9
+    );
+  }
+  
+  .overlay-swap .overlay-action__close-btn {
+    background-color: var(--bg);
+  }
+  
+  .overlay-swap .overlay-action__content {
+    max-width: 600px;
+  }
+  
+  .overlay-swap .overlay-action__slot {
+    align-items: center;
+    padding-top: 60px;
+  }
+  
+  .overlay-swap .uik-pool-actions {
+    box-shadow: 10px 10px 20px -5px hsl(
+      var(--bg--h),
+      var(--bg--s),
+      calc(var(--bg--l) - 10%)
+    ),
+    -10px -10px 20px -5px hsl(
+      var(--bg--h),
+      var(--bg--s),
+      calc(var(--bg--l) + 4%)
+    );
+    max-width: 100%;
+    min-width: 100%;
+    width: 100%;
+    margin-right: 0;
+  } 
+  
+  .overlay-swap .uik-pool-actions__tokens {
+    margin-top: 0;
+  }
+
+  .nft-name--modal{
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.nft-iconurl{
+    max-width: 250px;
+    border-radius: 20px;
+    margin-top: 15px;
+}
+.nft-iconurl-small{
+    max-width: 50%;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.send-nft-view{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nfts__item-video-small {
+    max-width: 50%;
+  }
+
+.nft-view{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.display-table{
+    padding: 6px;
+    font-size: 14px;
+    background-color: #e6e2f1;
+    margin-top: 8px;
+    border-radius: 10px;
+
+}
+
+.display-table-label{
+    font-weight: bold;
+    color: #a93185;
+}
+
+.nft-box-send-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 16px;
+}
+
+.nft__button{
+    outline: none;
+    border: none;
+}
+
+.nft-hidden {
+    display: none;
+}
+
+.send__address {
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-top: 6px;
+  }
+
+  .send__address-input {
+    width: 100%;
+    border-radius: 15px;
+    border: none;
+    background-color: #e6e2f1;
+    transition: all 0.125s;
+    height: 70px;
+    padding: 0 17px 1px 71px;
+    font-family: var(--font);
+    font-size: 15px;
+    color: var(--text);
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  .send__amount-input {
+    width: 100%;
+    border-radius: 15px;
+    border: none;
+    background-color: #e6e2f1;
+    transition: all 0.125s;
+    height: 70px;
+    padding: 0 17px 1px 17px;
+    font-family: var(--font);
+    font-size: 15px;
+    color: var(--text);
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .send__address .send__address-identicon {
+    position: absolute;
+    left: 13px;
+    background-color: #dad5eaad;
+    border-radius: 10px;
+    pointer-events: none;
+  }
+
