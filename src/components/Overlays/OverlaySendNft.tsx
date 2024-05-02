@@ -21,6 +21,7 @@ interface OverlaySendNFT {
   accounts:any;
   selectedSigner:any;
   provider:any; 
+  isDarkMode?:boolean;
 }
 
 const nftTxAbi = [
@@ -140,7 +141,8 @@ export const OverlaySendNFT = ({
   nftId,
   accounts,
   selectedSigner,
-  provider
+  provider,
+  isDarkMode
 }: OverlaySendNFT): JSX.Element => {
   const [isAccountListOpen, setAccountsListOpen] = useState(false);
   const [destinationAddress, setDestinationAddress] = useState<string>('');
@@ -279,6 +281,7 @@ export const OverlaySendNFT = ({
       title="Send NFT"
       onClose={onClose}
       className="overlay-swap"
+      isDarkMode={isDarkMode}
     >
       <div className="uik-pool-actions pool-actions">
         <div className="send-nft-view">

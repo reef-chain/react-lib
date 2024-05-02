@@ -87,6 +87,10 @@
     font-weight: 600;
     color: var(--text);
   }
+
+  .token-card__token-name-dark{
+    color: white!important;
+  }
   
   .token-card__token-price {
     font-size: 13px;
@@ -98,6 +102,10 @@
     margin: 0;
     padding: 0;
     transition: all 0.15;
+  }
+
+  .token-card__token-price-dark{
+    color: white!important;
   }
   
   .token-card__token-price:not([disabled]):hover {
@@ -157,6 +165,10 @@
     color: var(--text);
     border: none;
     background-color: transparent;
+  }
+
+  .token-card__amount-dark{
+    color: white!important;
   }
   
   .token-card__value:hover,

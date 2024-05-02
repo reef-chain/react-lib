@@ -1,6 +1,17 @@
 import { BigNumber, ethers } from 'ethers';
+import { toast } from 'react-toastify';
+import { Notify } from '../state';
 
 export type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
+
+// eslint-disable-next-line
+export const notify = (message: string, type: Notify='success'): void => {
+  toast[type](message);
+};
+
+export const toCurrencyFormat = (value: number, options?: Intl.NumberFormatOptions): string => Intl.NumberFormat(navigator.language, {
+  style: 'currency', currency: 'USD', currencyDisplay: 'symbol', ...options,
+}).format(value);
 
 export const REEF_ADDRESS = '0x0000000000000000000000000000000001000000';
 export const EMPTY_ADDRESS = '0x';

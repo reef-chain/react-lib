@@ -19,6 +19,7 @@ interface OverlayNFT {
   accounts:any;
   selectedSigner:any;
   provider:any; 
+  isDarkMode?:boolean;
 }
 
 export const OverlayNFT = ({
@@ -34,6 +35,7 @@ export const OverlayNFT = ({
   accounts,
   selectedSigner,
   provider,
+  isDarkMode,
 }: OverlayNFT): JSX.Element => {
   const [sendNFT, setSendNFT] = useState(false);
   const [isNFTLoaded, setIsNFTLoaded] = useState<boolean>(false);
@@ -44,6 +46,7 @@ export const OverlayNFT = ({
       title="NFT Details"
       onClose={onClose}
       className="overlay-swap"
+      isDarkMode={isDarkMode}
     >
       <div className="uik-pool-actions pool-actions">
         <div className="nft-name--modal">{nftName}</div>
@@ -114,6 +117,7 @@ export const OverlayNFT = ({
         accounts={accounts}
         selectedSigner={selectedSigner}
         provider={provider}
+        isDarkMode={isDarkMode}
       />
     </OverlayAction>
   );
