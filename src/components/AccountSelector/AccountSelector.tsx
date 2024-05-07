@@ -10,7 +10,7 @@ import {
 } from "@reef-chain/ui-kit/dist/ui-kit/components/organisms/AccountSelector/AccountSelector";
 import { ReefSigner } from "../../state";
 import { toReefBalanceDisplay, trim } from "../../utils";
-import { defaultAvailableExtensions } from "../WalletSelector/WalletSelector";
+import { walletSelectorOptions } from "../WalletSelector/WalletSelector";
 
 export type Network = "mainnet" | "testnet";
 export type Language = "en" | "hi";
@@ -146,7 +146,7 @@ export const AccountSelector = ({
         <Uik.AccountSelector
           isOpen={isOpen}
           onClose={() => setOpen(false)}
-          availableExtensions={availableExtensions || defaultAvailableExtensions}
+          availableExtensions={availableExtensions || Object.values(walletSelectorOptions)}
           selExtName={selExtName}
           onExtensionSelect={selectExtension}
           accounts={allAccounts}

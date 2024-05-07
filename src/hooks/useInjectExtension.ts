@@ -32,9 +32,7 @@ export const useInjectExtension = (
       setError(undefined);
       setIsLoading(true);
       const tryConnectSnap = extensionIdent === extReef.REEF_SNAP_IDENT;
-      extensions = (await extReef.web3Enable(appDisplayName, undefined, tryConnectSnap)).filter((ext) =>
-        extReef.ExtensionsIdents.includes(ext.name)
-      );
+      extensions = await extReef.web3Enable(appDisplayName, undefined, tryConnectSnap);
 
       const extension = extensions.find((ext) => ext.name === extensionIdent);
       if (!extension) {
