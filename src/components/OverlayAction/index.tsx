@@ -4,7 +4,7 @@ import Uik from '@reef-chain/ui-kit';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import './overlay-action.css';
 
-interface OverlayAction {
+interface OverlayAction extends React.PropsWithChildren<{}> {
   isOpen: boolean;
   onClose?: () => any;
   onOpened?: () => any;

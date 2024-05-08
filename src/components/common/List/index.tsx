@@ -1,10 +1,10 @@
 import React from 'react';
 
-interface ListItem {
+interface ListItem extends React.PropsWithChildren<{}> {
   onClick?: () => void;
 }
 
-export const List: React.FC<unknown> = ({ children }): JSX.Element => (
+export const List: React.FC<ListItem> = ({ children }): JSX.Element => (
   <ul className="list-group list-group-flush list-group-full px-0 border-rad">
     {children}
   </ul>

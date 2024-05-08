@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const Label: React.FC<unknown> = ({ children }) => (
+export const Label: React.FC<React.PropsWithChildren<{}>> = ({ children }) => (
   <label>{children}</label>
 );
 
@@ -23,13 +23,13 @@ export const ConfirmLabel = ({
   </div>
 );
 
-export const FormLabel: React.FC<unknown> = ({ children }): JSX.Element => (
+export const FormLabel: React.FC<React.PropsWithChildren<{}>> = ({ children }): JSX.Element => (
   <label className="form-label text-muted sub-text d-flex flex-row">
     {children}
   </label>
 );
 
-export const TransactionWarningLabel: React.FC<unknown> = ({
+export const TransactionWarningLabel: React.FC<React.PropsWithChildren<{}>> = ({
   children,
 }): JSX.Element => (
   <span className="text-warn sub-text mx-auto">{children}</span>
