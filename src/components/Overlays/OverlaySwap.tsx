@@ -7,7 +7,7 @@ import { network as libNet } from '@reef-chain/util-lib';
 import './overlay.css';
 import { Notify, Pool, PoolWithReserves, ReefSigner, Token, TokenPrices } from '../../state';
 import { network as nw } from '@reef-chain/util-lib';
-import { store } from '../..';
+import * as store from '../../store';
 import { onSwap as hooksOnswap, useSwapState } from '../../hooks';
 import { OverlayAction } from '../OverlayAction';
 import { Finalizing, Trade } from '../PoolActions';

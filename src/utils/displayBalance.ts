@@ -1,6 +1,6 @@
 import { Token } from '@reef-chain/util-lib/dist/dts/token';
 import BigNumber from 'bignumber.js';
-import { utils } from '..';
+import * as utils  from '../utils';
 
 export const formatHumanAmount = (value = ''): string => {
   let amount = new BigNumber(value.replaceAll(',', ''));
