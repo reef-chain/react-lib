@@ -11,6 +11,7 @@ interface OverlayAction extends React.PropsWithChildren<{}> {
   onClosed?: () => any;
   className?: string,
   title?: string,
+  isDarkMode?:boolean;
 }
 
 export const OverlayAction: React.FC<OverlayAction> = ({
@@ -21,6 +22,7 @@ export const OverlayAction: React.FC<OverlayAction> = ({
   className,
   title,
   children,
+  isDarkMode=false
 }): JSX.Element => {
   const wrapper = useRef(null);
 
@@ -43,7 +45,7 @@ export const OverlayAction: React.FC<OverlayAction> = ({
     >
       <CSSTransition
         in={isOpen}
-        className="overlay-action__wrapper"
+        className={`overlay-action__wrapper ${isDarkMode?'overlay-action__wrapper-dark':''}`}
         nodeRef={wrapper}
         timeout={500}
         unmountOnExit
