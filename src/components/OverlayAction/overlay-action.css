@@ -10,6 +10,10 @@
   overflow: auto;
 }
 
+.overlay-action__wrapper-dark {
+  background-color: #3b3b3be6!important;
+}
+
 .overlay-action__wrapper.enter {
   transform: translateY(-100%);
   background-color: hsl(

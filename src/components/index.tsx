@@ -11,6 +11,6 @@ export * from './Transfer';
 export * from './EvmBind/EvmBindComponent';
 export * from './OverlayAction';
 export * from './WalletSelector/WalletSelector';
-
 export * from './NFT';
-export * from './Overlays'
+export * from './Overlays';
+export * from './Tokens';

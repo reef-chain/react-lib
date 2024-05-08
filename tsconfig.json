@@ -16,7 +16,8 @@
     "noUnusedParameters": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "jsxFactory": "React.createElement",  
+    "jsxFactory": "React.createElement",
+    "jsxFragmentFactory": "React.Fragment"
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist", "example"]

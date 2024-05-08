@@ -15,6 +15,7 @@ interface OverlaySend {
   provider:Provider|undefined;
   accounts:ReefSigner[]|undefined;
   notify:(message: string, type?: Notify) => void;
+  isDarkMode?:boolean;
 }
 
 export const OverlaySend:React.FC<OverlaySend> = ({
@@ -25,7 +26,8 @@ export const OverlaySend:React.FC<OverlaySend> = ({
   selectedSigner,
   provider,
   accounts,
-  notify
+  notify,
+  isDarkMode
 }: OverlaySend): JSX.Element => {
   return (
     <OverlayAction
@@ -33,6 +35,7 @@ export const OverlaySend:React.FC<OverlaySend> = ({
       title="Send"
       onClose={onClose}
       className="overlay-swap"
+      isDarkMode={isDarkMode}
     >
       <div className="uik-pool-actions pool-actions">
         { provider && selectedSigner
