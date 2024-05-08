@@ -1,6 +1,6 @@
 {
   "name": "@reef-chain/react-lib",
-  "version": "2.6.5",
+  "version": "3.0.0",
   "description": "Reef React Library",
   "author": "Reef chain",
   "license": "MIT",
@@ -14,7 +14,8 @@
   "scripts": {
     "mb": "microbundle --jsx 'React.createElement' --jsxImportSource react --globals react/jsx-runtime=jsx --format modern,cjs",
     "build": "yarn run mb",
-    "build:clean": "rm -rf node_modules&&rm -f yarn.lock&&yarn install&&yarn build",
+    "clean": "rm -rf node_modules&&rm -f yarn.lock&&yarn install",
+    "build:clean": "yarn clean&&yarn build",
     "start": "yarn run mb watch --no-compress",
     "prepare": "run-s build",
     "test": "run-s test:unit test:lint test:build",
@@ -31,7 +32,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@polkadot/react-identicon": "^3.6.6",
     "@reef-chain/evm-provider": "^2.0.3",
-    "@reef-chain/ui-kit": "^2.0.7",
+    "@reef-chain/ui-kit": "^3.0.0",
     "@reef-chain/util-lib": "^2.5.7",
     "@types/react-router-dom": "^5.3.0",
     "axios": "^1.6.5",
@@ -48,8 +49,7 @@
     "rxjs": "^7.5.4"
   },
   "resolutions": {
-    "ethers": "^5.7.0",
-    "@reef-chain/util-lib": "2.4.2"
+    "ethers": "^5.7.0"
   },
   "peerDependencies": {
     "react": "^18.2.0"
