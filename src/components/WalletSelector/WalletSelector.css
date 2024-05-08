@@ -1,0 +1,7 @@
+.wallet-item:hover {
+    color: #742cb2;
+}
+
+.wallet-item svg {
+    height: 30px;
+}
