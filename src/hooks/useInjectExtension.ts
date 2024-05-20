@@ -52,7 +52,7 @@ export const useInjectExtension = (
             address: acc.address,
             meta: {
               genesisHash: acc.genesisHash,
-              name: acc.name,
+              name: acc.name && acc.name.length>0?acc.name:extension.name,
               source: extension.name,
             },
             type: acc.type,
