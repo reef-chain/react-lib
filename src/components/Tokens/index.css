@@ -22,6 +22,7 @@
     box-shadow: var(--shadow);
     border-radius: 15px;
     padding: 15px;
+    margin-bottom: 0.5rem!important;
   }
 
   .token-card__wrapper-dark{
