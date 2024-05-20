@@ -46,7 +46,6 @@ export const useInjectExtension = (
       }
 
       const accounts = await extension.accounts.get();
-      console.log("accounts===",accounts);
       const accountsWithMeta = accounts.map(
         (acc) =>
           ({
