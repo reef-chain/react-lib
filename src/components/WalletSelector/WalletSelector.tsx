@@ -10,7 +10,7 @@ import "./WalletSelector.css";
 export const walletSelectorOptions: Record<string, Extension> = {
     [reefExt.REEF_EXTENSION_IDENT]: {
         name: reefExt.REEF_EXTENSION_IDENT,
-        displayName: "Browser extension",
+        displayName: "Browser Extension",
         link: "https://chrome.google.com/webstore/detail/reefjs-extension/mjgkpalnahacmhkikiommfiomhjipgjn",
         selected: false,
         installed: false,
@@ -29,18 +29,18 @@ export const walletSelectorOptions: Record<string, Extension> = {
     },
     [reefExt.REEF_EASY_WALLET_IDENT]: {
         name: reefExt.REEF_EASY_WALLET_IDENT,
-        displayName: "Easy wallet",
-        link: "http://localhost:8080", // TODO
+        displayName: "Easy Wallet",
+        link: "https://chromewebstore.google.com/detail/reef-easy-social-account/dicnbkmjoihaadhfnjclmpnmpciokngm",
         selected: false,
         installed: false,
         icon: <Uik.ReefSign />,
-        // chromeExtensionLink: "TODO",
+        chromeExtensionLink: "https://chromewebstore.google.com/detail/reef-easy-social-account/dicnbkmjoihaadhfnjclmpnmpciokngm",
         // firefoxExtensionLink: "TODO",
     },
     [reefExt.REEF_WALLET_CONNECT_IDENT]: {
         name: reefExt.REEF_WALLET_CONNECT_IDENT,
         displayName: "Mobile App",
-        link: "http://localhost:8080", // TODO
+        link: "https://x.com/Reef_Chain/status/1775160377703064053",
         selected: false,
         installed: false,
         icon: <WalletConnectLogo />
