@@ -28,6 +28,7 @@ interface TokenCard {
   useDexConfig:any;
   isReefswapUI:boolean;
   isDarkMode?:boolean;
+  isLoading?:boolean;
 }
 
 export const TokenCard:React.FC<TokenCard> = ({
@@ -46,7 +47,8 @@ export const TokenCard:React.FC<TokenCard> = ({
   nw,
   useDexConfig,
   isReefswapUI,
-  isDarkMode=false
+  isDarkMode=false,
+  isLoading=false
 }: TokenCard): JSX.Element => {
   const [isSwapOpen, setSwapOpen] = useState(false);
   const [isSendOpen, setSendOpen] = useState(false);
@@ -110,6 +112,7 @@ export const TokenCard:React.FC<TokenCard> = ({
               type="button"
             >
               {
+                isLoading? <>Loading</>:
                 !!price && !Number.isNaN(+price)
                   ? (
                     <>
@@ -161,7 +164,11 @@ export const TokenCard:React.FC<TokenCard> = ({
             >
               {
               !hideBalance.isHidden
-                ? `${displayBalanceFromToken(token)} ${token.symbol}`
+                ? !isLoading?`${displayBalanceFromToken(token)} ${token.symbol}`:<>
+                <div />
+                    <div />
+                    <div />
+                    <div /></>
                 : (
                   <>
                     <div />
