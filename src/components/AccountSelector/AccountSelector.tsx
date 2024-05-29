@@ -36,6 +36,7 @@ interface AccountSelector {
   onUpdateMetadata?: (network: Network) => any;
   onStartAccountCreation?: () => Promise<AccountCreationData>;
   onConfirmAccountCreation?: (seed: string, name: string) => any;
+  handleWalletConnect?:()=>Promise<void>;
   open?: boolean;
 }
 
@@ -60,6 +61,7 @@ export const AccountSelector = ({
   onUpdateMetadata,
   onStartAccountCreation,
   onConfirmAccountCreation,
+  handleWalletConnect,
   open = false,
 }: AccountSelector): JSX.Element => {
   const name = selectedSigner ? selectedSigner.name : "";
@@ -164,6 +166,7 @@ export const AccountSelector = ({
           onUpdateMetadata={onUpdateMetadata}
           onStartAccountCreation={onStartAccountCreation}
           onConfirmAccountCreation={onConfirmAccountCreation}
+          handleWalletConnect={handleWalletConnect}
         />
       </div>
       <button
