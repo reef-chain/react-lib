@@ -3240,10 +3240,10 @@
     blakejs "~1.2.1"
     ethers "~5.5.0"
 
-"@reef-chain/ui-kit@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@reef-chain/ui-kit/-/ui-kit-3.0.1.tgz#8f15cdcef8358457e7e49422696d4559b6a5dcaa"
-  integrity sha512-eGIKaVgiDLsHVF4rcnagdPlSbEoRboZICInv9kZm4gMa5MuojLaI/eRw2+qqTM6pdv0j3Nq9fgRpous148ZMZg==
+"@reef-chain/ui-kit@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@reef-chain/ui-kit/-/ui-kit-3.0.2.tgz#cda6137374660f27706c6492b9df51ad5bd96fb6"
+  integrity sha512-bwlUptSlaClM80F8cfMVf9av7qgyxNlWgFsj44Y5fKywu3px3bI571B8hYrNA2TRWAGpaNVuySOHhwPwAD5GRA==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^6.1.0"
     "@fortawesome/free-regular-svg-icons" "^6.1.0"
