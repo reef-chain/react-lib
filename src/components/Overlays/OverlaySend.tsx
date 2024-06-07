@@ -16,6 +16,8 @@ interface OverlaySend {
   accounts:ReefSigner[]|undefined;
   notify:(message: string, type?: Notify) => void;
   isDarkMode?:boolean;
+  isWalletConnect?:boolean;
+  handleWalletConnectModal?:(val:boolean)=>void;
 }
 
 export const OverlaySend:React.FC<OverlaySend> = ({
@@ -27,7 +29,9 @@ export const OverlaySend:React.FC<OverlaySend> = ({
   provider,
   accounts,
   notify,
-  isDarkMode
+  isDarkMode,
+  isWalletConnect,
+  handleWalletConnectModal,
 }: OverlaySend): JSX.Element => {
   return (
     <OverlayAction
@@ -47,6 +51,8 @@ export const OverlaySend:React.FC<OverlaySend> = ({
             signer={selectedSigner}
             tokens={tokens}
             tokenAddress={tokenAddress}
+            isWalletConnect={isWalletConnect}
+            handleWalletConnectModal={handleWalletConnectModal}
           />
           )}
       </div>
