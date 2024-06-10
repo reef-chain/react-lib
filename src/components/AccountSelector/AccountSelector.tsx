@@ -38,6 +38,7 @@ interface AccountSelector {
   onConfirmAccountCreation?: (seed: string, name: string) => any;
   handleWalletConnect?:()=>Promise<void>;
   open?: boolean;
+  setOpen?:(val:boolean)=>void;
 }
 
 export const AccountSelector = ({
@@ -63,12 +64,21 @@ export const AccountSelector = ({
   onConfirmAccountCreation,
   handleWalletConnect,
   open = false,
+  setOpen
 }: AccountSelector): JSX.Element => {
   const name = selectedSigner ? selectedSigner.name : "";
   const balance = toReefBalanceDisplay(selectedSigner?.balance);
 
   const [allAccounts, setAllAccounts] = useState<Account[]>();
-  const [isOpen, setOpen] = useState(open);
+  const [isOpen, setIsOpen] = useState(open);
+
+  useEffect(()=>{
+    if(setOpen)setOpen(isOpen);
+  },[isOpen])
+
+  useEffect(()=>{
+    if(open!=isOpen)setIsOpen(open);
+  },[open])
 
   useEffect(() => {
     const allAccounts: Account[] = accounts.map((acc) => {
@@ -102,7 +112,7 @@ export const AccountSelector = ({
 
     const index = accounts.indexOf(acc);
     selectAccount(index, acc);
-    setOpen(false);
+    setIsOpen(false);
   };
 
   return (
@@ -139,7 +149,7 @@ export const AccountSelector = ({
           <button
             type="button"
             className="nav-account__account"
-            onClick={() => setOpen(true)}
+            onClick={() => setIsOpen(true)}
           >
             <span>{trim(name)}</span>
           </button>
@@ -147,7 +157,7 @@ export const AccountSelector = ({
 
         <Uik.AccountSelector
           isOpen={isOpen}
-          onClose={() => setOpen(false)}
+          onClose={() => setIsOpen(false)}
           availableExtensions={availableExtensions || Object.values(walletSelectorOptions)}
           selExtName={selExtName}
           onExtensionSelect={selectExtension}
@@ -173,7 +183,7 @@ export const AccountSelector = ({
         type="button"
         aria-label="Open button"
         className="nav-account__gear"
-        onClick={() => setOpen(true)}
+        onClick={() => setIsOpen(true)}
       >
         <FontAwesomeIcon icon={faGear} />
       </button>
