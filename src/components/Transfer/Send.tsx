@@ -44,6 +44,8 @@ interface Send {
   accounts: ReefSigner[];
   notify: NotifyFun;
   tokenAddress?: string;
+  isWalletConnect?:boolean;
+  handleWalletConnectModal?:(val:boolean)=>void;
 }
 
 const getSignerEvmAddress = async (
@@ -189,6 +191,8 @@ export const Send = ({
   accounts,
   provider,
   tokenAddress,
+  isWalletConnect,
+  handleWalletConnectModal
 }: Send): JSX.Element => {
   const [to, setTo] = useState("");
   const [status, setStatus] = useState("Send");
@@ -251,6 +255,7 @@ export const Send = ({
   const onSend = async (): Promise<void> => {
     try {
       setLoading(true);
+      if(isWalletConnect && handleWalletConnectModal)handleWalletConnectModal(true);
       ensureTokenAmount(token);
       ensureExistentialReefAmount(token, signer.balance);
       const amount = calculateAmount(token);
@@ -273,6 +278,7 @@ export const Send = ({
           "Tokens transfered.\nBalances will reload after blocks are finalized",
         aliveFor: 10,
       });
+      if(isWalletConnect && handleWalletConnectModal)handleWalletConnectModal(false);
 
       Uik.dropConfetti();
     } catch (error) {

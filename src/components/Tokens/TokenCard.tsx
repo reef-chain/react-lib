@@ -29,6 +29,8 @@ interface TokenCard {
   isReefswapUI:boolean;
   isDarkMode?:boolean;
   isLoading?:boolean;
+  isWalletConnect?:boolean;
+  handleWalletConnectModal?:(val:boolean)=>void;
 }
 
 export const TokenCard:React.FC<TokenCard> = ({
@@ -48,7 +50,9 @@ export const TokenCard:React.FC<TokenCard> = ({
   useDexConfig,
   isReefswapUI,
   isDarkMode=false,
-  isLoading=false
+  isLoading=false,
+  isWalletConnect=false,
+  handleWalletConnectModal
 }: TokenCard): JSX.Element => {
   const [isSwapOpen, setSwapOpen] = useState(false);
   const [isSendOpen, setSendOpen] = useState(false);
@@ -224,6 +228,8 @@ export const TokenCard:React.FC<TokenCard> = ({
         provider={provider}
         accounts={accounts}
         notify={notify}
+        isWalletConnect={isWalletConnect}
+        handleWalletConnectModal={handleWalletConnectModal}
       />
     </div>
   );
