@@ -3280,6 +3280,22 @@
     graphql "^16.8.1"
     mqtt "^5.3.5"
 
+"@reef-chain/util-lib@file:.yalc/@reef-chain/util-lib":
+  version "2.5.11"
+  dependencies:
+    "@metamask/providers" "^14.0.2"
+    "@polkadot/api" "^10.11.2"
+    "@polkadot/extension-inject" "^0.46.6"
+    "@polkadot/types" "^10.11.2"
+    "@reef-chain/evm-provider" "^2.0.2"
+    "@walletconnect/sign-client" "^2.12.2"
+    "@walletconnect/utils" "^2.12.2"
+    axios "^1.6.2"
+    bignumber.js "^9.1.2"
+    ethers "~5.5.4"
+    graphql "^16.8.1"
+    mqtt "^5.3.5"
+
 "@rollup/plugin-alias@^3.1.1":
   version "3.1.9"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-alias/-/plugin-alias-3.1.9.tgz#a5d267548fe48441f34be8323fb64d1d4a1b3fdf"
