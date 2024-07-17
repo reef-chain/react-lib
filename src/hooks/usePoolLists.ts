@@ -62,7 +62,7 @@ current: boolean): BigNumber => {
     .div(new BigNumber(10).pow(decimals2))
     .multipliedBy(tokenPrices[token2]);
 
-  return dv1.plus(dv2);
+  return dv1.plus(dv2).toString()=="NaN"? new BigNumber(0) :dv1.plus(dv2);
 };
 
 const calculateVolumeChange = (pool: PoolListItem, tokenPrices: TokenPrices): number => {
@@ -72,6 +72,7 @@ const calculateVolumeChange = (pool: PoolListItem, tokenPrices: TokenPrices): nu
   if (previous.eq(0)) return 100;
   if (current.eq(0)) return -100;
   const res = current.minus(previous).div(previous).multipliedBy(100);
+  console.log("res.toNumber()====",res.toNumber());
   return res.toNumber();
 };
 
@@ -104,7 +105,7 @@ const calculateUserLiquidity = (
     .multipliedBy(tokenPrices[token2]);
   const res = v1.plus(v2);
 
-  return res.gt(0) ? res.toFormat(2) : undefined;
+  return res.gt(0) ? res.toFormat(2) : "0";
 };
 
 const getUserPoolList = (queryType: PoolQueryType, limit: number, offset: number, search: string, signerAddress: string): PoolQueryObject => ({
