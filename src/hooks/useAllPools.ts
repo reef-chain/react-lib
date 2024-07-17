@@ -18,7 +18,6 @@ export const useAllPools = (httpClient: AxiosInstance): PoolWithReserves[] => {
   const getAllPoolsQry = getAllPoolsQuery();
 
   useAsyncEffect(async () => {
-    // create empty icons addresses, which will be later used for map creation
     let emptyTokenIconsAddresses: string[] = []
     let tokenIconsMap={};
 
