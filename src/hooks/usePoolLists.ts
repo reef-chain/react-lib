@@ -15,8 +15,10 @@ import {
   PoolQueryObject, PoolQueryType,
 } from '../graphql/pools';
 import { TokenPrices } from '../state';
-import { getIconUrl } from '../components/common/Icons';
 import { graphqlRequest } from '../graphql/utils';
+import { tokenIconUtils } from '@reef-chain/util-lib';
+import { useAsyncEffect } from './useAsyncEffect';
+import { getIconUrl } from '../components/common/Icons';
 
 interface PoolItem {
   address: string;
@@ -126,6 +128,8 @@ export const usePoolsList = ({
   const [dataPoolsCount, setDataPoolsCount] = useState<AllPoolsListCountQuery | UserPoolsListCountQuery|undefined>();
   const [loadingPoolsList, setLoadingPoolsList] = useState<boolean>(true);
   const [loadingPoolsCount, setLoadingPoolsCount] = useState<boolean>(true);
+  const [tokenAddresses, setTokenAddresses] = useState<string[]>([]);
+  const [tokenIconsMap, setTokenIconsMap] = useState({});
 
   useEffect(() => {
     const handleResp = async (): Promise<void> => {
@@ -149,20 +153,47 @@ export const usePoolsList = ({
     handleResp();
   }, []);
 
+  useAsyncEffect(async()=>{
+    if(tokenAddresses.length){
+      const _fetchedTokenIconsMap = await tokenIconUtils.resolveTokenUrl(tokenAddresses);
+      setTokenIconsMap(_fetchedTokenIconsMap)
+    }
+  },[tokenAddresses])
+
   const processed = useMemo((): PoolItem[] => {
     if (!dataPoolsList) return [];
     const poolsList = queryType === 'User'
       ? (dataPoolsList as UserPoolsListQuery).userPoolsList
       : (dataPoolsList as AllPoolsListQuery).allPoolsList;
+    
+    let emptyTokenIconsAddresses: string[] = []
+    let _tokenIconsMap={};
+  
+    poolsList.map((pool) => {
+      if (!pool.iconUrl1) emptyTokenIconsAddresses.push(pool.token1);
+      else _tokenIconsMap[pool.token1]=pool.iconUrl1
+      if (!pool.iconUrl2) emptyTokenIconsAddresses.push(pool.token2);
+      else _tokenIconsMap[pool.token2]=pool.iconUrl2
+    })
+
+    if(tokenAddresses!=emptyTokenIconsAddresses){
+      setTokenAddresses(emptyTokenIconsAddresses);
+    }
+
+    const mergedTokenIconsMap = {
+      ...tokenIconsMap,
+      ..._tokenIconsMap
+    }
+
     const mappedPools = poolsList.map((pool) => ({
       address: pool.id,
       token1: {
-        image: !pool.iconUrl1 ? getIconUrl(pool.token1) : pool.iconUrl1,
+        image: !pool.iconUrl1 ? mergedTokenIconsMap[pool.token1]??getIconUrl(pool.token1) : pool.iconUrl1,
         name: pool.name1,
         address:pool.token1
       },
       token2: {
-        image: !pool.iconUrl2 ? getIconUrl(pool.token2) : pool.iconUrl2,
+        image: !pool.iconUrl2 ? mergedTokenIconsMap[pool.token2]??getIconUrl(pool.token2)  : pool.iconUrl2,
         name: pool.name2,
         address:pool.token2
             },
@@ -175,7 +206,7 @@ export const usePoolsList = ({
     return queryType === 'User'
       ? mappedPools.filter(pool => pool.myLiquidity && new BigNumber(pool.myLiquidity).isGreaterThan(0.1))
       : mappedPools;
-  }, [dataPoolsList]);
+  }, [dataPoolsList,tokenIconsMap]);
 
   let count = 0;
 
