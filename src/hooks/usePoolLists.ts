@@ -185,7 +185,7 @@ export const usePoolsList = ({
       ..._tokenIconsMap
     }
 
-    return poolsList.map((pool) => ({
+    const mappedPools = poolsList.map((pool) => ({
       address: pool.id,
       token1: {
         image: !pool.iconUrl1 ? mergedTokenIconsMap[pool.token1]??getIconUrl(pool.token1) : pool.iconUrl1,
@@ -202,6 +202,10 @@ export const usePoolsList = ({
       volumeChange24h: calculateVolumeChange(pool, tokenPrices),
       myLiquidity: calculateUserLiquidity(pool, tokenPrices),
     }));
+
+    return queryType === 'User'
+      ? mappedPools.filter(pool => pool.myLiquidity && new BigNumber(pool.myLiquidity).isGreaterThan(0.1))
+      : mappedPools;
   }, [dataPoolsList,tokenIconsMap]);
 
   let count = 0;
@@ -211,6 +215,7 @@ export const usePoolsList = ({
       ? (dataPoolsCount as UserPoolsListCountQuery).userPoolsListCount
       : (dataPoolsCount as AllPoolsListCountQuery).allPoolsListCount;
   }
+
   return [
     processed,
     loadingPoolsList || loadingPoolsCount,
