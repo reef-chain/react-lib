@@ -1,6 +1,6 @@
 import { BigNumber } from 'bignumber.js';
 import { useEffect, useMemo, useState } from 'react';
-import { network } from '@reef-chain/util-lib';
+import { network, tokenIconUtils } from '@reef-chain/util-lib';
 import { AxiosInstance } from 'axios';
 import {
   Pool24HVolume,
@@ -146,6 +146,7 @@ export interface PoolStats {
 export const usePoolInfo = (address: string, signerAddress: string, tokenPrices: TokenPrices, httpClient: AxiosInstance): [PoolStats|undefined, boolean] => {
   const [tokensData, setTokensData] = useState<PoolTokensDataQuery|undefined>();
   const [poolInfoData, setPoolInfoData] = useState<PoolInfoQuery|undefined>();
+  const [tokenIconsMap,setTokenIconMap] = useState<any>();
   const [tokensLoading, setTokensLoading] = useState<boolean>(true);
   const [poolInfoLoading, setPoolInfoLoading] = useState<boolean>(true);
   const toTime = useMemo(() => {
@@ -190,6 +191,22 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
     setPoolInfoData(response.data.data);
     setPoolInfoLoading(false);
   },[TRIGGER])
+
+
+  useAsyncEffect(async()=>{
+    if(tokensData){
+      // resolving token icons
+      const { token1,token2 } = tokensData!.poolById;
+
+      let tokenAddresses:string[] = [];
+
+      if(token1.iconUrl=='')tokenAddresses.push(token1.id);
+      if(token2.iconUrl=='')tokenAddresses.push(token2.id);
+
+      const _tokenIconMap = await tokenIconUtils.resolveTokenUrl(tokenAddresses);
+      setTokenIconMap(_tokenIconMap);
+    }
+  },[tokensData])
 
   const info = useMemo<PoolStats|undefined>(() => {
     if (!poolInfoData || !tokensData) {
@@ -249,7 +266,7 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
     return {
       firstToken: {
         address: token1.id,
-        icon: token1.iconUrl === '' ? getIconUrl(token1.id) : token1.iconUrl,
+        icon: token1.iconUrl === '' ? tokenIconsMap? tokenIconsMap[token1.id]: getIconUrl(token1.id) : token1.iconUrl,
         name: token1.name,
         symbol: token1.symbol,
         decimals: token1.decimals,
@@ -265,7 +282,7 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
       },
       secondToken: {
         address: token2.id,
-        icon: token2.iconUrl === '' ? getIconUrl(token2.id) : token2.iconUrl,
+        icon: token2.iconUrl === '' ? tokenIconsMap? tokenIconsMap[token2.id]: getIconUrl(token2.id) : token2.iconUrl,
         name: token2.name,
         symbol: token2.symbol,
         decimals: token2.decimals,
