@@ -4,7 +4,7 @@ import { faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
 import BigNumber from 'bignumber.js';
 import { RemoveLiquidityState } from '../../store';
 import WithdrawPopup from './ConfirmPopups/Withdraw';
-import { removeUserPoolSupply, calculatePoolShare } from '../../utils';
+import { removeUserPoolSupply, calculatePoolShare, showRemovePoolTokenShare } from '../../utils';
 
 interface WithdrawActions {
   onRemoveLiquidity: () => Promise<void>;
@@ -33,9 +33,16 @@ export const Withdraw = ({
   },
 }: Withdraw): JSX.Element => {
   const getTotalValue = useMemo((): number => {
-    const firstTokenValue = new BigNumber(token1.price).times(token1.amount).toNumber();
-    const secondTokenValue = new BigNumber(token2.price).times(token2.amount).toNumber();
-    const sum = firstTokenValue + secondTokenValue;
+    let amount1 = new BigNumber(showRemovePoolTokenShare(percentage, pool?.token1)).toNumber();
+    if (Number.isNaN(amount1)) amount1 = 0;
+    let amount2 = new BigNumber(showRemovePoolTokenShare(percentage, pool?.token2)).toNumber();
+    if (Number.isNaN(amount2)) amount2 = 0;
+
+    let value1 = Uik.utils.maxDecimals(new BigNumber(token1.price).times(amount1).toNumber(), 2);
+    if (Number.isNaN(value1)) value1 = 0;
+    let value2 = Uik.utils.maxDecimals(new BigNumber(token2.price).times(amount2).toNumber(), 2);
+    if (Number.isNaN(value2)) value2 = 0;
+    let sum = value1+value2;
     return Uik.utils.maxDecimals(sum, 2);
   }, [token1, token2]);
 
