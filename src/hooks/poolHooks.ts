@@ -184,8 +184,10 @@ export const usePoolTransactionSubscription = (
 ): {data:PoolTransactionQuery, loading:boolean} => {
   const [data, setData] = useState<PoolTransactionQuery|undefined>();
   const [loading, setLoading] = useState<boolean>(true);
+
   const queryObj = getPoolTransactionQry(address, type, limit, pageIndex);
   const TRIGGER = useObservableState(network.getLatestBlockContractEvents$(address?[address]:[]));
+
   useEffect(() => {
     const fetchResponse = async (): Promise<void> => {
       const response = await graphqlRequest(httpClient, queryObj);
@@ -193,7 +195,7 @@ export const usePoolTransactionSubscription = (
       setLoading(false);
     };
     fetchResponse();
-  }, [TRIGGER]);
+  }, [TRIGGER,pageIndex,limit,type,address]);
 
   if (httpClient === undefined) {
     return [undefined, true] as any;
