@@ -2,6 +2,7 @@ import {
   reefState,
   network as nw,
   extension as extReef,
+  ReefAccount,
 } from "@reef-chain/util-lib";
 import { useEffect, useState } from "react";
 import { Provider } from "@reef-chain/evm-provider";
@@ -105,6 +106,9 @@ export const useInitReefStateExtension = (
   let selectedAddress: string | undefined = useObservableState(
     reefState.selectedAddress$
   );
+  let accounts: ReefAccount[] | null | undefined = useObservableState(
+    reefState.accounts$
+  );
 
   useEffect(() => {
     setError(errExtension);
@@ -164,7 +168,21 @@ export const useInitReefStateExtension = (
           )
       );
       const allAccs = await Promise.all(accountPromises);
-      setAllAccounts(allAccs);
+      let updatedBalanceAccounts:ReefSigner[] = [];
+      let updatedBalancesMap = {};
+
+      if(accounts){
+        accounts.forEach((acc)=>updatedBalancesMap[acc.address]=acc.balance);
+      }
+
+      allAccs.forEach((acc)=>{
+        updatedBalanceAccounts.push({
+          balance: updatedBalancesMap[acc.address]??acc.balance,
+          ...acc
+        })
+      })
+
+      setAllAccounts(updatedBalanceAccounts);
 
       const storedAddress = getSelectedAddress();
       if (selectedAddress === undefined && storedAddress !== undefined)
@@ -184,7 +202,7 @@ export const useInitReefStateExtension = (
       setSelectedReefSigner(undefined);
       setIsSignersLoading(false);
     }
-  }, [extensionWithAccounts, provider, selectedAddress, initNetwork, extensionWithAccounts]);
+  }, [provider, selectedAddress, initNetwork,extensionWithAccounts,accounts]);
 
   return {
     error,
