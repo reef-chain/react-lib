@@ -216,7 +216,7 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
         data:undefined,
         status:false
       }
-      return {data:undefined,status:false};
+      return {data:undefined,status:true};
     }
 
     const pool = poolInfoData.poolInfo;
