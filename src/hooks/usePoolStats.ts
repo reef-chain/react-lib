@@ -212,7 +212,6 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
 
   const info = useMemo<{data:PoolStats|undefined,status:boolean}>(() => {
     if (!poolInfoData || !tokensData || !(tokensData!.poolById!=null)) {
-      console.log("tokensData===",tokensData)
       if(tokensData && tokensData!.poolById==null)return {
         data:undefined,
         status:false
