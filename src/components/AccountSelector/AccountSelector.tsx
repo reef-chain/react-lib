@@ -82,13 +82,15 @@ export const AccountSelector = ({
 
   useEffect(() => {
     const allAccounts: Account[] = accounts.map((acc) => {
-      const { name, address, evmAddress, source, isEvmClaimed } = acc;
+      const { name, address, evmAddress, source, isEvmClaimed,lockedBalance,freeBalance } = (acc as any);
       return {
         name,
         address,
         evmAddress,
         source,
         isEvmClaimed,
+        lockedBalance,
+        freeBalance
       } as Account;
     });
     setAllAccounts(allAccounts);
