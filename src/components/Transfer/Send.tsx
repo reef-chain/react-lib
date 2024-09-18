@@ -201,6 +201,16 @@ export const Send = ({
   const [amountInUsd,setAmountInUsd] = useState("");
   const [reefPrice,setReefPrice]= useState(0);
 
+  useEffect(()=>{
+    if(signer && accounts && accounts.length){
+      accounts.forEach((acc)=>{
+        if(acc.address==signer.address){
+          signer.balance = (acc as any).freeBalance;
+        }
+      })
+    }
+  },[signer,accounts])
+
   const getInitToken = (): TokenWithAmount => {
     if (tokenAddress) {
       const targetToken = tokens.find(
