@@ -87,7 +87,7 @@ const getSignerNativeAddress = async (
 const sendStatus = (
   to: string,
   token: TokenWithAmount,
-  signer: ReefSigner
+  signer: ReefSigner,
 ): ButtonStatus => {
   try {
     const toAddress = to.trim();
