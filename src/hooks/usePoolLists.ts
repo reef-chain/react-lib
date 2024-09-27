@@ -158,7 +158,7 @@ export const usePoolsList = ({
       const _fetchedTokenIconsMap = await tokenIconUtils.resolveTokenUrl(tokenAddresses);
       setTokenIconsMap(_fetchedTokenIconsMap)
     }
-  },[tokenAddresses])
+  },[dataPoolsList])
 
   const processed = useMemo((): PoolItem[] => {
     if (!dataPoolsList) return [];
