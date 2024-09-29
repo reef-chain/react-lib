@@ -77,6 +77,14 @@ const calculateVolumeChange = (pool: PoolListItem, tokenPrices: TokenPrices): nu
   return res.toNumber();
 };
 
+export const getReefInfuraUrl = (url:string)=>{
+  if(!url)return url;
+  if(url.includes("cloudflare-ipfs.com")){
+    return url.replace("cloudflare-ipfs.com","reef.infura-ipfs.io")
+  }
+  return url;
+}
+
 const calculateUSDTVL = ({
   reserved1,
   reserved2,
@@ -142,14 +150,6 @@ export const usePoolsList = ({
     handleResp();
   }, [limit, offset,search,signerAddress]);
 
-  const getReefInfuraUrl = (url:string)=>{
-    if(!url)return url;
-    if(url.includes("cloudflare-ipfs.com")){
-      return url.replace("cloudflare-ipfs.com","reef.infura-ipfs.io")
-    }
-    return url;
-  }
-
   const userPoolCountQry = getUserPoolCountQry(queryType, search, signerAddress);
   useEffect(() => {
     const handleResp = async (): Promise<void> => {
@@ -196,12 +196,12 @@ export const usePoolsList = ({
     const mappedPools = poolsList.map((pool) => ({
       address: pool.id,
       token1: {
-        image: !pool.iconUrl1 ? getReefInfuraUrl(mergedTokenIconsMap[pool.token1])??getReefInfuraUrl(getIconUrl(pool.token1)) : getReefInfuraUrl(pool.iconUrl1),
+        image: getReefInfuraUrl(!pool.iconUrl1 ? mergedTokenIconsMap[pool.token1]??getIconUrl(pool.token1) : pool.iconUrl1),
         name: pool.name1,
         address:pool.token1
       },
       token2: {
-        image: !pool.iconUrl2 ? getReefInfuraUrl(mergedTokenIconsMap[pool.token2])??getReefInfuraUrl(getIconUrl(pool.token2))  : getReefInfuraUrl(pool.iconUrl2),
+        image: getReefInfuraUrl(!pool.iconUrl2 ? mergedTokenIconsMap[pool.token2]??getIconUrl(pool.token2)  : pool.iconUrl2),
         name: pool.name2,
         address:pool.token2
             },

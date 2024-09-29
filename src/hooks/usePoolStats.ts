@@ -19,6 +19,7 @@ import { graphqlRequest } from '../graphql/utils';
 import { getIconUrl } from '../components/common/Icons';
 import { useAsyncEffect } from './useAsyncEffect';
 import { useObservableState } from './useObservableState';
+import { getReefInfuraUrl } from './usePoolLists';
 
 const getPoolTotalValueLockedQry = (toTime: string): PoolQueryObject => ({
   query: POOLS_TOTAL_VALUE_LOCKED,
@@ -266,7 +267,7 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
     return {
       firstToken: {
         address: token1.id,
-        icon: token1.iconUrl === '' ? tokenIconsMap? tokenIconsMap[token1.id]: getIconUrl(token1.id) : token1.iconUrl,
+        icon: getReefInfuraUrl(token1.iconUrl === '' ? tokenIconsMap? tokenIconsMap[token1.id]: getIconUrl(token1.id) : token1.iconUrl),
         name: token1.name,
         symbol: token1.symbol,
         decimals: token1.decimals,
@@ -282,7 +283,7 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
       },
       secondToken: {
         address: token2.id,
-        icon: token2.iconUrl === '' ? tokenIconsMap? tokenIconsMap[token2.id]: getIconUrl(token2.id) : token2.iconUrl,
+        icon: getReefInfuraUrl(token2.iconUrl === '' ? tokenIconsMap? tokenIconsMap[token2.id]: getIconUrl(token2.id) : token2.iconUrl),
         name: token2.name,
         symbol: token2.symbol,
         decimals: token2.decimals,
