@@ -87,7 +87,7 @@ const getSignerNativeAddress = async (
 const sendStatus = (
   to: string,
   token: TokenWithAmount,
-  signer: ReefSigner
+  signer: ReefSigner,
 ): ButtonStatus => {
   try {
     const toAddress = to.trim();
@@ -200,6 +200,16 @@ export const Send = ({
   const [isAmountPristine, setAmountPristine] = useState(true);
   const [amountInUsd,setAmountInUsd] = useState("");
   const [reefPrice,setReefPrice]= useState(0);
+
+  useEffect(()=>{
+    if(signer && accounts && accounts.length){
+      accounts.forEach((acc)=>{
+        if(acc.address==signer.address){
+          signer.balance = (acc as any).freeBalance;
+        }
+      })
+    }
+  },[signer,accounts])
 
   const getInitToken = (): TokenWithAmount => {
     if (tokenAddress) {
