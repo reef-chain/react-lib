@@ -205,7 +205,7 @@ export const Send = ({
     if(signer && accounts && accounts.length){
       accounts.forEach((acc)=>{
         if(acc.address==signer.address){
-          signer.balance = (acc as any).freeBalance;
+          signer.balance = (acc as any).freeBalance ?? (acc as any).balance;
         }
       })
     }
