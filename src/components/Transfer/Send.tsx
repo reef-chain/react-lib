@@ -435,7 +435,7 @@ export const Send = ({
       )}
 
     {token.address===REEF_ADDRESS &&  <div className="uik-pool-actions__tokens">
-          <UsdAmountField onInput={handleUsdAmount}
+          <UsdAmountField onInput={handleUsdAmount} isDarkMode={isDarkMode}
           value={amountInUsd.toString()} reefPrice = {reefPrice.toString()} />
     </div>}
 
