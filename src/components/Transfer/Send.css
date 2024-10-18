@@ -136,6 +136,7 @@
 
 .send__address-dark input{
   background-color: rgb(55 56 64) !important;
+  color: white!important;
 }
 
 .send__address-dark input:hover{
