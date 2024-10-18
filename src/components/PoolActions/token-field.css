@@ -122,7 +122,14 @@
   color: white !important;
 }
 
+.dark-dropdown{
+  background-color: #373840!important;
+}
+
 .uik-pool-actions-token__amount-dark{
   color: white!important;
 }
 
+.summary-light-text{
+  color: white!important;
+}

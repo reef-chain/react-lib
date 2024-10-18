@@ -38,6 +38,7 @@ interface SummaryItem {
   empty?: boolean,
   className?: string
   warn?: string;
+  isDarkMode?:boolean;
 }
 
 const SummaryItem = ({
@@ -46,6 +47,7 @@ const SummaryItem = ({
   empty,
   className,
   warn = '',
+  isDarkMode=false,
 }: SummaryItem): JSX.Element => (
   <div
     className={`
@@ -54,7 +56,7 @@ const SummaryItem = ({
       ${className || ''}
     `}
   >
-    <div className="uik-pool-actions__summary-item-label">
+    <div className={`uik-pool-actions__summary-item-label ${isDarkMode?'summary-light-text':''}`}>
       { label }
       { warn !== '' && (
       <span className="slippage-warning">
@@ -71,7 +73,7 @@ const SummaryItem = ({
       </span>
       )}
     </div>
-    <div className="uik-pool-actions__summary-item-value">{ value }</div>
+    <div className={`uik-pool-actions__summary-item-value ${isDarkMode?'summary-light-text':''}`}>{ value }</div>
   </div>
 );
 
@@ -225,11 +227,13 @@ export const Trade = ({
           label="Rate"
           value={rate}
           empty={!rate}
+          isDarkMode={isDarkMode}
         />
         <SummaryItem
           label="Fee"
           value={fee}
           empty={!fee}
+          isDarkMode={isDarkMode}
         />
         <SummaryItem
           label="Slippage"
@@ -237,6 +241,7 @@ export const Trade = ({
           value={`${slippage}%`}
           empty={!slippage}
           warn={summaryItemWarning}
+          isDarkMode={isDarkMode}
         />
       </div>
 

@@ -118,7 +118,7 @@ const TokenDropdown = ({ token, tokens, selectToken,isDarkMode } : TokenDropdown
       </button>
 
       <Uik.Dropdown
-        className="uik-pool-actions-token__select-dropdown"
+        className={`uik-pool-actions-token__select-dropdown ${isDarkMode?'dark-dropdown':''}`}
         isOpen={isOpen}
         onClose={() => setOpen(false)}
       >

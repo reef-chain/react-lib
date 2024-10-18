@@ -175,6 +175,7 @@ export const OverlaySwap = ({
       title="Swap"
       onClose={onClose}
       className={`overlay-swap${isDarkMode?'-dark':''}`}
+      isDarkMode={isDarkMode}
     >
       <div className={`uik-pool-actions pool-actions ${isDarkMode?'uik-pool-actions-dark':''}`}>
         {
