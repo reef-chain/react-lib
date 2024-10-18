@@ -174,16 +174,7 @@
 }
 
 .overlay-swap-dark .uik-pool-actions {
-  box-shadow: 10px 10px 20px -5px hsl(
-    var(--bg--h),
-    var(--bg--s),
-    calc(var(--bg--l) - 10%)
-  ),
-  -10px -10px 20px -5px hsl(
-    var(--bg--h),
-    var(--bg--s),
-    calc(var(--bg--l) + 4%)
-  );
+  box-shadow: none;
   max-width: 100%;
   min-width: 100%;
   width: 100%;
