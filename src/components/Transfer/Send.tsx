@@ -44,6 +44,7 @@ interface Send {
   accounts: ReefSigner[];
   notify: NotifyFun;
   tokenAddress?: string;
+  isDarkMode?:boolean;
   isWalletConnect?:boolean;
   handleWalletConnectModal?:(val:boolean)=>void;
 }
@@ -192,6 +193,7 @@ export const Send = ({
   provider,
   tokenAddress,
   isWalletConnect,
+  isDarkMode,
   handleWalletConnectModal
 }: Send): JSX.Element => {
   const [to, setTo] = useState("");
@@ -200,6 +202,8 @@ export const Send = ({
   const [isAmountPristine, setAmountPristine] = useState(true);
   const [amountInUsd,setAmountInUsd] = useState("");
   const [reefPrice,setReefPrice]= useState(0);
+
+  console.log(isDarkMode)
 
   useEffect(()=>{
     if(signer && accounts && accounts.length){
