@@ -146,3 +146,9 @@
 .send__address-dark input:focus{
   background-color: rgb(55 56 64) !important;
 }
+
+.uik-pool-actions__cta.uik-button--disabled.dark-btn {
+  background: #373840;
+  color: hsla( 224.2105263158deg, 8.7557603687%, 57.4509803922%, 0.6 );
+  box-shadow: none;
+}

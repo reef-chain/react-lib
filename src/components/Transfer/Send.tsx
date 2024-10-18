@@ -457,7 +457,7 @@ export const Send = ({
 
       <Uik.Button
         size="large"
-        className="uik-pool-actions__cta"
+        className={`uik-pool-actions__cta ${isDarkMode?'dark-btn':''}`}
         fill
         loading={isLoading}
         disabled={isLoading || !isValid}
