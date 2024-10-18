@@ -134,6 +134,10 @@
 }
 
 
-.send__address-dark {
+.send__address-dark input{
   background-color: rgb(55 56 64) !important;
+}
+
+.send__address-dark input:focus{
+  background-color: #9b9c9f !important;
 }

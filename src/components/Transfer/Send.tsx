@@ -380,7 +380,7 @@ export const Send = ({
 
   return (
     <div className="send">
-      <div className="send__address">
+      <div className={`send__address ${isDarkMode?'send__address-dark':''}`}>
       {to.length===0?
         <div className="send__address-identicon" style={{
           width:"46px",
