@@ -41,7 +41,7 @@ export const OverlaySend:React.FC<OverlaySend> = ({
       className={`overlay-swap${isDarkMode?'-dark':''}`}
       isDarkMode={isDarkMode}
     >
-      <div className={`uik-pool-actions pool-actions`}>
+      <div className={`uik-pool-actions pool-actions ${isDarkMode?'uik-pool-actions-dark':''}`}>
         { provider && selectedSigner
           && (
           <Send

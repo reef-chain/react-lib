@@ -294,3 +294,7 @@
   pointer-events: none;
 }
 
+/* this one is override for send */
+.uik-pool-actions-dark{
+  background-color: #26272c!important;
+}
