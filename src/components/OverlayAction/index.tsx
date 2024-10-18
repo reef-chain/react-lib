@@ -61,7 +61,7 @@ export const OverlayAction: React.FC<OverlayAction> = ({
               <div className={`${!isDarkMode?`overlay-action__title`:`overlay-action__title-dark`} overlay-action__title-base`}>{ title }</div>
 
               <button
-                className="overlay-action__close-btn"
+                className={`overlay-action__close-btn${isDarkMode?'-dark':''}`}
                 aria-label="Close button"
                 type="button"
                 onClick={onClose}

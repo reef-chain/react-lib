@@ -38,7 +38,7 @@ export const OverlaySend:React.FC<OverlaySend> = ({
       isOpen={isOpen}
       title="Send"
       onClose={onClose}
-      className={`overlay-swap`}
+      className={`overlay-swap${isDarkMode?'-dark':''}`}
       isDarkMode={isDarkMode}
     >
       <div className={`uik-pool-actions pool-actions`}>

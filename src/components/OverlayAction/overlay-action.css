@@ -151,3 +151,30 @@
 .overlay-action__title-dark {
   color: white!important;
 }
+
+
+.overlay-action__close-btn-dark {
+  position: absolute;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 54px;
+  height: 54px;
+  min-width: 54px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: none;
+  transition: all 0.125s;
+  color: white;
+  box-shadow: none;
+}
+
+.overlay-action__close-btn-dark:hover {
+  color: white;
+  cursor: pointer;
+}
+
+.overlay-action__close-btn-dark:active {
+  color: white;
+}
