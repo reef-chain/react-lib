@@ -203,8 +203,6 @@ export const Send = ({
   const [amountInUsd,setAmountInUsd] = useState("");
   const [reefPrice,setReefPrice]= useState(0);
 
-  console.log(isDarkMode)
-
   useEffect(()=>{
     if(signer && accounts && accounts.length){
       accounts.forEach((acc)=>{
@@ -428,6 +426,7 @@ export const Send = ({
           token={token}
           tokens={tokens}
           onAmountChange={(amt) => onAmountChange(amt, token)}
+          isDarkMode={isDarkMode}
         />
       </div>
 

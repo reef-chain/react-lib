@@ -9,6 +9,7 @@ interface TokenDropdown {
   token: TokenWithAmount;
   tokens: Token[];
   selectToken?: (token: Token) => void;
+  isDarkMode?:boolean;
 }
 
 interface TokenDropdownItem {
@@ -47,7 +48,7 @@ const TokenDropdownItem = ({ token, selectToken }: TokenDropdownItem): JSX.Eleme
   </Uik.DropdownItem>
 );
 
-const TokenDropdown = ({ token, tokens, selectToken } : TokenDropdown): JSX.Element => {
+const TokenDropdown = ({ token, tokens, selectToken,isDarkMode } : TokenDropdown): JSX.Element => {
   const [isOpen, setOpen] = useState(token.isEmpty && !!selectToken);
   const [search, setSearch] = useState('');
 
@@ -106,8 +107,8 @@ const TokenDropdown = ({ token, tokens, selectToken } : TokenDropdown): JSX.Elem
         { !token.isEmpty
           && (
           <div className="uik-pool-actions-token__info">
-            <div className="uik-pool-actions-token__symbol">{ token.symbol }</div>
-            <div className="uik-pool-actions-token__amount" title={showBalance(token)}>
+            <div className={`uik-pool-actions-token__symbol${isDarkMode?'-dark':''}`}>{ token.symbol }</div>
+            <div className={`uik-pool-actions-token__amount ${isDarkMode?'uik-pool-actions-token__amount-dark':''}`} title={showBalance(token)}>
               { formatHumanBalance(token) }
               {' '}
               { token.symbol }
