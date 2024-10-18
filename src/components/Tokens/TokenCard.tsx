@@ -217,6 +217,7 @@ export const TokenCard:React.FC<TokenCard> = ({
         pools={pools}
         network={network}
         notify={notify}
+        isDarkMode={isDarkMode}
       />
 
       <OverlaySend
