@@ -112,6 +112,17 @@
   background-color: #373840!important;
 }
 
+.uik-pool-actions-token--select-dark{
+  background-color: #373840!important;
+  color: white !important;
+}
+
+.pool-actions__summary-dark{
+  background-color: #373840!important;
+  color: white !important;
+}
+
 .uik-pool-actions-token__amount-dark{
   color: white!important;
 }
+

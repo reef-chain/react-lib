@@ -29,6 +29,7 @@ interface Trade {
   actions: TradeActions;
   maxSlippage?: number;
   confirmText?: string;
+  isDarkMode?:boolean;
 }
 
 interface SummaryItem {
@@ -141,6 +142,7 @@ export const Trade = ({
   pools,
   tokens,
   maxSlippage = 100,
+  isDarkMode=false
 } : Trade): JSX.Element => {
   const { percentage: slippage } = resolveSettings(settings);
   const rate = pool ? calculateRate(token1.address, pool) : undefined;
@@ -174,6 +176,7 @@ export const Trade = ({
           tokens={selectTokens1}
           onAmountChange={setToken1Amount}
           selectToken={selectToken1}
+          isDarkMode={isDarkMode}
         />
 
         <div className="uik-pool-actions__switch-slider-container">
@@ -213,10 +216,11 @@ export const Trade = ({
           tokens={selectTokens2}
           onAmountChange={setToken2Amount}
           selectToken={selectToken2}
+          isDarkMode={isDarkMode}
         />
       </div>
 
-      <div className="uik-pool-actions__summary uik-pool-actions__trade-summary">
+      <div className={`uik-pool-actions__summary uik-pool-actions__trade-summary ${isDarkMode?'pool-actions__summary-dark':''}`}>
         <SummaryItem
           label="Rate"
           value={rate}
@@ -252,7 +256,7 @@ export const Trade = ({
       </div>
 
       <Uik.Button
-        className="uik-pool-actions__cta"
+        className={`uik-pool-actions__cta ${isDarkMode?'dark-btn':''}`}
         fill
         icon={faRepeat}
         text={status}

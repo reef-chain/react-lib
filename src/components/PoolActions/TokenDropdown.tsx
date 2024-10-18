@@ -87,7 +87,7 @@ const TokenDropdown = ({ token, tokens, selectToken,isDarkMode } : TokenDropdown
       <button
         className={!token.isEmpty
           ? 'uik-pool-actions-token__token'
-          : 'uik-pool-actions-token uik-pool-actions-token--select'}
+          : `uik-pool-actions-token uik-pool-actions-token--select ${isDarkMode?'uik-pool-actions-token--select-dark':''}`}
         type="button"
         disabled={!selectToken}
         onClick={() => setOpen(true)}

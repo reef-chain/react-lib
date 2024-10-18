@@ -184,6 +184,7 @@ export const OverlaySwap = ({
                 pools={pools}
                 tokens={tokens}
                 state={tradeState}
+                isDarkMode={isDarkMode}
                 maxSlippage={MAX_SLIPPAGE}
                 actions={{
                   onSwap,
