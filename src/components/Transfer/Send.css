@@ -132,3 +132,8 @@
   overflow: hidden;
   white-space: nowrap;
 }
+
+
+.send__address-dark {
+  background-color: rgb(55 56 64) !important;
+}
