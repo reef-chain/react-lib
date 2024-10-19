@@ -305,7 +305,7 @@ export const OverlaySendNFT = ({
               />
             )}
         </div>
-        <div className="send__address">
+        <div className={`send__address ${isDarkMode?'send__address-dark':''}`}>
           <Identicon className="send__address-identicon" value={destinationAddress} size={46} theme="substrate" />
           <input
             className="send__address-input"

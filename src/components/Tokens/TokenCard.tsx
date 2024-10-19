@@ -217,6 +217,7 @@ export const TokenCard:React.FC<TokenCard> = ({
         pools={pools}
         network={network}
         notify={notify}
+        isDarkMode={isDarkMode}
       />
 
       <OverlaySend
@@ -227,6 +228,7 @@ export const TokenCard:React.FC<TokenCard> = ({
         selectedSigner={selectedSigner}
         provider={provider}
         accounts={accounts}
+        isDarkMode={isDarkMode}
         notify={notify}
         isWalletConnect={isWalletConnect}
         handleWalletConnectModal={handleWalletConnectModal}

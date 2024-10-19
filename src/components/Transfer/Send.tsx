@@ -44,6 +44,7 @@ interface Send {
   accounts: ReefSigner[];
   notify: NotifyFun;
   tokenAddress?: string;
+  isDarkMode?:boolean;
   isWalletConnect?:boolean;
   handleWalletConnectModal?:(val:boolean)=>void;
 }
@@ -192,6 +193,7 @@ export const Send = ({
   provider,
   tokenAddress,
   isWalletConnect,
+  isDarkMode,
   handleWalletConnectModal
 }: Send): JSX.Element => {
   const [to, setTo] = useState("");
@@ -376,7 +378,7 @@ export const Send = ({
 
   return (
     <div className="send">
-      <div className="send__address">
+      <div className={`send__address ${isDarkMode?'send__address-dark':''}`}>
       {to.length===0?
         <div className="send__address-identicon" style={{
           width:"46px",
@@ -424,6 +426,7 @@ export const Send = ({
           token={token}
           tokens={tokens}
           onAmountChange={(amt) => onAmountChange(amt, token)}
+          isDarkMode={isDarkMode}
         />
       </div>
 
@@ -432,7 +435,7 @@ export const Send = ({
       )}
 
     {token.address===REEF_ADDRESS &&  <div className="uik-pool-actions__tokens">
-          <UsdAmountField onInput={handleUsdAmount}
+          <UsdAmountField onInput={handleUsdAmount} isDarkMode={isDarkMode}
           value={amountInUsd.toString()} reefPrice = {reefPrice.toString()} />
     </div>}
 
@@ -454,7 +457,7 @@ export const Send = ({
 
       <Uik.Button
         size="large"
-        className="uik-pool-actions__cta"
+        className={`uik-pool-actions__cta ${isDarkMode?'dark-btn':''}`}
         fill
         loading={isLoading}
         disabled={isLoading || !isValid}

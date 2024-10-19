@@ -10,6 +10,9 @@
 .uik-pool-actions-token__token:not([disabled]):hover .uik-pool-actions-token__info .uik-pool-actions-token__symbol {
   color: var(--primary) !important;
 }
+.uik-pool-actions-token__symbol-dark {
+  color: white !important;
+}
 
 .uik-pool-actions-token__select-wrapper--select {
   width: 100%;
@@ -103,4 +106,30 @@
   -webkit-background-clip: text;
   white-space: nowrap;
   -webkit-text-fill-color: transparent;
+}
+
+.uik-pool-actions-token-dark{
+  background-color: #373840!important;
+}
+
+.uik-pool-actions-token--select-dark{
+  background-color: #373840!important;
+  color: white !important;
+}
+
+.pool-actions__summary-dark{
+  background-color: #373840!important;
+  color: white !important;
+}
+
+.dark-dropdown{
+  background-color: #373840!important;
+}
+
+.uik-pool-actions-token__amount-dark{
+  color: white!important;
+}
+
+.summary-light-text{
+  color: white!important;
 }

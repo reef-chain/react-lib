@@ -27,6 +27,7 @@ interface OverlaySwap {
     pools:PoolWithReserves[];
     network:libNet.DexProtocolv2 |undefined;
     notify:(message: string, type?: Notify) => void;
+    isDarkMode?:boolean;
 }
 
 const poolWithReservesToPool = (p: PoolWithReserves): Pool => ({
@@ -65,7 +66,8 @@ export const OverlaySwap = ({
   tokenPrices,
   pools,
   network,
-  notify
+  notify,
+  isDarkMode=false
 }: OverlaySwap): JSX.Element => {
   const [address1, setAddress1] = useState(tokenAddress);
   const [address2, setAddress2] = useState('0x');
@@ -172,9 +174,10 @@ export const OverlaySwap = ({
       isOpen={isOpen}
       title="Swap"
       onClose={onClose}
-      className="overlay-swap"
+      className={`overlay-swap${isDarkMode?'-dark':''}`}
+      isDarkMode={isDarkMode}
     >
-      <div className="uik-pool-actions pool-actions">
+      <div className={`uik-pool-actions pool-actions ${isDarkMode?'uik-pool-actions-dark':''}`}>
         {
           finalized
             ? (
@@ -182,6 +185,7 @@ export const OverlaySwap = ({
                 pools={pools}
                 tokens={tokens}
                 state={tradeState}
+                isDarkMode={isDarkMode}
                 maxSlippage={MAX_SLIPPAGE}
                 actions={{
                   onSwap,

@@ -13,12 +13,14 @@ interface UsdAmountField {
   value:string;
   onInput: (amount: string) => void;
   reefPrice:string;
+  isDarkMode?:boolean;
 }
 
 const UsdAmountField = ({
   value,
   onInput,
-  reefPrice
+  reefPrice,
+  isDarkMode=false
 }: UsdAmountField): JSX.Element => {
   const [isFocused, setFocused] = useState(false);
   const onInputFocus = (): void => setFocused(true);
@@ -34,6 +36,7 @@ const UsdAmountField = ({
     <div
       className={`
         uik-pool-actions-token
+         ${isDarkMode?'uik-pool-actions-token-dark':''}
         ${isFocused ? 'uik-pool-actions-token--focused' : ''}
       `}
       style={{

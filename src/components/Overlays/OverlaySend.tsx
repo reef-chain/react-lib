@@ -38,10 +38,10 @@ export const OverlaySend:React.FC<OverlaySend> = ({
       isOpen={isOpen}
       title="Send"
       onClose={onClose}
-      className="overlay-swap"
+      className={`overlay-swap${isDarkMode?'-dark':''}`}
       isDarkMode={isDarkMode}
     >
-      <div className="uik-pool-actions pool-actions">
+      <div className={`uik-pool-actions pool-actions ${isDarkMode?'uik-pool-actions-dark':''}`}>
         { provider && selectedSigner
           && (
           <Send
@@ -53,6 +53,7 @@ export const OverlaySend:React.FC<OverlaySend> = ({
             tokenAddress={tokenAddress}
             isWalletConnect={isWalletConnect}
             handleWalletConnectModal={handleWalletConnectModal}
+            isDarkMode={isDarkMode}
           />
           )}
       </div>

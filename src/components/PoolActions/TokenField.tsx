@@ -14,6 +14,7 @@ interface TokenField {
   tokens?: Token[];
   selectToken?: SelectToken;
   onAmountChange: (amount: string) => void;
+  isDarkMode?:boolean;
 }
 
 const TokenField = ({
@@ -21,6 +22,7 @@ const TokenField = ({
   tokens = [],
   onAmountChange,
   selectToken,
+  isDarkMode=false,
 }: TokenField): JSX.Element => {
   const [isFocused, setFocused] = useState(false);
   const onInputFocus = (): void => setFocused(true);
@@ -44,6 +46,7 @@ const TokenField = ({
     <div
       className={`
         uik-pool-actions-token
+        ${isDarkMode?'uik-pool-actions-token-dark':''}
         ${isFocused ? 'uik-pool-actions-token--focused' : isFocused}
       `}
     >
@@ -51,6 +54,7 @@ const TokenField = ({
         token={token}
         tokens={tokens}
         selectToken={selectToken}
+        isDarkMode={isDarkMode}
       />
       { !token.isEmpty
         && (
