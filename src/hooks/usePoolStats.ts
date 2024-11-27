@@ -144,7 +144,7 @@ export interface PoolStats {
   volumeChange24h: number;
 }
 
-export const usePoolInfo = (address: string, signerAddress: string, tokenPrices: TokenPrices, httpClient: AxiosInstance): [PoolStats|undefined, boolean] => {
+export const usePoolInfo = (address: string, signerAddress: string, tokenPrices: TokenPrices, httpClient: AxiosInstance): [{data:PoolStats|undefined,status:boolean}, boolean] => {
   const [tokensData, setTokensData] = useState<PoolTokensDataQuery|undefined>();
   const [poolInfoData, setPoolInfoData] = useState<PoolInfoQuery|undefined>();
   const [tokenIconsMap,setTokenIconMap] = useState<any>();
@@ -196,22 +196,28 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
 
   useAsyncEffect(async()=>{
     if(tokensData){
-      // resolving token icons
-      const { token1,token2 } = tokensData!.poolById;
-
-      let tokenAddresses:string[] = [];
-
-      if(token1.iconUrl=='')tokenAddresses.push(token1.id);
-      if(token2.iconUrl=='')tokenAddresses.push(token2.id);
-
-      const _tokenIconMap = await tokenIconUtils.resolveTokenUrl(tokenAddresses);
-      setTokenIconMap(_tokenIconMap);
+      if(tokensData.poolById!=null){
+        // resolving token icons
+        const { token1,token2 } = tokensData!.poolById;
+  
+        let tokenAddresses:string[] = [];
+  
+        if(token1.iconUrl=='')tokenAddresses.push(token1.id);
+        if(token2.iconUrl=='')tokenAddresses.push(token2.id);
+  
+        const _tokenIconMap = await tokenIconUtils.resolveTokenUrl(tokenAddresses);
+        setTokenIconMap(_tokenIconMap);
+      }
     }
   },[tokensData])
 
-  const info = useMemo<PoolStats|undefined>(() => {
-    if (!poolInfoData || !tokensData) {
-      return undefined;
+  const info = useMemo<{data:PoolStats|undefined,status:boolean}>(() => {
+    if (!poolInfoData || !tokensData || !(tokensData!.poolById!=null)) {
+      if(tokensData && tokensData!.poolById==null)return {
+        data:undefined,
+        status:false
+      }
+      return {data:undefined,status:true};
     }
 
     const pool = poolInfoData.poolInfo;
@@ -264,7 +270,7 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
 
     const all = amountLocked1.plus(amountLocked2);
 
-    return {
+    return {data:{
       firstToken: {
         address: token1.id,
         icon: getReefInfuraUrl(token1.iconUrl === '' ? tokenIconsMap? tokenIconsMap[token1.id]: getIconUrl(token1.id) : token1.iconUrl),
@@ -301,7 +307,7 @@ export const usePoolInfo = (address: string, signerAddress: string, tokenPrices:
       tvlUSD,
       volume24hUSD: volume24hUSD.toFormat(2),
       volumeChange24h: volDiff,
-    };
+    },status:true};
   }, [poolInfoData, tokensData, tokenPrices]);
 
   return [info, tokensLoading || poolInfoLoading];
