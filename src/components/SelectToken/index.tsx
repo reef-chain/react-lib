@@ -121,6 +121,7 @@ export const SelectToken = ({
             <LeadText>{token.symbol}</LeadText>
             <MutedText>
               <MiniText>{trim(token.address, 20)}</MiniText>
+              {/* @ts-ignore */}
               <CopyToClipboard text={toReefEVMAddressWithNotification(token.address)}>
                 <span
                   onClick={(event) => event.stopPropagation()}

@@ -78,7 +78,8 @@
     "@polkadot/x-randomvalues": "^13.1.1",
     "@polkadot/x-textdecoder": "^13.1.1",
     "@polkadot/x-textencoder": "^13.1.1",
-    "@polkadot/x-ws": "^13.1.1"
+    "@polkadot/x-ws": "^13.1.1",
+    "@reef-chain/evm-provider": "^3.0.0"
   },
   "peerDependencies": {
     "react": "^18.2.0"
