@@ -1,5 +1,6 @@
 import { BigNumber } from 'ethers';
-import { BigNumber as BN } from 'bignumber.js';
+import BigNumberJs from "bignumber.js";
+type BN = BigNumberJs; 
 import { parseEther } from 'ethers/lib/utils';
 import {
   EMPTY_ADDRESS,
@@ -139,7 +140,7 @@ export const reefTokenWithAmount = (): TokenWithAmount => toTokenAmount(
   },
 );
 
-export const getTokenPrice = (address: string, prices: TokenPrices): BN => new BN(
+export const getTokenPrice = (address: string, prices: TokenPrices): BN => new BigNumberJs(
   prices[address] && !Number.isNaN(prices[address])
     ? prices[address]
     : 0,
