@@ -4,6 +4,7 @@ import { Provider } from "@reef-chain/evm-provider";
 import { BigNumber } from "ethers";
 import {network as nw} from "@reef-chain/util-lib";
 import { ReefSigner } from "../state";
+import { IFormoAnalytics, TransactionStatus } from "@formo/analytics";
 
 export type TxStatusHandler = (status: TxStatusUpdate) => void;
 
@@ -70,7 +71,8 @@ export const nativeTransfer = async (
   amount: string,
   destinationAddress: string,
   provider: Provider,
-  signer: ReefSigner
+  signer: ReefSigner,
+  analytics?:IFormoAnalytics,
 ): Promise<void> => {
   const transfer = provider.api.tx.balances.transfer(
     destinationAddress,
@@ -82,9 +84,23 @@ export const nativeTransfer = async (
       { signer: signer.signer.signingKey },
       (status) => {
         if (status.dispatchError) {
+          if(analytics){
+            analytics.transaction({
+              status:TransactionStatus.REJECTED,
+              address:signer.evmAddress!,
+              chainId:13939,
+            })
+          }
           reject({ message: status.dispatchError.toString() });
         }
         if (status.status.isInBlock) {
+          if(analytics){
+            analytics.transaction({
+              status:TransactionStatus.BROADCASTED,
+              address:signer.evmAddress!,
+              chainId:13939,
+            })
+          }
           resolve();
         }
       }
