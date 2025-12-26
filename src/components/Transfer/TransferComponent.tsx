@@ -54,7 +54,7 @@ interface TransferComponent {
   onTxUpdate?: TxStatusHandler;
   accounts: ReefSigner[];
   currentAccount: ReefSigner;
-  analytics?: IFormoAnalytics;
+  analytics_formo?: IFormoAnalytics;
 }
 
 const TX_IDENT_ANY = 'TX_HASH_ANY';
@@ -147,7 +147,7 @@ export const TransferComponent = ({
   onTxUpdate,
   currentAccount,
   accounts,
-  analytics
+  analytics_formo
 }: TransferComponent): JSX.Element => {
   const [availableTxAccounts, setAvailableTxAccounts] = useState<ReefSigner[]>(
     [],
@@ -276,8 +276,8 @@ export const TransferComponent = ({
       return;
     }
     try {
-      if(analytics){
-        analytics.track('transfer_initiated', {
+      if(analytics_formo){
+        analytics_formo.track('transfer_initiated', {
           token_address: txToken.address,
           token_symbol: txToken.symbol,
           amount: txToken.amount,
@@ -294,14 +294,14 @@ export const TransferComponent = ({
         );
         setLastTxIdentInProgress(txIdent);
         getUpdateTxCallback([onTxUpdate, setTxUpdateData])({ txIdent });
-        if(analytics){
-          analytics.track('transfer_sent_to_evm', {
+        if(analytics_formo){
+          analytics_formo.track('transfer_sent_to_evm', {
             token_address: txToken.address,
             token_symbol: txToken.symbol,
             amount: txToken.amount,
             tx_ident: txIdent,
           });
-          analytics.transaction({
+          analytics_formo.transaction({
             status:TransactionStatus.CONFIRMED,
             address:from.evmAddress!,
             chainId:13939,
@@ -318,8 +318,8 @@ export const TransferComponent = ({
         );
         setLastTxIdentInProgress(txIdent);
         getUpdateTxCallback([onTxUpdate, setTxUpdateData])({ txIdent });
-        if(analytics){
-          analytics.track('transfer_sent_to_substrate', {
+        if(analytics_formo){
+          analytics_formo.track('transfer_sent_to_substrate', {
             token_address: txToken.address,
             token_symbol: txToken.symbol,
             amount: txToken.amount,
@@ -338,8 +338,8 @@ export const TransferComponent = ({
         },
         addresses: [from.address],
       });
-      if(analytics){
-        analytics.track('transfer_error', {
+      if(analytics_formo){
+        analytics_formo.track('transfer_error', {
           token_address: txToken?.address,
           token_symbol: txToken?.symbol,
           amount: txToken?.amount,

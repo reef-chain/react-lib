@@ -48,7 +48,7 @@ interface Send {
   isDarkMode?:boolean;
   isWalletConnect?:boolean;
   handleWalletConnectModal?:(val:boolean)=>void;
-  analytics?: IFormoAnalytics;
+  analytics_formo?: IFormoAnalytics;
 }
 
 const getSignerEvmAddress = async (
@@ -197,7 +197,7 @@ export const Send = ({
   isWalletConnect,
   isDarkMode,
   handleWalletConnectModal,
-  analytics
+  analytics_formo
 }: Send): JSX.Element => {
   const [to, setTo] = useState("");
   const [status, setStatus] = useState("Send");
@@ -269,7 +269,7 @@ export const Send = ({
 
   const onSend = async (): Promise<void> => {
     try {
-      if(analytics){analytics.transaction({
+      if(analytics_formo){analytics_formo.transaction({
         address:signer.address,
         chainId:13939,
         status:TransactionStatus.STARTED
@@ -283,7 +283,7 @@ export const Send = ({
       if (isNativeTransfer(token)) {
         setStatus("Transfering native REEF");
         const nativeAddr = await getSignerNativeAddress(to, provider);
-        await nativeTransfer(amount, nativeAddr, provider, signer,analytics!);
+        await nativeTransfer(amount, nativeAddr, provider, signer,analytics_formo!);
       } else {
         setStatus("Extracting evm address");
         const toAddress = isNativeAddress(to)
@@ -291,8 +291,8 @@ export const Send = ({
           : to;
         setStatus(`Transfering ${token.symbol}`);
         await tokenContract.transfer(toAddress, amount);
-        if(analytics){
-          analytics.transaction({
+        if(analytics_formo){
+          analytics_formo.transaction({
             status:TransactionStatus.CONFIRMED,
             address:signer.evmAddress!,
             chainId:13939,

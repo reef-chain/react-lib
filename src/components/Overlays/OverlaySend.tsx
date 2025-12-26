@@ -19,7 +19,7 @@ interface OverlaySend {
   isDarkMode?:boolean;
   isWalletConnect?:boolean;
   handleWalletConnectModal?:(val:boolean)=>void;
-  analytics?: IFormoAnalytics
+  analytics_formo?: IFormoAnalytics
 }
 
 export const OverlaySend:React.FC<OverlaySend> = ({
@@ -34,7 +34,7 @@ export const OverlaySend:React.FC<OverlaySend> = ({
   isDarkMode,
   isWalletConnect,
   handleWalletConnectModal,
-  analytics,
+  analytics_formo,
 }: OverlaySend): JSX.Element => {
   return (
     <OverlayAction
@@ -57,7 +57,7 @@ export const OverlaySend:React.FC<OverlaySend> = ({
             isWalletConnect={isWalletConnect}
             handleWalletConnectModal={handleWalletConnectModal}
             isDarkMode={isDarkMode}
-            analytics={analytics}
+            analytics_formo={analytics_formo}
           />
           )}
       </div>

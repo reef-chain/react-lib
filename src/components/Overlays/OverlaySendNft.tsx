@@ -23,7 +23,7 @@ interface OverlaySendNFT {
   selectedSigner:any;
   provider:any; 
   isDarkMode?:boolean;
-  analytics?:IFormoAnalytics,
+  analytics_formo?:IFormoAnalytics,
 }
 
 const nftTxAbi = [
@@ -145,7 +145,7 @@ export const OverlaySendNFT = ({
   selectedSigner,
   provider,
   isDarkMode,
-  analytics,
+  analytics_formo,
 }: OverlaySendNFT): JSX.Element => {
   const [isAccountListOpen, setAccountsListOpen] = useState(false);
   const [destinationAddress, setDestinationAddress] = useState<string>('');
@@ -171,8 +171,8 @@ export const OverlaySendNFT = ({
   };
 
   const transferNFT = async (from: string, to: string, _amount: number, nftContract: string, _signer: Signer, _provider: Provider, _nftId: string): Promise<void> => {
-    if(analytics){
-      analytics.track("nft_transfer", {
+    if(analytics_formo){
+      analytics_formo.track("nft_transfer", {
         nft_contract: nftContract,
         nft_id: _nftId,
         from_address: from,
@@ -194,8 +194,8 @@ export const OverlaySendNFT = ({
           storageLimit: 2000,
         },
       });
-      if(analytics){
-        analytics.track("nft_transfer", {
+      if(analytics_formo){
+        analytics_formo.track("nft_transfer", {
           nft_contract: nftContract,
           nft_id: _nftId,
           from_address: from,
@@ -216,8 +216,8 @@ export const OverlaySendNFT = ({
       } else {
         Uik.notify.danger('Unknown error occurred, please try again');
       }
-      if(analytics){
-        analytics.track("nft_transfer", {
+      if(analytics_formo){
+        analytics_formo.track("nft_transfer", {
           nft_contract: nftContract,
           nft_id: _nftId,
           from_address: from,

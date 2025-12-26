@@ -72,7 +72,7 @@ export const nativeTransfer = async (
   destinationAddress: string,
   provider: Provider,
   signer: ReefSigner,
-  analytics?:IFormoAnalytics,
+  analytics_formo?:IFormoAnalytics,
 ): Promise<void> => {
   const transfer = provider.api.tx.balances.transfer(
     destinationAddress,
@@ -84,8 +84,8 @@ export const nativeTransfer = async (
       { signer: signer.signer.signingKey },
       (status) => {
         if (status.dispatchError) {
-          if(analytics){
-            analytics.transaction({
+          if(analytics_formo){
+            analytics_formo.transaction({
               status:TransactionStatus.REJECTED,
               address:signer.evmAddress!,
               chainId:13939,
@@ -94,8 +94,8 @@ export const nativeTransfer = async (
           reject({ message: status.dispatchError.toString() });
         }
         if (status.status.isInBlock) {
-          if(analytics){
-            analytics.transaction({
+          if(analytics_formo){
+            analytics_formo.transaction({
               status:TransactionStatus.BROADCASTED,
               address:signer.evmAddress!,
               chainId:13939,

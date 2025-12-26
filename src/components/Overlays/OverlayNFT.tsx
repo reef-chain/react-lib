@@ -21,7 +21,7 @@ interface OverlayNFT {
   selectedSigner:any;
   provider:any; 
   isDarkMode?:boolean;
-  analytics?: IFormoAnalytics;
+  analytics_formo?: IFormoAnalytics;
 }
 
 export const OverlayNFT = ({
@@ -38,7 +38,7 @@ export const OverlayNFT = ({
   selectedSigner,
   provider,
   isDarkMode,
-  analytics,
+  analytics_formo,
 }: OverlayNFT): JSX.Element => {
   const [sendNFT, setSendNFT] = useState(false);
   const [isNFTLoaded, setIsNFTLoaded] = useState<boolean>(false);
@@ -121,7 +121,7 @@ export const OverlayNFT = ({
         selectedSigner={selectedSigner}
         provider={provider}
         isDarkMode={isDarkMode}
-        analytics={analytics}
+        analytics_formo={analytics_formo}
       />
     </OverlayAction>
   );

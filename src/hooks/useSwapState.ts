@@ -39,7 +39,7 @@ type Network = network.DexProtocolv2;
 
 const CHAIN_ID = 13939;
 
-// Helper to build common analytics payload
+// Helper to build common analytics_formo payload
 const buildBasePayload = (
   token1: TokenWithAmount,
   token2: TokenWithAmount,
@@ -227,7 +227,7 @@ interface OnSwap {
   updateTokenState: () => Promise<void>;
   onSuccess?: (...args: any[]) => any;
   onFinalized?: (...args: any[]) => any;
-  analytics?: IFormoAnalytics;
+  analytics_formo?: IFormoAnalytics;
 }
 
 export const onSwap = ({
@@ -239,7 +239,7 @@ export const onSwap = ({
   updateTokenState,
   onSuccess,
   onFinalized,
-  analytics,
+  analytics_formo,
 }: OnSwap) => async (): Promise<void> => {
   const {
     token1, settings, token2, isValid, isLoading,
@@ -254,7 +254,7 @@ export const onSwap = ({
   const basePayload = buildBasePayload(token1, token2, account, { percentage, deadline }, batchTxs);
 
   // Track swap initiated
-  analytics?.track('swap_initiated', basePayload);
+  analytics_formo?.track('swap_initiated', basePayload);
 
   try {
     dispatch(setLoadingAction(true));
@@ -296,7 +296,7 @@ export const onSwap = ({
       // === BATCHED TRANSACTION FLOW ===
       
       // Track batch approval started
-      analytics?.track('batch_approval_started', {
+      analytics_formo?.track('batch_approval_started', {
         ...basePayload,
         routerAddress: network.routerAddress,
         approvalAmount: sellAmount.toString(),
@@ -311,7 +311,7 @@ export const onSwap = ({
       );
 
       // Track batch trade started
-      analytics?.track('batch_trade_started', {
+      analytics_formo?.track('batch_trade_started', {
         ...basePayload,
         sellAmount: sellAmount.toString(),
         minBuyAmount: minBuyAmount.toString(),
@@ -324,8 +324,8 @@ export const onSwap = ({
       ]);
 
       // Signing and awaiting when data comes in block
-      analytics?.track('batch_signed_and_sent', basePayload);
-      analytics?.transaction({
+      analytics_formo?.track('batch_signed_and_sent', basePayload);
+      analytics_formo?.transaction({
         status: TransactionStatus.BROADCASTED,
         address: evmAddress!,
         chainId: CHAIN_ID,
@@ -339,7 +339,7 @@ export const onSwap = ({
             const err = captureError(status.events);
             if (err) {
               // Track batch error
-              analytics?.track('batch_error', {
+              analytics_formo?.track('batch_error', {
                 ...basePayload,
                 stage: 'sign_and_send',
                 errorMessage: err,
@@ -348,7 +348,7 @@ export const onSwap = ({
             }
             if (status.dispatchError) {
               // Track batch error
-              analytics?.track('batch_error', {
+              analytics_formo?.track('batch_error', {
                 ...basePayload,
                 stage: 'dispatch',
                 errorMessage: status.dispatchError.toString(),
@@ -357,8 +357,8 @@ export const onSwap = ({
             }
             if (status.status.isInBlock) {
               // Track batch in block
-              analytics?.track('batch_in_block', basePayload);
-              analytics?.transaction({
+              analytics_formo?.track('batch_in_block', basePayload);
+              analytics_formo?.transaction({
                 status: TransactionStatus.BROADCASTED,
                 address: evmAddress!,
                 chainId: CHAIN_ID,
@@ -368,8 +368,8 @@ export const onSwap = ({
             // If you want to await until block is finalized use below if
             if (status.status.isFinalized) {
               // Track batch finalized
-              analytics?.track('batch_finalized', basePayload);
-              analytics?.transaction({
+              analytics_formo?.track('batch_finalized', basePayload);
+              analytics_formo?.transaction({
                 status: TransactionStatus.CONFIRMED,
                 address: evmAddress!,
                 chainId: CHAIN_ID,
@@ -390,15 +390,15 @@ export const onSwap = ({
       // === SEQUENTIAL TRANSACTION FLOW ===
       
       // Track approval started
-      analytics?.track('approval_started', {
+      analytics_formo?.track('approval_started', {
         ...basePayload,
         routerAddress: network.routerAddress,
         approvalAmount: sellAmount.toString(),
       });
 
       // Track approval signed and sent
-      analytics?.track('approval_signed_and_sent', basePayload);
-      analytics?.transaction({
+      analytics_formo?.track('approval_signed_and_sent', basePayload);
+      analytics_formo?.transaction({
         status: TransactionStatus.BROADCASTED,
         address: evmAddress!,
         chainId: CHAIN_ID,
@@ -412,7 +412,7 @@ export const onSwap = ({
             const err = captureError(status.events);
             if (err) {
               // Track approval error
-              analytics?.track('approval_error', {
+              analytics_formo?.track('approval_error', {
                 ...basePayload,
                 stage: 'sign_and_send',
                 errorMessage: err,
@@ -421,7 +421,7 @@ export const onSwap = ({
             }
             if (status.dispatchError) {
               // Track approval error
-              analytics?.track('approval_error', {
+              analytics_formo?.track('approval_error', {
                 ...basePayload,
                 stage: 'dispatch',
                 errorMessage: status.dispatchError.toString(),
@@ -431,8 +431,8 @@ export const onSwap = ({
             }
             if (status.status.isInBlock) {
               // Track approval in block
-              analytics?.track('approval_in_block', basePayload);
-              analytics?.transaction({
+              analytics_formo?.track('approval_in_block', basePayload);
+              analytics_formo?.transaction({
                 status: TransactionStatus.CONFIRMED,
                 address: evmAddress!,
                 chainId: CHAIN_ID,
@@ -445,7 +445,7 @@ export const onSwap = ({
       await signAndSendApprove;
 
       // Track trade started
-      analytics?.track('trade_started', {
+      analytics_formo?.track('trade_started', {
         ...basePayload,
         sellAmount: sellAmount.toString(),
         minBuyAmount: minBuyAmount.toString(),
@@ -462,8 +462,8 @@ export const onSwap = ({
       );
 
       // Track trade signed and sent
-      analytics?.track('trade_signed_and_sent', basePayload);
-      analytics?.transaction({
+      analytics_formo?.track('trade_signed_and_sent', basePayload);
+      analytics_formo?.transaction({
         status: TransactionStatus.BROADCASTED,
         address: evmAddress!,
         chainId: CHAIN_ID,
@@ -477,7 +477,7 @@ export const onSwap = ({
             const err = captureError(status.events);
             if (err) {
               // Track trade error
-              analytics?.track('trade_error', {
+              analytics_formo?.track('trade_error', {
                 ...basePayload,
                 stage: 'sign_and_send',
                 errorMessage: err,
@@ -486,7 +486,7 @@ export const onSwap = ({
             }
             if (status.dispatchError) {
               // Track trade error
-              analytics?.track('trade_error', {
+              analytics_formo?.track('trade_error', {
                 ...basePayload,
                 stage: 'dispatch',
                 errorMessage: status.dispatchError.toString(),
@@ -496,8 +496,8 @@ export const onSwap = ({
             }
             if (status.status.isInBlock) {
               // Track trade in block
-              analytics?.track('trade_in_block', basePayload);
-              analytics?.transaction({
+              analytics_formo?.track('trade_in_block', basePayload);
+              analytics_formo?.transaction({
                 status: TransactionStatus.BROADCASTED,
                 address: evmAddress!,
                 chainId: CHAIN_ID,
@@ -506,8 +506,8 @@ export const onSwap = ({
             }
             if (status.status.isFinalized) {
               // Track trade finalized
-              analytics?.track('trade_finalized', basePayload);
-              analytics?.transaction({
+              analytics_formo?.track('trade_finalized', basePayload);
+              analytics_formo?.transaction({
                 status: TransactionStatus.CONFIRMED,
                 address: evmAddress!,
                 chainId: CHAIN_ID,
@@ -526,7 +526,7 @@ export const onSwap = ({
     }
 
     // Track swap completed
-    analytics?.track('swap_completed', {
+    analytics_formo?.track('swap_completed', {
       ...basePayload,
       success: true,
     });
@@ -541,7 +541,7 @@ export const onSwap = ({
     Uik.dropConfetti();
   } catch (error) {
     // Track swap failed (catch-all for any unhandled errors)
-    analytics?.track('swap_failed', {
+    analytics_formo?.track('swap_failed', {
       ...basePayload,
       errorMessage: errorHandler(error.message),
     });

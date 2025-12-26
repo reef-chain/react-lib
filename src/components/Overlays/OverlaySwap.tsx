@@ -29,7 +29,7 @@ interface OverlaySwap {
     network:libNet.DexProtocolv2 |undefined;
     notify:(message: string, type?: Notify) => void;
     isDarkMode?:boolean;
-    analytics?: IFormoAnalytics;
+    analytics_formo?: IFormoAnalytics;
 }
 
 const poolWithReservesToPool = (p: PoolWithReserves): Pool => ({
@@ -70,7 +70,7 @@ export const OverlaySwap = ({
   network,
   notify,
   isDarkMode=false,
-  analytics,
+  analytics_formo,
 }: OverlaySwap): JSX.Element => {
   const [address1, setAddress1] = useState(tokenAddress);
   const [address2, setAddress2] = useState('0x');
@@ -165,7 +165,7 @@ export const OverlaySwap = ({
       setFinalized(true);
       if (onClose) onClose();
     },
-    analytics,
+    analytics_formo,
   });
   const onSwitch = (): void => {
     tradeDispatch(store.switchTokensAction());
