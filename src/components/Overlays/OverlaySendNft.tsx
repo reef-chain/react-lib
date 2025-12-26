@@ -8,6 +8,7 @@ import { Provider, Signer } from '@reef-chain/evm-provider';
 import { shortAddress } from '../../utils';
 import { OverlayAction } from '../OverlayAction';
 import { ReefSigner } from '../../state';
+import { IFormoAnalytics } from '@formo/analytics';
 
 interface OverlaySendNFT {
   nftName?: string;
@@ -22,6 +23,7 @@ interface OverlaySendNFT {
   selectedSigner:any;
   provider:any; 
   isDarkMode?:boolean;
+  analytics?:IFormoAnalytics,
 }
 
 const nftTxAbi = [
@@ -142,7 +144,8 @@ export const OverlaySendNFT = ({
   accounts,
   selectedSigner,
   provider,
-  isDarkMode
+  isDarkMode,
+  analytics,
 }: OverlaySendNFT): JSX.Element => {
   const [isAccountListOpen, setAccountsListOpen] = useState(false);
   const [destinationAddress, setDestinationAddress] = useState<string>('');
@@ -168,6 +171,16 @@ export const OverlaySendNFT = ({
   };
 
   const transferNFT = async (from: string, to: string, _amount: number, nftContract: string, _signer: Signer, _provider: Provider, _nftId: string): Promise<void> => {
+    if(analytics){
+      analytics.track("nft_transfer", {
+        nft_contract: nftContract,
+        nft_id: _nftId,
+        from_address: from,
+        to_address: to,
+        amount: _amount,
+        status:"initiated"
+      })
+    }
     if (!isFormValid || transactionInProgress) {
       return;
     }
@@ -181,6 +194,16 @@ export const OverlaySendNFT = ({
           storageLimit: 2000,
         },
       });
+      if(analytics){
+        analytics.track("nft_transfer", {
+          nft_contract: nftContract,
+          nft_id: _nftId,
+          from_address: from,
+          to_address: toAddress,
+          amount: _amount,
+          status:"successful"
+        })
+      }
       Uik.notify.success('Transaction Successful!');
       clearStates();
       onClose();
@@ -192,6 +215,17 @@ export const OverlaySendNFT = ({
         Uik.notify.danger('Transaction cancelled by user');
       } else {
         Uik.notify.danger('Unknown error occurred, please try again');
+      }
+      if(analytics){
+        analytics.track("nft_transfer", {
+          nft_contract: nftContract,
+          nft_id: _nftId,
+          from_address: from,
+          to_address: toAddress,
+          amount: _amount,
+          error:error.toString(),
+          status:"failed"
+        })
       }
     } finally {
       setTransactionInProgress(false);

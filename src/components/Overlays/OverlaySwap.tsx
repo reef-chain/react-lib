@@ -165,6 +165,7 @@ export const OverlaySwap = ({
       setFinalized(true);
       if (onClose) onClose();
     },
+    analytics,
   });
   const onSwitch = (): void => {
     tradeDispatch(store.switchTokensAction());
