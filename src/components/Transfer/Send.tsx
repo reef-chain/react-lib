@@ -36,6 +36,7 @@ import SendPopup from "../PoolActions/ConfirmPopups/Send";
 import { DownIcon } from "../common/Icons";
 import { retrieveReefCoingeckoPrice } from "../../api";
 import UsdAmountField from "../PoolActions/UsdAmountField";
+import { IFormoAnalytics, TransactionStatus } from "@formo/analytics";
 
 interface Send {
   tokens: Token[];
@@ -47,6 +48,7 @@ interface Send {
   isDarkMode?:boolean;
   isWalletConnect?:boolean;
   handleWalletConnectModal?:(val:boolean)=>void;
+  analytics_formo?: IFormoAnalytics;
 }
 
 const getSignerEvmAddress = async (
@@ -194,7 +196,8 @@ export const Send = ({
   tokenAddress,
   isWalletConnect,
   isDarkMode,
-  handleWalletConnectModal
+  handleWalletConnectModal,
+  analytics_formo
 }: Send): JSX.Element => {
   const [to, setTo] = useState("");
   const [status, setStatus] = useState("Send");
@@ -266,6 +269,11 @@ export const Send = ({
 
   const onSend = async (): Promise<void> => {
     try {
+      if(analytics_formo){analytics_formo.transaction({
+        address:signer.address,
+        chainId:13939,
+        status:TransactionStatus.STARTED
+      })}
       setLoading(true);
       if(isWalletConnect && handleWalletConnectModal)handleWalletConnectModal(true);
       ensureTokenAmount(token);
@@ -275,7 +283,7 @@ export const Send = ({
       if (isNativeTransfer(token)) {
         setStatus("Transfering native REEF");
         const nativeAddr = await getSignerNativeAddress(to, provider);
-        await nativeTransfer(amount, nativeAddr, provider, signer);
+        await nativeTransfer(amount, nativeAddr, provider, signer,analytics_formo!);
       } else {
         setStatus("Extracting evm address");
         const toAddress = isNativeAddress(to)
@@ -283,6 +291,15 @@ export const Send = ({
           : to;
         setStatus(`Transfering ${token.symbol}`);
         await tokenContract.transfer(toAddress, amount);
+        if(analytics_formo){
+          analytics_formo.transaction({
+            status:TransactionStatus.CONFIRMED,
+            address:signer.evmAddress!,
+            chainId:13939,
+            to:toAddress,
+            value:amount,
+          })
+        }
       }
 
       Uik.notify.success({

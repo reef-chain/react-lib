@@ -5,6 +5,7 @@ import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import {OverlaySendNFT} from './OverlaySendNft';
 import { shortAddress } from '../../utils';
 import { OverlayAction } from '../OverlayAction';
+import { IFormoAnalytics } from '@formo/analytics';
 
 interface OverlayNFT {
   nftName?: string;
@@ -20,6 +21,7 @@ interface OverlayNFT {
   selectedSigner:any;
   provider:any; 
   isDarkMode?:boolean;
+  analytics_formo?: IFormoAnalytics;
 }
 
 export const OverlayNFT = ({
@@ -36,6 +38,7 @@ export const OverlayNFT = ({
   selectedSigner,
   provider,
   isDarkMode,
+  analytics_formo,
 }: OverlayNFT): JSX.Element => {
   const [sendNFT, setSendNFT] = useState(false);
   const [isNFTLoaded, setIsNFTLoaded] = useState<boolean>(false);
@@ -118,6 +121,7 @@ export const OverlayNFT = ({
         selectedSigner={selectedSigner}
         provider={provider}
         isDarkMode={isDarkMode}
+        analytics_formo={analytics_formo}
       />
     </OverlayAction>
   );

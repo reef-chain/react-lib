@@ -11,6 +11,7 @@ import * as store from '../../store';
 import { onSwap as hooksOnswap, useSwapState } from '../../hooks';
 import { OverlayAction } from '../OverlayAction';
 import { Finalizing, Trade } from '../PoolActions';
+import { IFormoAnalytics } from '@formo/analytics';
 
 const REEF_ADDRESS = '0x0000000000000000000000000000000001000000';
 const MAX_SLIPPAGE = 20;
@@ -28,6 +29,7 @@ interface OverlaySwap {
     network:libNet.DexProtocolv2 |undefined;
     notify:(message: string, type?: Notify) => void;
     isDarkMode?:boolean;
+    analytics_formo?: IFormoAnalytics;
 }
 
 const poolWithReservesToPool = (p: PoolWithReserves): Pool => ({
@@ -67,7 +69,8 @@ export const OverlaySwap = ({
   pools,
   network,
   notify,
-  isDarkMode=false
+  isDarkMode=false,
+  analytics_formo,
 }: OverlaySwap): JSX.Element => {
   const [address1, setAddress1] = useState(tokenAddress);
   const [address2, setAddress2] = useState('0x');
@@ -162,6 +165,7 @@ export const OverlaySwap = ({
       setFinalized(true);
       if (onClose) onClose();
     },
+    analytics_formo,
   });
   const onSwitch = (): void => {
     tradeDispatch(store.switchTokensAction());

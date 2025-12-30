@@ -33,8 +33,39 @@ import {
 } from '../utils';
 import { findToken } from './useKeepTokenUpdated';
 import { useLoadPool } from './useLoadPool';
+import { IFormoAnalytics, TransactionStatus } from '@formo/analytics';
 
 type Network = network.DexProtocolv2;
+
+const CHAIN_ID = 13939;
+
+// Helper to build common analytics_formo payload
+const buildBasePayload = (
+  token1: TokenWithAmount,
+  token2: TokenWithAmount,
+  account: ReefSigner,
+  settings: { percentage: number; deadline: number },
+  batchTxs?: boolean,
+) => ({
+  sellToken: {
+    address: token1.address,
+    symbol: token1.symbol,
+    amount: token1.amount,
+    price: token1.price,
+  },
+  buyToken: {
+    address: token2.address,
+    symbol: token2.symbol,
+    amount: token2.amount,
+    price: token2.price,
+  },
+  userAddress: account.evmAddress,
+  slippagePercentage: settings.percentage,
+  deadline: settings.deadline,
+  chainId: CHAIN_ID,
+  flowType: batchTxs ? 'batch' : 'sequential',
+  timestamp: Date.now(),
+});
 
 const swapStatus = (
   sell: TokenWithAmount,
@@ -66,17 +97,6 @@ const swapStatus = (
 
     ensure(reserved1.gt(0) || reserved2.gt(0), 'Insufficient amounts');
 
-    // WIP checking for ReefswapV2: K error
-    // Temporary solution was with `swapExactTokensForTokensSupportingFeeOnTransferTokens` function!
-    // Error still arrives when using `swapExactTokensForTokens`
-
-    // const balanceAdjuster1 = token1.balance.mul(1000).sub(amountIn1.mul(3));
-    // const balanceAdjuster2 = token2.balance.mul(1000).sub(amountIn2.mul(3));
-
-    // const reserved = reserved1.mul(reserved2).mul(1000 ** 2);
-    // const balance = balanceAdjuster1.mul(balanceAdjuster2);
-    // ensure(balance.gte(reserved), 'Deliquified pool');
-    // ensure(amountOut1.eq(amountIn1) && amountOut2.eq(amountIn2), 'Deliquified pool')
     return { isValid: true, text: 'Trade' };
   } catch (e) {
     return { isValid: false, text: e.message };
@@ -95,6 +115,7 @@ interface UseSwapState {
   waitForPool?: boolean;
   pool?: Pool;
 }
+
 export const useSwapState = ({
   state,
   tokens,
@@ -123,10 +144,11 @@ export const useSwapState = ({
   let loadedPool: Pool | undefined;
   let isPoolLoading = false;
   if (waitForPool) {
+    
     // Avoid querying pool based on token addresses and receive pool from props
     loadedPool = poolProp;
   } else {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+     // eslint-disable-next-line react-hooks/rules-of-hooks
     [loadedPool, isPoolLoading] = useLoadPool(
       sell,
       buy,
@@ -135,13 +157,13 @@ export const useSwapState = ({
       isLoading,
     );
   }
+  
   useEffect(() => {
     if (loadedPool) {
       dispatch(setPoolAction(loadedPool));
     }
   }, [loadedPool]);
 
-  // Updating swap tokens
   useEffect(() => {
     const foundToken1 = findToken(address2, tokens);
     if (prevAddress2.current !== address2 || (!tokenBuySet.current && buy.address)
@@ -163,14 +185,12 @@ export const useSwapState = ({
     }
   }, [tokens, tokenPrices, address1, address2]);
 
-  // Updating token prices
   useEffect(() => {
     if ((tokenPrices[address1] || tokenPrices[address2]) && (tokenBuySet.current || tokenSellSet.current)) {
       dispatch(setTokenPricesAction(tokenPrices));
     }
   }, [tokenPrices]);
 
-  // Updating swap state
   useEffect(() => {
     let [currentStatus, currentIsValid, currentIsLoading] = [
       '',
@@ -207,6 +227,7 @@ interface OnSwap {
   updateTokenState: () => Promise<void>;
   onSuccess?: (...args: any[]) => any;
   onFinalized?: (...args: any[]) => any;
+  analytics_formo?: IFormoAnalytics;
 }
 
 export const onSwap = ({
@@ -218,15 +239,22 @@ export const onSwap = ({
   updateTokenState,
   onSuccess,
   onFinalized,
+  analytics_formo,
 }: OnSwap) => async (): Promise<void> => {
   const {
     token1, settings, token2, isValid, isLoading,
   } = state;
+  
   if (!isValid || isLoading || !account || !network) {
     return;
   }
+  
   const { signer, address, evmAddress } = account;
   const { percentage, deadline } = resolveSettings(settings);
+  const basePayload = buildBasePayload(token1, token2, account, { percentage, deadline }, batchTxs);
+
+  // Track swap initiated
+  analytics_formo?.track('swap_initiated', basePayload);
 
   try {
     dispatch(setLoadingAction(true));
@@ -235,14 +263,17 @@ export const onSwap = ({
     const sellAmount = calculateAmount(token1);
     const minBuyAmount = calculateAmountWithPercentage(token2, percentage);
     const reefswapRouter = getReefswapRouter(network.routerAddress, signer);
-
     const sellTokenContract = new Contract(token1.address, ERC20, signer);
 
     dispatch(setStatusAction('Executing trade'));
+
+    // Prepare approval transaction
     const approveTransaction = await sellTokenContract.populateTransaction.approve(
       network.routerAddress,
       sellAmount,
     );
+
+    // Prepare trade transaction
     const tradeTransaction = await reefswapRouter.populateTransaction.swapExactTokensForTokensSupportingFeeOnTransferTokens(
       sellAmount,
       minBuyAmount,
@@ -262,21 +293,44 @@ export const onSwap = ({
     );
 
     if (batchTxs) {
+      // === BATCHED TRANSACTION FLOW ===
+      
+      // Track batch approval started
+      analytics_formo?.track('batch_approval_started', {
+        ...basePayload,
+        routerAddress: network.routerAddress,
+        approvalAmount: sellAmount.toString(),
+      });
+
       const tradeExtrinsic = signer.provider.api.tx.evm.call(
         tradeTransaction.to,
         tradeTransaction.data,
         toBN(tradeTransaction.value || 0),
-        toBN(582938 * 2), // hardcoded gas estimation, multiply by 2 as a safety margin
-        toBN(64 * 2), // hardcoded storage estimation, multiply by 2 as a safety margin
+        toBN(582938 * 2),// hardcoded gas estimation, multiply by 2 as a safety margin
+        toBN(64 * 2),// hardcoded storage estimation, multiply by 2 as a safety margin
       );
 
-      // Batching extrinsics
+      // Track batch trade started
+      analytics_formo?.track('batch_trade_started', {
+        ...basePayload,
+        sellAmount: sellAmount.toString(),
+        minBuyAmount: minBuyAmount.toString(),
+        path: [token1.address, token2.address],
+      });
+
       const batch = signer.provider.api.tx.utility.batchAll([
         approveExtrinsic,
         tradeExtrinsic,
       ]);
 
       // Signing and awaiting when data comes in block
+      analytics_formo?.track('batch_signed_and_sent', basePayload);
+      analytics_formo?.transaction({
+        status: TransactionStatus.BROADCASTED,
+        address: evmAddress!,
+        chainId: CHAIN_ID,
+      });
+
       const signAndSend = new Promise<void>((resolve, reject): void => {
         batch.signAndSend(
           address,
@@ -284,18 +338,44 @@ export const onSwap = ({
           (status: any) => {
             const err = captureError(status.events);
             if (err) {
+              // Track batch error
+              analytics_formo?.track('batch_error', {
+                ...basePayload,
+                stage: 'sign_and_send',
+                errorMessage: err,
+              });
               reject({ message: err });
             }
             if (status.dispatchError) {
+              // Track batch error
+              analytics_formo?.track('batch_error', {
+                ...basePayload,
+                stage: 'dispatch',
+                errorMessage: status.dispatchError.toString(),
+              });
               reject({ message: status.dispatchError.toString() });
             }
             if (status.status.isInBlock) {
+              // Track batch in block
+              analytics_formo?.track('batch_in_block', basePayload);
+              analytics_formo?.transaction({
+                status: TransactionStatus.BROADCASTED,
+                address: evmAddress!,
+                chainId: CHAIN_ID,
+              });
               resolve();
             }
             // If you want to await until block is finalized use below if
             if (status.status.isFinalized) {
+              // Track batch finalized
+              analytics_formo?.track('batch_finalized', basePayload);
+              analytics_formo?.transaction({
+                status: TransactionStatus.CONFIRMED,
+                address: evmAddress!,
+                chainId: CHAIN_ID,
+              });
+              
               if (onFinalized) onFinalized();
-
               Uik.notify.success({
                 message: 'Blocks have been finalized',
                 aliveFor: 10,
@@ -305,8 +385,25 @@ export const onSwap = ({
         );
       });
       await signAndSend;
+      
     } else {
-      // Approve
+      // === SEQUENTIAL TRANSACTION FLOW ===
+      
+      // Track approval started
+      analytics_formo?.track('approval_started', {
+        ...basePayload,
+        routerAddress: network.routerAddress,
+        approvalAmount: sellAmount.toString(),
+      });
+
+      // Track approval signed and sent
+      analytics_formo?.track('approval_signed_and_sent', basePayload);
+      analytics_formo?.transaction({
+        status: TransactionStatus.BROADCASTED,
+        address: evmAddress!,
+        chainId: CHAIN_ID,
+      });
+
       const signAndSendApprove = new Promise<void>((resolve, reject) => {
         approveExtrinsic.signAndSend(
           address,
@@ -314,13 +411,32 @@ export const onSwap = ({
           (status: any) => {
             const err = captureError(status.events);
             if (err) {
+              // Track approval error
+              analytics_formo?.track('approval_error', {
+                ...basePayload,
+                stage: 'sign_and_send',
+                errorMessage: err,
+              });
               reject({ message: err });
             }
             if (status.dispatchError) {
+              // Track approval error
+              analytics_formo?.track('approval_error', {
+                ...basePayload,
+                stage: 'dispatch',
+                errorMessage: status.dispatchError.toString(),
+              });
               console.error(status.dispatchError.toString());
               reject({ message: status.dispatchError.toString() });
             }
             if (status.status.isInBlock) {
+              // Track approval in block
+              analytics_formo?.track('approval_in_block', basePayload);
+              analytics_formo?.transaction({
+                status: TransactionStatus.CONFIRMED,
+                address: evmAddress!,
+                chainId: CHAIN_ID,
+              });
               resolve();
             }
           },
@@ -328,7 +444,14 @@ export const onSwap = ({
       });
       await signAndSendApprove;
 
-      // Swap
+      // Track trade started
+      analytics_formo?.track('trade_started', {
+        ...basePayload,
+        sellAmount: sellAmount.toString(),
+        minBuyAmount: minBuyAmount.toString(),
+        path: [token1.address, token2.address],
+      });
+
       const tradeResources = await signer.provider.estimateResources(tradeTransaction);
       const tradeExtrinsic = signer.provider.api.tx.evm.call(
         tradeTransaction.to,
@@ -338,6 +461,14 @@ export const onSwap = ({
         tradeResources.storage.lt(0) ? toBN(0) : toBN(tradeResources.storage),
       );
 
+      // Track trade signed and sent
+      analytics_formo?.track('trade_signed_and_sent', basePayload);
+      analytics_formo?.transaction({
+        status: TransactionStatus.BROADCASTED,
+        address: evmAddress!,
+        chainId: CHAIN_ID,
+      });
+
       const signAndSendTrade = new Promise<void>((resolve, reject) => {
         tradeExtrinsic.signAndSend(
           address,
@@ -345,19 +476,44 @@ export const onSwap = ({
           (status: any) => {
             const err = captureError(status.events);
             if (err) {
+              // Track trade error
+              analytics_formo?.track('trade_error', {
+                ...basePayload,
+                stage: 'sign_and_send',
+                errorMessage: err,
+              });
               reject({ message: err });
             }
             if (status.dispatchError) {
+              // Track trade error
+              analytics_formo?.track('trade_error', {
+                ...basePayload,
+                stage: 'dispatch',
+                errorMessage: status.dispatchError.toString(),
+              });
               console.error(status.dispatchError.toString());
               reject({ message: status.dispatchError.toString() });
             }
             if (status.status.isInBlock) {
+              // Track trade in block
+              analytics_formo?.track('trade_in_block', basePayload);
+              analytics_formo?.transaction({
+                status: TransactionStatus.BROADCASTED,
+                address: evmAddress!,
+                chainId: CHAIN_ID,
+              });
               resolve();
             }
-            // If you want to await until block is finalized use below if
             if (status.status.isFinalized) {
+              // Track trade finalized
+              analytics_formo?.track('trade_finalized', basePayload);
+              analytics_formo?.transaction({
+                status: TransactionStatus.CONFIRMED,
+                address: evmAddress!,
+                chainId: CHAIN_ID,
+              });
+              
               if (onFinalized) onFinalized();
-
               Uik.notify.success({
                 message: 'Blocks have been finalized',
                 aliveFor: 10,
@@ -369,6 +525,12 @@ export const onSwap = ({
       await signAndSendTrade;
     }
 
+    // Track swap completed
+    analytics_formo?.track('swap_completed', {
+      ...basePayload,
+      success: true,
+    });
+
     if (onSuccess) onSuccess();
 
     Uik.notify.success({
@@ -378,6 +540,12 @@ export const onSwap = ({
 
     Uik.dropConfetti();
   } catch (error) {
+    // Track swap failed (catch-all for any unhandled errors)
+    analytics_formo?.track('swap_failed', {
+      ...basePayload,
+      errorMessage: errorHandler(error.message),
+    });
+
     const message = errorHandler(error.message);
     Uik.notify.danger({
       message: `An error occurred while trying to complete your trade: ${message}`,

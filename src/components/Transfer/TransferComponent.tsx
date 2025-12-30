@@ -44,6 +44,7 @@ import { AccountListModal } from '../AccountSelector/AccountListModal';
 import { ConfirmLabel } from '../common/Label';
 import { Button } from '../common/Button';
 import { TxStatusHandler, TxStatusUpdate } from '../../utils/transactionUtil';
+import { IFormoAnalytics, TransactionStatus } from '@formo/analytics';
 
 interface TransferComponent {
   tokens: Token[];
@@ -53,6 +54,7 @@ interface TransferComponent {
   onTxUpdate?: TxStatusHandler;
   accounts: ReefSigner[];
   currentAccount: ReefSigner;
+  analytics_formo?: IFormoAnalytics;
 }
 
 const TX_IDENT_ANY = 'TX_HASH_ANY';
@@ -145,6 +147,7 @@ export const TransferComponent = ({
   onTxUpdate,
   currentAccount,
   accounts,
+  analytics_formo
 }: TransferComponent): JSX.Element => {
   const [availableTxAccounts, setAvailableTxAccounts] = useState<ReefSigner[]>(
     [],
@@ -273,6 +276,13 @@ export const TransferComponent = ({
       return;
     }
     try {
+      if(analytics_formo){
+        analytics_formo.track('transfer_initiated', {
+          token_address: txToken.address,
+          token_symbol: txToken.symbol,
+          amount: txToken.amount,
+        });
+      }
       setIsLoading(true);
       ensureTokenAmount(txToken);
       if (utils.isAddress(to)) {
@@ -284,6 +294,20 @@ export const TransferComponent = ({
         );
         setLastTxIdentInProgress(txIdent);
         getUpdateTxCallback([onTxUpdate, setTxUpdateData])({ txIdent });
+        if(analytics_formo){
+          analytics_formo.track('transfer_sent_to_evm', {
+            token_address: txToken.address,
+            token_symbol: txToken.symbol,
+            amount: txToken.amount,
+            tx_ident: txIdent,
+          });
+          analytics_formo.transaction({
+            status:TransactionStatus.CONFIRMED,
+            address:from.evmAddress!,
+            chainId:13939,
+            to:to,
+          })
+        }
       } else if (isSubstrateAddress(to)) {
         const txIdent = sendToNativeAddress(
           provider,
@@ -294,6 +318,14 @@ export const TransferComponent = ({
         );
         setLastTxIdentInProgress(txIdent);
         getUpdateTxCallback([onTxUpdate, setTxUpdateData])({ txIdent });
+        if(analytics_formo){
+          analytics_formo.track('transfer_sent_to_substrate', {
+            token_address: txToken.address,
+            token_symbol: txToken.symbol,
+            amount: txToken.amount,
+            tx_ident: txIdent,
+          });
+        }
       }
     } catch (err) {
       console.log('onSendTxConfirmed error =', err);
@@ -306,6 +338,14 @@ export const TransferComponent = ({
         },
         addresses: [from.address],
       });
+      if(analytics_formo){
+        analytics_formo.track('transfer_error', {
+          token_address: txToken?.address,
+          token_symbol: txToken?.symbol,
+          amount: txToken?.amount,
+          error_message: err.message || err,
+        });
+      }
     }
     setIsLoading(false);
   };

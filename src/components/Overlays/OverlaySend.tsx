@@ -5,6 +5,7 @@ import { OverlayAction } from '../OverlayAction';
 import './overlay.css';
 import { Notify, ReefSigner, Token } from '../../state';
 import { Provider } from '@reef-chain/evm-provider';
+import { IFormoAnalytics } from '@formo/analytics';
 
 interface OverlaySend {
   tokenAddress?: string;
@@ -18,6 +19,7 @@ interface OverlaySend {
   isDarkMode?:boolean;
   isWalletConnect?:boolean;
   handleWalletConnectModal?:(val:boolean)=>void;
+  analytics_formo?: IFormoAnalytics
 }
 
 export const OverlaySend:React.FC<OverlaySend> = ({
@@ -32,6 +34,7 @@ export const OverlaySend:React.FC<OverlaySend> = ({
   isDarkMode,
   isWalletConnect,
   handleWalletConnectModal,
+  analytics_formo,
 }: OverlaySend): JSX.Element => {
   return (
     <OverlayAction
@@ -54,6 +57,7 @@ export const OverlaySend:React.FC<OverlaySend> = ({
             isWalletConnect={isWalletConnect}
             handleWalletConnectModal={handleWalletConnectModal}
             isDarkMode={isDarkMode}
+            analytics_formo={analytics_formo}
           />
           )}
       </div>
