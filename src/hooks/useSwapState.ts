@@ -207,8 +207,14 @@ export const useSwapState = ({
         account?.isEvmClaimed,
         pool,
       );
+      if(!account){
+        currentStatus="Wallet not connected";
+        currentIsValid=false;
+      }
+     else{
       currentStatus = text;
       currentIsValid = isValid;
+     }
       currentIsLoading = false;
     }
     dispatch(
